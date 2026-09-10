@@ -42,18 +42,27 @@
     --shadow-sm:0 6px 18px -8px rgba(0,0,0,.45);
   }
   *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  *::before, *::after{ box-sizing:inherit; }
+  html{
+    scroll-behavior:smooth;
+    width:100%;
+    overflow-x:hidden;
+    -webkit-text-size-adjust:100%;
+  }
   body{
-    margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+    margin:0; min-height:100vh; width:100%; max-width:100vw;
+    overflow-x:hidden; position:relative;
+    background:var(--bg); color:var(--ink);
     font-family:'Nunito', sans-serif; line-height:1.55;
     transition:background-color .25s ease, color .25s ease;
     display:flex; flex-direction:column;
   }
+  img, svg{ max-width:100%; }
 
   /* ---------- TOP BAR ---------- */
   .topbar{
     display:flex; align-items:center; justify-content:space-between;
-    padding:18px 24px; max-width:1100px; width:100%; margin:0 auto;
+    padding:clamp(12px, 3vw, 18px) clamp(16px, 4vw, 24px); max-width:1100px; width:100%; margin:0 auto;
   }
   .back-link{
     display:inline-flex; align-items:center; gap:8px;
@@ -81,18 +90,18 @@
   /* ---------- MAIN LAYOUT ---------- */
   main{
     flex:1; display:flex; align-items:center; justify-content:center;
-    padding:24px; position:relative; overflow:hidden;
+    padding:clamp(16px, 3.5vw, 28px); position:relative; overflow:hidden; width:100%;
   }
   main::before, main::after{
-    content:""; position:absolute; border-radius:50%; filter:blur(60px); z-index:0; opacity:.55;
+    content:""; position:absolute; border-radius:50%; filter:blur(60px); z-index:0; opacity:.55; pointer-events:none;
   }
   main::before{ width:340px; height:340px; background:var(--green-pale); top:-120px; left:-100px; }
   main::after{ width:300px; height:300px; background:var(--sky); opacity:.25; bottom:-100px; right:-80px; }
 
   .form-card{
-    position:relative; z-index:1; width:100%; max-width:460px;
-    background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg);
-    box-shadow:var(--shadow); padding:38px 34px 32px;
+    position:relative; z-index:1; width:100%; max-width:min(460px, 100%);
+    background:var(--card); border:1px solid var(--border); border-radius:clamp(18px, 3vw, var(--radius-lg));
+    box-shadow:var(--shadow); padding:clamp(24px, 5vw, 38px) clamp(18px, 4vw, 34px);
     animation:cardIn .55s cubic-bezier(.22,1,.36,1) both;
   }
   @keyframes cardIn{
@@ -109,22 +118,22 @@
     letter-spacing:.04em; text-transform:uppercase; padding:6px 12px; border-radius:100px; margin-bottom:14px;
   }
   html[data-theme="dark"] .form-badge{ color:var(--green); }
-  .form-card h1{ margin:0 0 6px; font-size:30px; font-weight:900; letter-spacing:-0.02em; }
-  .form-card .sub{ margin:0 0 26px; color:var(--muted); font-size:14.5px; }
+  .form-card h1{ margin:0 0 6px; font-size:clamp(22px, 4vw, 30px); font-weight:900; letter-spacing:-0.02em; }
+  .form-card .sub{ margin:0 0 24px; color:var(--muted); font-size:14px; }
 
-  .field{ margin-bottom:18px; }
+  .field{ margin-bottom:16px; }
   .field label{
-    display:block; font-weight:700; font-size:13.5px; margin-bottom:7px; color:var(--ink);
+    display:block; font-weight:700; font-size:13.5px; margin-bottom:6px; color:var(--ink);
   }
   .field input, .field select{
-    width:100%; padding:13px 15px; font-family:inherit; font-size:15px; color:var(--ink);
+    width:100%; padding:12px 14px; font-family:inherit; font-size:15px; color:var(--ink);
     background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius-md);
     outline:none; transition:border-color .18s ease, box-shadow .18s ease, background-color .25s ease;
     appearance:none; -webkit-appearance:none;
   }
   .field select{
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'><path d='M1 1L7 7L13 1' stroke='%235B6B7A' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-    background-repeat:no-repeat; background-position:right 15px center; padding-right:38px;
+    background-repeat:no-repeat; background-position:right 14px center; padding-right:36px;
   }
   .field input:focus, .field select:focus{
     border-color:var(--green); box-shadow:0 0 0 4px rgba(51,197,107,.15);
@@ -135,7 +144,7 @@
   }
   .error-msg{
     display:none; align-items:center; gap:6px;
-    color:var(--error); font-size:12.5px; font-weight:700; margin-top:6px;
+    color:var(--error); font-size:12px; font-weight:700; margin-top:5px;
   }
   .field.has-error .error-msg{ display:flex; }
 
@@ -144,10 +153,10 @@
     max-height:0; opacity:0; overflow:hidden; margin-bottom:0;
     transition:max-height .35s cubic-bezier(.22,1,.36,1), opacity .3s ease, margin-bottom .35s ease;
   }
-  #idNumberField.show{ max-height:120px; opacity:1; margin-bottom:18px; }
+  #idNumberField.show{ max-height:120px; opacity:1; margin-bottom:16px; }
 
   .submit-btn{
-    width:100%; padding:15px; margin-top:6px; border:none; border-radius:var(--radius-md);
+    width:100%; padding:14px; margin-top:6px; border:none; border-radius:var(--radius-md);
     background:var(--green); color:#fff; font-family:inherit; font-weight:800; font-size:16px;
     cursor:pointer; box-shadow:0 10px 24px -8px rgba(51,197,107,.55);
     transition:transform .15s ease, box-shadow .15s ease, background-color .2s ease;
@@ -157,8 +166,8 @@
 
   .privacy-note{
     display:flex; align-items:flex-start; gap:8px;
-    margin-top:18px; padding:12px 14px; background:var(--bg); border:1px solid var(--border);
-    border-radius:var(--radius-md); color:var(--muted); font-size:12.5px; line-height:1.5;
+    margin-top:16px; padding:11px 13px; background:var(--bg); border:1px solid var(--border);
+    border-radius:var(--radius-md); color:var(--muted); font-size:12px; line-height:1.45;
   }
   .privacy-note svg{ width:16px; height:16px; flex-shrink:0; margin-top:1px; stroke:var(--muted); }
 
@@ -166,20 +175,20 @@
   #successView{ display:none; text-align:center; }
   #successView.show{ display:block; animation:cardIn .5s cubic-bezier(.22,1,.36,1) both; }
   .success-icon{
-    width:72px; height:72px; margin:0 auto 18px; border-radius:50%;
+    width:66px; height:66px; margin:0 auto 16px; border-radius:50%;
     background:var(--green-pale); display:flex; align-items:center; justify-content:center;
     animation:pop .5s cubic-bezier(.34,1.56,.64,1) both .1s;
   }
   @keyframes pop{ from{ transform:scale(0); opacity:0; } to{ transform:scale(1); opacity:1; } }
-  .success-icon svg{ width:34px; height:34px; stroke:var(--green-dark); }
+  .success-icon svg{ width:32px; height:32px; stroke:var(--green-dark); }
   #successView h1{ margin:0 0 8px; }
-  #successView .sub{ margin-bottom:22px; }
+  #successView .sub{ margin-bottom:20px; }
   .success-details{
     text-align:left; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-md);
-    padding:16px 18px; margin-bottom:22px;
+    padding:14px 16px; margin-bottom:20px;
   }
   .success-details .row{
-    display:flex; justify-content:space-between; gap:12px; padding:9px 0; font-size:14.5px;
+    display:flex; justify-content:space-between; gap:12px; padding:8px 0; font-size:14px;
     border-bottom:1px solid var(--border);
   }
   .success-details .row:last-child{ border-bottom:none; }
@@ -188,15 +197,15 @@
 
   .home-btn{
     display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%;
-    padding:14px; border-radius:var(--radius-md); border:1.5px solid var(--ink);
+    padding:13px; border-radius:var(--radius-md); border:1.5px solid var(--ink);
     background:transparent; color:var(--ink); font-family:inherit; font-weight:800; font-size:15px;
     text-decoration:none; cursor:pointer; transition:background-color .18s ease, color .18s ease;
   }
   .home-btn:hover{ background:var(--ink); color:var(--bg); }
 
-  @media (max-width:520px){
-    .form-card{ padding:30px 22px 26px; border-radius:20px; }
-    .form-card h1{ font-size:25px; }
+  @media (max-width:480px){
+    .form-card{ padding:26px 18px 22px; border-radius:18px; }
+    .form-card h1{ font-size:22px; }
   }
 </style>
 </head>
