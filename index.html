@@ -953,8 +953,7 @@
     const root = document.documentElement;
     const btn = document.getElementById('themeToggle');
     const stored = localStorage.getItem('sq-theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initial = stored || (prefersDark ? 'dark' : 'light');
+    const initial = stored || 'light';
 
     setTheme(initial);
 
