@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Dashboard — Swasthya Queue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FDF6EC;
+    --ink: #1E2A3A;
+    --green: #33C56B;
+    --green-dark: #22A855;
+    --green-pale: #CFF3D8;
+    --coral: #F4A896;
+    --coral-pale: #FBDCD3;
+    --sky: #A6D9E8;
+    --sky-pale: #DDF1F6;
+    --yellow: #FFD666;
+    --yellow-pale: #FFF3C4;
+    --lavender: #D8D3F7;
+    --lavender-pale: #ECEAFB;
+    --card: #FFFFFF;
+    --muted: #5B6B7A;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --shadow: 5px 5px 0 var(--ink);
+    --shadow-sm: 3px 3px 0 var(--ink);
+    --border: #E6DFD2;
+    --error: #D64545;
+    --error-bg: #FBE7E7;
+  }
+  html[data-theme="dark"] {
+    --bg: #12161C;
+    --ink: #F3EFE4;
+    --green: #33C56B;
+    --green-dark: #4FE08C;
+    --green-pale: #1F3B2A;
+    --coral: #F4A896;
+    --coral-pale: #43302B;
+    --sky: #A6D9E8;
+    --sky-pale: #233642;
+    --yellow: #FFD666;
+    --yellow-pale: #3D351B;
+    --lavender: #D8D3F7;
+    --lavender-pale: #2F2B48;
+    --card: #1B212A;
+    --muted: #9BA7B0;
+    --border: #2A313B;
+    --error: #FF8484;
+    --error-bg: #3A2020;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 100vh;
+    transition: background-color .25s ease, color .25s ease;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  a { text-decoration: none; color: inherit; }
+  button, input, select, textarea { font-family: inherit; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+  /* Neobrutalist Clay utility */
+  .clay {
+    background: var(--card);
+    border: 3px solid var(--ink);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, box-shadow .15s ease, background-color .25s ease;
+  }
+
+  /* Top Bar */
+  .top-strip {
+    height: 6px;
+    background: repeating-linear-gradient(45deg, var(--coral), var(--coral) 12px, var(--yellow) 12px, var(--yellow) 24px, var(--green) 24px, var(--green) 36px, var(--sky) 36px, var(--sky) 48px);
+  }
+
+  /* Header & Navigation */
+  .header-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 3px solid var(--ink);
+    padding: 12px 0;
+    backdrop-filter: blur(10px);
+  }
+  .wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(16px, 3vw, 32px);
+  }
+  .nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 3px solid var(--ink);
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .brand-title {
+    font-size: 22px;
+    font-weight: 800;
+  }
+  .camp-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 99px;
+    background: var(--sky-pale);
+    border: 2px solid var(--ink);
+    color: var(--ink);
+  }
+  .camp-pill .live-pulse {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.6s infinite ease-in-out;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+  }
+
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 800;
+    border-radius: var(--radius-md);
+    border: 3px solid var(--ink);
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform .1s ease, box-shadow .1s ease, background-color .15s ease;
+    white-space: nowrap;
+  }
+  .btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+  .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .btn-green { background: var(--green); }
+  .btn-green:hover { background: #2fbc64; }
+  .btn-sky { background: var(--sky); }
+  .btn-yellow { background: var(--yellow); }
+  .btn-coral { background: var(--coral); }
+  .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: 10px; }
+  
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .theme-toggle svg { width: 20px; height: 20px; stroke: var(--ink); }
+  .theme-toggle .icon-moon { display: none; }
+  html[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+  html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+
+  /* Main Container */
+  main {
+    padding: 28px 0 60px;
+  }
+
+  /* Live Clock Bar */
+  .camp-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    margin-bottom: 24px;
+    background: var(--card);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .banner-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .banner-icon {
+    font-size: 26px;
+    line-height: 1;
+  }
+  .banner-text h2 { font-size: 20px; }
+  .banner-text p { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .banner-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .clock-chip {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 12px;
+    background: var(--yellow-pale);
+    border: 2px solid var(--ink);
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card .stat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .stat-card .stat-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-card .stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .stat-card .stat-value {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-sub {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  /* Controls & Action Bar */
+  .action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+  }
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .search-box {
+    position: relative;
+    min-width: 240px;
+    flex: 1;
+    max-width: 380px;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--ink);
+    background: var(--bg);
+    color: var(--ink);
+    outline: none;
+    transition: box-shadow .15s ease;
+  }
+  .search-box input:focus {
+    box-shadow: 0 0 0 3px var(--yellow);
+  }
+  .search-box svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    stroke: var(--muted);
+    pointer-events: none;
+  }
+  .select-custom {
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--ink);
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* Filter Tabs */
+  .status-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 800;
+    border-radius: 99px;
+    border: 2px solid var(--ink);
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: all .15s ease;
+  }
+  .tab-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .tab-btn.active {
+    background: var(--ink);
+    color: var(--bg);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .tab-btn .badge-count {
+    margin-left: 6px;
+    padding: 2px 6px;
+    border-radius: 99px;
+    font-size: 11px;
+    background: var(--yellow);
+    color: #1E2A3A;
+  }
+  .tab-btn.active .badge-count {
+    background: var(--green);
+    color: #1E2A3A;
+  }
+
+  /* Queue Table Section */
+  .table-container {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+  }
+  .queue-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  .queue-table th {
+    background: var(--bg);
+    padding: 14px 18px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 3px solid var(--ink);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .queue-table td {
+    padding: 16px 18px;
+    border-bottom: 2px solid var(--border);
+    vertical-align: middle;
+  }
+  .queue-table tr:last-child td { border-bottom: none; }
+  .queue-table tr:hover td {
+    background: rgba(0,0,0,0.02);
+  }
+  html[data-theme="dark"] .queue-table tr:hover td {
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* Row Highlights */
+  .token-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 10px;
+    border: 2px solid var(--ink);
+    background: var(--yellow-pale);
+    color: var(--ink);
+  }
+  .token-chip.priority {
+    background: var(--coral-pale);
+    border-color: var(--error);
+    color: var(--error);
+  }
+  .patient-meta {
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .patient-sub {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  /* Status Badges & Selects */
+  .status-select {
+    font-size: 13px;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 99px;
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--ink);
+    outline: none;
+    transition: all .15s ease;
+  }
+  .status-waiting { background: var(--yellow-pale); color: #8A6500; }
+  .status-active { background: var(--green-pale); color: #0E7739; animation: pulse 2s infinite; }
+  .status-triage { background: var(--sky-pale); color: #0C617B; }
+  .status-completed { background: #EAEAEF; color: #555; }
+  .status-emergency { background: var(--coral-pale); color: #B31A1A; font-weight: 900; }
+
+  html[data-theme="dark"] .status-waiting { color: #FFE277; }
+  html[data-theme="dark"] .status-active { color: #57F299; }
+  html[data-theme="dark"] .status-triage { color: #73D6F2; }
+  html[data-theme="dark"] .status-completed { background: #262B33; color: #A0AAB5; }
+  html[data-theme="dark"] .status-emergency { color: #FFA1A1; }
+
+  .action-btns {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .action-icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 2px solid var(--ink);
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: transform .1s ease;
+  }
+  .action-icon-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .action-icon-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--muted);
+  }
+  .empty-state h3 { font-size: 20px; margin-bottom: 6px; }
+
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 22, 28, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-box {
+    width: 100%;
+    max-width: 520px;
+    padding: 28px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  .modal-header h3 { font-size: 22px; }
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 2px solid var(--ink);
+    background: var(--coral-pale);
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .form-control {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--ink);
+    background: var(--bg);
+    color: var(--ink);
+    outline: none;
+  }
+  .form-control:focus {
+    box-shadow: 0 0 0 3px var(--sky);
+  }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--card);
+    border: 3px solid var(--ink);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 200;
+    transform: translateY(120%);
+    transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 360px;
+  }
+  .toast.show {
+    transform: translateY(0);
+  }
+  .toast-icon { font-size: 22px; }
+  .toast-text b { display: block; font-size: 14px; }
+  .toast-text span { font-size: 12px; color: var(--muted); }
+
+  /* Accessibility Notice */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    .action-bar { flex-direction: column; align-items: stretch; }
+    .filter-group { flex-direction: column; width: 100%; }
+    .search-box { max-width: 100%; min-width: 100%; }
+    .select-custom { width: 100%; }
+    .camp-banner { flex-direction: column; align-items: flex-start; }
+    .banner-right { width: 100%; justify-content: space-between; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .nav-content { flex-direction: column; align-items: flex-start; }
+    .nav-controls { width: 100%; justify-content: space-between; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-strip"></div>
+
+<!-- Top Navigation -->
+<header class="header-nav">
+  <div class="wrap nav-content">
+    <div class="brand-group">
+      <a href="index.html" class="logo-badge" title="Back to Home Page" aria-label="Swasthya Queue Home">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 13c2-6 6-9 8-9s6 3 8 9c-2 3-5 5-8 5s-6-2-8-5z" stroke="#1E2A3A" stroke-width="2.2" stroke-linejoin="round"/><path d="M8 13h2l1.5-3 2 5 1.5-2h2" stroke="#1E2A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div>
+        <div class="brand-title">Swasthya Queue</div>
+        <div class="camp-pill" aria-label="Current camp status">
+          <span class="live-pulse" aria-hidden="true"></span>
+          PHC Sarangpur • Camp #14 (Live)
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-controls">
+      <a href="index.html" class="btn btn-sm" aria-label="Return to landing page">
+        ← Back to Site
+      </a>
+      <button class="btn btn-sm btn-yellow" id="resetDataBtn" title="Reset to default demo data">
+        🔄 Reset Demo
+      </button>
+      <button class="btn icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Camp Banner & Clock -->
+  <section class="clay camp-banner" aria-label="Camp information">
+    <div class="banner-left">
+      <div class="banner-icon">🏥</div>
+      <div class="banner-text">
+        <h2>Camp Staff OPD Queue Dashboard</h2>
+        <p>Rural Health Camp Sarangpur • Dr. Priya Sharma &amp; Team • Realtime Patient Tracker</p>
+      </div>
+    </div>
+    <div class="banner-right">
+      <div class="clock-chip" id="liveClock" aria-label="Current time">10:30 AM</div>
+      <button class="btn btn-green" id="callNextBtn" aria-label="Call next patient in line">
+        📢 Call Next Patient
+      </button>
+      <button class="btn btn-sky" id="openAddModalBtn" aria-label="Add new walk-in patient">
+        ➕ Add Walk-in
+      </button>
+    </div>
+  </section>
+
+  <!-- Realtime Metrics Grid -->
+  <section class="stats-grid" aria-label="Queue Statistics">
+    <div class="clay stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Total Registered</span>
+        <div class="stat-icon" style="background:var(--sky-pale);">📋</div>
+      </div>
+      <div class="stat-value" id="statTotal">0</div>
+      <div class="stat-sub">Today's Camp Total</div>
+    </div>
+
+    <div class="clay stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Waiting in Line</span>
+        <div class="stat-icon" style="background:var(--yellow-pale);">⏳</div>
+      </div>
+      <div class="stat-value" id="statWaiting" style="color:var(--ink);">0</div>
+      <div class="stat-sub">Avg wait: ~12 mins</div>
+    </div>
+
+    <div class="clay stat-card">
+      <div class="stat-header">
+        <span class="stat-label">In Consultation</span>
+        <div class="stat-icon" style="background:var(--green-pale);">🩺</div>
+      </div>
+      <div class="stat-value" id="statActive" style="color:var(--green-dark);">0</div>
+      <div class="stat-sub">With Doctors Now</div>
+    </div>
+
+    <div class="clay stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Completed</span>
+        <div class="stat-icon" style="background:var(--lavender-pale);">✅</div>
+      </div>
+      <div class="stat-value" id="statCompleted">0</div>
+      <div class="stat-sub">Discharged / Medicines given</div>
+    </div>
+
+    <div class="clay stat-card">
+      <div class="stat-header">
+        <span class="stat-label">High Priority / Triage</span>
+        <div class="stat-icon" style="background:var(--coral-pale);">🚨</div>
+      </div>
+      <div class="stat-value" id="statEmergency" style="color:var(--error);">0</div>
+      <div class="stat-sub">Urgent attention needed</div>
+    </div>
+  </section>
+
+  <!-- Filter and Search Actions -->
+  <div class="clay action-bar">
+    <div class="filter-group">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search by name, token #, or village..." aria-label="Search patients">
+      </div>
+
+      <select class="select-custom" id="deptFilter" aria-label="Filter by department">
+        <option value="ALL">All OPD Departments</option>
+        <option value="General Medicine">General Medicine</option>
+        <option value="Maternal & Child">Maternal &amp; Child</option>
+        <option value="Pediatrics">Pediatrics</option>
+        <option value="Ayush">Ayush &amp; Chronic Care</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Status Filter Tabs -->
+  <div class="status-tabs" role="tablist" aria-label="Filter queue by status">
+    <button class="tab-btn active" data-status="ALL" role="tab" aria-selected="true">
+      All Patients <span class="badge-count" id="countAll">0</span>
+    </button>
+    <button class="tab-btn" data-status="ACTIVE" role="tab" aria-selected="false">
+      🩺 With Doctor <span class="badge-count" id="countActive">0</span>
+    </button>
+    <button class="tab-btn" data-status="WAITING" role="tab" aria-selected="false">
+      ⏳ Waiting <span class="badge-count" id="countWaiting">0</span>
+    </button>
+    <button class="tab-btn" data-status="TRIAGE" role="tab" aria-selected="false">
+      🔵 In Triage <span class="badge-count" id="countTriage">0</span>
+    </button>
+    <button class="tab-btn" data-status="COMPLETED" role="tab" aria-selected="false">
+      ✅ Completed <span class="badge-count" id="countCompleted">0</span>
+    </button>
+  </div>
+
+  <!-- Queue Table Container -->
+  <div class="table-container">
+    <table class="queue-table" aria-label="Live Patient Queue">
+      <thead>
+        <tr>
+          <th>Token #</th>
+          <th>Patient Name &amp; Details</th>
+          <th>Department &amp; Doctor</th>
+          <th>Symptom / Notes</th>
+          <th>Queue Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="queueTableBody">
+        <!-- Injected via JavaScript -->
+      </tbody>
+    </table>
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <h3>No patients found</h3>
+      <p>Try clearing your search or filter criteria.</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- ADD WALK-IN PATIENT MODAL -->
+<div class="modal-overlay" id="addPatientModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="clay modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">Register Walk-in Patient</h3>
+      <button class="modal-close" id="closeAddModalBtn" type="button" aria-label="Close dialog">✕</button>
+    </div>
+    <form id="addPatientForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pName">Patient Full Name *</label>
+          <input type="text" id="pName" class="form-control" required placeholder="e.g. Ramesh Patel">
+        </div>
+        <div class="form-group">
+          <label for="pAge">Age &amp; Gender *</label>
+          <input type="text" id="pAge" class="form-control" required placeholder="e.g. 42 / M">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pVillage">Village / Locality *</label>
+          <input type="text" id="pVillage" class="form-control" required placeholder="e.g. Sarangpur">
+        </div>
+        <div class="form-group">
+          <label for="pPhone">Phone (For SMS Alert)</label>
+          <input type="tel" id="pPhone" class="form-control" placeholder="10-digit mobile">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pDept">Assigned Department *</label>
+          <select id="pDept" class="form-control" required>
+            <option value="General Medicine">General Medicine</option>
+            <option value="Maternal & Child">Maternal &amp; Child</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="Ayush">Ayush &amp; Chronic Care</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="pPriority">Priority Triage</label>
+          <select id="pPriority" class="form-control">
+            <option value="NORMAL">Normal Queue</option>
+            <option value="HIGH">🚨 High Priority / Urgent</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pSymptom">Chief Concern / Symptom *</label>
+        <input type="text" id="pSymptom" class="form-control" required placeholder="e.g. High fever, chest congestion, blood pressure check">
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+        <button type="button" class="btn" id="cancelAddBtn">Cancel</button>
+        <button type="submit" class="btn btn-green">➕ Add to Queue</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST ALERT -->
+<div class="toast" id="toastBox" role="status" aria-live="polite">
+  <div class="toast-icon" id="toastIcon">🔔</div>
+  <div class="toast-text">
+    <b id="toastTitle">Notification</b>
+    <span id="toastMsg">Action completed successfully</span>
+  </div>
+</div>
+
+<script>
+  // Initial Mock Data (Realistic rural camp patients)
+  const INITIAL_PATIENTS = [
+    {
+      id: "p1",
+      token: "A-101",
+      name: "Ramesh Kumar",
+      age: "52",
+      gender: "M",
+      village: "Rampur",
+      phone: "9876543210",
+      dept: "General Medicine",
+      doctor: "Dr. Priya Sharma",
+      symptom: "Chronic dry cough & HTN followup",
+      status: "ACTIVE", // ACTIVE = With Doctor
+      priority: "NORMAL",
+      waitMin: 0
+    },
+    {
+      id: "p2",
+      token: "A-102",
+      name: "Sunita Devi",
+      age: "34",
+      gender: "F",
+      village: "Sarangpur",
+      phone: "9812345678",
+      dept: "Maternal & Child",
+      doctor: "Dr. Anjali Rao",
+      symptom: "2nd Trimester Antenatal checkup",
+      status: "ACTIVE",
+      priority: "NORMAL",
+      waitMin: 0
+    },
+    {
+      id: "p3",
+      token: "A-103",
+      name: "Baby Aarav",
+      age: "3",
+      gender: "M",
+      village: "Kalyanpur",
+      phone: "9923456781",
+      dept: "Pediatrics",
+      doctor: "Dr. R. Verma",
+      symptom: "Sudden spike in fever (102.5°F)",
+      status: "WAITING",
+      priority: "HIGH",
+      waitMin: 4
+    },
+    {
+      id: "p4",
+      token: "A-104",
+      name: "Rekha Sharma",
+      age: "45",
+      gender: "F",
+      village: "Rampur",
+      phone: "9734567892",
+      dept: "General Medicine",
+      doctor: "Dr. Priya Sharma",
+      symptom: "Joint pain & general body fatigue",
+      status: "WAITING",
+      priority: "NORMAL",
+      waitMin: 12
+    },
+    {
+      id: "p5",
+      token: "A-105",
+      name: "Mohan Lal",
+      age: "68",
+      gender: "M",
+      village: "Bhedaghat",
+      phone: "9645678903",
+      dept: "Ayush",
+      doctor: "Dr. S. K. Joshi",
+      symptom: "Diabetic neuropathy foot pain",
+      status: "WAITING",
+      priority: "NORMAL",
+      waitMin: 18
+    },
+    {
+      id: "p6",
+      token: "A-106",
+      name: "Meena Bai",
+      age: "28",
+      gender: "F",
+      village: "Sarangpur",
+      phone: "9556789014",
+      dept: "General Medicine",
+      doctor: "Dr. Priya Sharma",
+      symptom: "Persistent severe migraine & nausea",
+      status: "TRIAGE",
+      priority: "NORMAL",
+      waitMin: 8
+    },
+    {
+      id: "p7",
+      token: "A-107",
+      name: "Chhotelal Patel",
+      age: "41",
+      gender: "M",
+      village: "Pipariya",
+      phone: "9467890125",
+      dept: "General Medicine",
+      doctor: "Dr. Priya Sharma",
+      symptom: "Allergic skin rash after field work",
+      status: "WAITING",
+      priority: "NORMAL",
+      waitMin: 25
+    },
+    {
+      id: "p8",
+      token: "A-108",
+      name: "Geeta Yadav",
+      age: "22",
+      gender: "F",
+      village: "Kalyanpur",
+      phone: "9378901236",
+      dept: "Maternal & Child",
+      doctor: "Dr. Anjali Rao",
+      symptom: "Anemia screening & iron supplement issue",
+      status: "WAITING",
+      priority: "NORMAL",
+      waitMin: 32
+    },
+    {
+      id: "p9",
+      token: "A-099",
+      name: "Radheshyam Malviya",
+      age: "60",
+      gender: "M",
+      village: "Sarangpur",
+      phone: "9289012347",
+      dept: "General Medicine",
+      doctor: "Dr. Priya Sharma",
+      symptom: "Routine BP check & medicine renewal",
+      status: "COMPLETED",
+      priority: "NORMAL",
+      waitMin: 0
+    },
+    {
+      id: "p10",
+      token: "A-100",
+      name: "Kamla Bai",
+      age: "58",
+      gender: "F",
+      village: "Rampur",
+      phone: "9190123458",
+      dept: "Ayush",
+      doctor: "Dr. S. K. Joshi",
+      symptom: "Ayurvedic arthritis consultation",
+      status: "COMPLETED",
+      priority: "NORMAL",
+      waitMin: 0
+    }
+  ];
+
+  // State Management via LocalStorage
+  const STORAGE_KEY = "swasthya_queue_dashboard_patients";
+  let patients = [];
+
+  function loadPatients() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        patients = JSON.parse(stored);
+      } else {
+        patients = JSON.parse(JSON.stringify(INITIAL_PATIENTS));
+        savePatients();
+      }
+    } catch (e) {
+      patients = JSON.parse(JSON.stringify(INITIAL_PATIENTS));
+    }
+  }
+
+  function savePatients() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+    } catch (e) {}
+  }
+
+  // Current Filters
+  let activeStatusFilter = "ALL";
+  let searchQuery = "";
+  let deptFilter = "ALL";
+
+  // Audio Chime using Web Audio API (No external sound file needed)
+  function playChime() {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.45);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.5);
+    } catch(e) {}
+  }
+
+  // Toast helper
+  let toastTimer;
+  function showToast(title, msg, icon = "🔔") {
+    const toast = document.getElementById("toastBox");
+    document.getElementById("toastTitle").textContent = title;
+    document.getElementById("toastMsg").textContent = msg;
+    document.getElementById("toastIcon").textContent = icon;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 3200);
+  }
+
+  // Update Summary Counts
+  function updateStats() {
+    const total = patients.length;
+    const waiting = patients.filter(p => p.status === "WAITING").length;
+    const active = patients.filter(p => p.status === "ACTIVE").length;
+    const completed = patients.filter(p => p.status === "COMPLETED").length;
+    const triage = patients.filter(p => p.status === "TRIAGE").length;
+    const emergency = patients.filter(p => p.priority === "HIGH" && p.status !== "COMPLETED").length;
+
+    document.getElementById("statTotal").textContent = total;
+    document.getElementById("statWaiting").textContent = waiting;
+    document.getElementById("statActive").textContent = active;
+    document.getElementById("statCompleted").textContent = completed;
+    document.getElementById("statEmergency").textContent = emergency;
+
+    document.getElementById("countAll").textContent = total;
+    document.getElementById("countActive").textContent = active;
+    document.getElementById("countWaiting").textContent = waiting;
+    document.getElementById("countTriage").textContent = triage;
+    document.getElementById("countCompleted").textContent = completed;
+  }
+
+  // Render Table
+  function renderQueue() {
+    updateStats();
+    const tbody = document.getElementById("queueTableBody");
+    const emptyState = document.getElementById("emptyState");
+    tbody.innerHTML = "";
+
+    const filtered = patients.filter(p => {
+      // Status Filter
+      if (activeStatusFilter !== "ALL" && p.status !== activeStatusFilter) {
+        return false;
+      }
+      // Department Filter
+      if (deptFilter !== "ALL" && p.dept !== deptFilter) {
+        return false;
+      }
+      // Search Query
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const matchName = p.name.toLowerCase().includes(q);
+        const matchToken = p.token.toLowerCase().includes(q);
+        const matchVillage = p.village.toLowerCase().includes(q);
+        const matchSymptom = p.symptom.toLowerCase().includes(q);
+        if (!matchName && !matchToken && !matchVillage && !matchSymptom) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      emptyState.style.display = "block";
+      return;
+    } else {
+      emptyState.style.display = "none";
+    }
+
+    filtered.forEach(patient => {
+      const tr = document.createElement("tr");
+
+      // Status pill class
+      let statusClass = "status-waiting";
+      if (patient.status === "ACTIVE") statusClass = "status-active";
+      if (patient.status === "TRIAGE") statusClass = "status-triage";
+      if (patient.status === "COMPLETED") statusClass = "status-completed";
+      if (patient.priority === "HIGH") statusClass += " status-emergency";
+
+      tr.innerHTML = `
+        <td>
+          <span class="token-chip ${patient.priority === 'HIGH' ? 'priority' : ''}">
+            #${patient.token}
+          </span>
+        </td>
+        <td>
+          <div class="patient-meta">${patient.name} (${patient.age}/${patient.gender})</div>
+          <div class="patient-sub">📍 ${patient.village} • 📞 ${patient.phone ? patient.phone : 'No Phone'}</div>
+        </td>
+        <td>
+          <div class="patient-meta">${patient.dept}</div>
+          <div class="patient-sub">${patient.doctor || 'Next Available Doctor'}</div>
+        </td>
+        <td>
+          <div style="font-weight:600; font-size:13px; max-width:260px;">${patient.symptom}</div>
+          ${patient.priority === 'HIGH' ? '<span style="font-size:11px; font-weight:800; color:var(--error); background:var(--error-bg); padding:2px 6px; border-radius:6px; display:inline-block; margin-top:2px;">URGENT TRIAGE</span>' : ''}
+        </td>
+        <td>
+          <select class="status-select ${statusClass}" onchange="changePatientStatus('${patient.id}', this.value)" aria-label="Change status for ${patient.name}">
+            <option value="WAITING" ${patient.status === 'WAITING' ? 'selected' : ''}>⏳ Waiting</option>
+            <option value="ACTIVE" ${patient.status === 'ACTIVE' ? 'selected' : ''}>🩺 With Doctor</option>
+            <option value="TRIAGE" ${patient.status === 'TRIAGE' ? 'selected' : ''}>🔵 In Triage</option>
+            <option value="COMPLETED" ${patient.status === 'COMPLETED' ? 'selected' : ''}>✅ Completed</option>
+          </select>
+        </td>
+        <td>
+          <div class="action-btns">
+            <button class="action-icon-btn" onclick="sendSmsAlert('${patient.id}')" title="Send SMS reminder to patient" aria-label="Send SMS to ${patient.name}">
+              💬
+            </button>
+            <button class="action-icon-btn" onclick="deletePatient('${patient.id}')" title="Remove patient" style="color:var(--error);" aria-label="Delete ${patient.name}">
+              🗑️
+            </button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Change Status Handler
+  window.changePatientStatus = function(id, newStatus) {
+    const patient = patients.find(p => p.id === id);
+    if (patient) {
+      patient.status = newStatus;
+      savePatients();
+      renderQueue();
+      showToast("Status Updated", `${patient.name} is now ${newStatus === 'ACTIVE' ? 'with Doctor' : newStatus.toLowerCase()}`, "🔄");
+    }
+  };
+
+  // Send Fake SMS Alert
+  window.sendSmsAlert = function(id) {
+    const patient = patients.find(p => p.id === id);
+    if (patient) {
+      playChime();
+      showToast("SMS Alert Sent!", `Sent token #${patient.token} update to ${patient.name} (${patient.phone || 'SMS Gateway'})`, "📱");
+    }
+  };
+
+  // Delete Patient
+  window.deletePatient = function(id) {
+    const patient = patients.find(p => p.id === id);
+    if (patient && confirm(`Remove patient ${patient.name} (#${patient.token}) from queue?`)) {
+      patients = patients.filter(p => p.id !== id);
+      savePatients();
+      renderQueue();
+      showToast("Patient Removed", `${patient.name} was removed from today's list`, "🗑️");
+    }
+  };
+
+  // "Call Next Patient" Feature
+  document.getElementById("callNextBtn").addEventListener("click", () => {
+    // Look for urgent waiting patient first, then any waiting patient
+    let nextPatient = patients.find(p => p.status === "WAITING" && p.priority === "HIGH");
+    if (!nextPatient) {
+      nextPatient = patients.find(p => p.status === "WAITING");
+    }
+
+    if (nextPatient) {
+      playChime();
+      nextPatient.status = "ACTIVE";
+      savePatients();
+      renderQueue();
+      showToast("Patient Called!", `Now calling Token #${nextPatient.token} (${nextPatient.name}) into Doctor's OPD`, "📢");
+    } else {
+      showToast("Queue Clear", "No more waiting patients in line!", "✅");
+    }
+  });
+
+  // Filter Tabs
+  document.querySelectorAll(".status-tabs .tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".status-tabs .tab-btn").forEach(b => {
+        b.classList.remove("active");
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.classList.add("active");
+      btn.setAttribute("aria-selected", "true");
+      activeStatusFilter = btn.dataset.status;
+      renderQueue();
+    });
+  });
+
+  // Search and Dept Filters
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    searchQuery = e.target.value.trim();
+    renderQueue();
+  });
+  document.getElementById("deptFilter").addEventListener("change", (e) => {
+    deptFilter = e.target.value;
+    renderQueue();
+  });
+
+  // Reset to default demo data
+  document.getElementById("resetDataBtn").addEventListener("click", () => {
+    if (confirm("Reset the demo queue back to default sample patients?")) {
+      patients = JSON.parse(JSON.stringify(INITIAL_PATIENTS));
+      savePatients();
+      renderQueue();
+      showToast("Reset Complete", "Demo queue has been restored to default", "🔄");
+    }
+  });
+
+  // Modal Dialog handling
+  const modal = document.getElementById("addPatientModal");
+  document.getElementById("openAddModalBtn").addEventListener("click", () => {
+    modal.classList.add("active");
+    document.getElementById("pName").focus();
+  });
+  function closeModal() {
+    modal.classList.remove("active");
+    document.getElementById("addPatientForm").reset();
+  }
+  document.getElementById("closeAddModalBtn").addEventListener("click", closeModal);
+  document.getElementById("cancelAddBtn").addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Add Walk-in Form Submit
+  document.getElementById("addPatientForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("pName").value.trim();
+    const ageGender = document.getElementById("pAge").value.trim();
+    const village = document.getElementById("pVillage").value.trim();
+    const phone = document.getElementById("pPhone").value.trim();
+    const dept = document.getElementById("pDept").value;
+    const priority = document.getElementById("pPriority").value;
+    const symptom = document.getElementById("pSymptom").value.trim();
+
+    // Generate Token Number
+    const nextTokenNum = 100 + patients.length + 1;
+    const token = `A-${nextTokenNum}`;
+
+    let doctor = "Dr. Priya Sharma";
+    if (dept === "Maternal & Child") doctor = "Dr. Anjali Rao";
+    if (dept === "Pediatrics") doctor = "Dr. R. Verma";
+    if (dept === "Ayush") doctor = "Dr. S. K. Joshi";
+
+    const parts = ageGender.split("/");
+    const age = parts[0] ? parts[0].trim() : ageGender;
+    const gender = parts[1] ? parts[1].trim() : "M";
+
+    const newPatient = {
+      id: "p_" + Date.now(),
+      token: token,
+      name: name,
+      age: age,
+      gender: gender,
+      village: village,
+      phone: phone || "9800000000",
+      dept: dept,
+      doctor: doctor,
+      symptom: symptom,
+      status: "WAITING",
+      priority: priority,
+      waitMin: 15
+    };
+
+    patients.unshift(newPatient); // Add to top of list
+    savePatients();
+    closeModal();
+    renderQueue();
+    playChime();
+    showToast("Patient Registered!", `Token #${token} assigned to ${name}. Added to queue.`, "✅");
+  });
+
+  // Live Clock updater
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("liveClock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Theme Toggle Sync
+  const themeToggle = document.getElementById("themeToggle");
+  const savedTheme = localStorage.getItem("swasthya_theme") || "light";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+
+  themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const target = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", target);
+    localStorage.setItem("swasthya_theme", target);
+  });
+
+  // Init
+  loadPatients();
+  renderQueue();
+</script>
+
+</body>
+</html>
