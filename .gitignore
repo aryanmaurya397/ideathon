@@ -21,5 +21,9 @@ yarn-error.log*
 # Temporary & Log files
 *.log
 
-.vercel
 .env*
+
+# Agent workspace rules (do not commit)
+AGENTS.md
+idea/AGENTS.md
+**/AGENTS.md

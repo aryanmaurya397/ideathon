@@ -644,6 +644,24 @@
   html[data-theme="dark"] .status-tag-badge.triage { color: #73D6F2; }
   html[data-theme="dark"] .status-tag-badge.completed { background: #262B33; color: #A0AAB5; }
 
+  /* Pulse Animations for Live OPD statuses */
+  @keyframes statusRingPulse {
+    0% { box-shadow: 0 0 0 0 rgba(51, 197, 107, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(51, 197, 107, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(51, 197, 107, 0); }
+  }
+  .status-tag-badge.active {
+    animation: statusRingPulse 1.8s infinite ease-in-out !important;
+  }
+  @keyframes triageRingPulse {
+    0% { box-shadow: 0 0 0 0 rgba(166, 217, 232, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(166, 217, 232, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(166, 217, 232, 0); }
+  }
+  .status-tag-badge.triage {
+    animation: triageRingPulse 1.8s infinite ease-in-out !important;
+  }
+
   .queue-metrics-box {
     display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;
   }
@@ -700,16 +718,125 @@
   }
   .rural-sms-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
 
-  .token-translate-row {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
-    padding: 8px 12px; background: var(--bg); border: 2px solid var(--border);
-    border-radius: 12px;
+  .rural-share-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    padding: 13px; border-radius: 14px; border: 2.5px solid var(--ink);
+    background: #25D366; color: #fff; font-weight: 800; font-size: 14.5px;
+    cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .1s ease;
+    margin-bottom: 8px; font-family: inherit;
   }
-  .token-translate-row .goog-te-gadget-simple {
-    border-radius: 8px !important;
+  .rural-share-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+
+  /* ── In-Modal Language Switcher Bar ── */
+  .modal-translate-bar {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    padding: 9px 12px; border-radius: 14px; margin-bottom: 14px;
+    background: var(--sky-pale); border: 2px solid var(--ink);
   }
-  .token-translate-label {
-    font-size: 12px; font-weight: 700; color: var(--muted); white-space: nowrap;
+  .modal-translate-label {
+    font-size: 12px; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 4px;
+    white-space: nowrap;
+  }
+  .modal-lang-chips {
+    display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+  }
+  .lang-chip {
+    font-size: 11.5px; font-weight: 800; padding: 4px 9px;
+    border-radius: 99px; border: 1.5px solid var(--ink);
+    background: var(--card); color: var(--ink); cursor: pointer;
+    transition: all .15s ease; font-family: inherit;
+  }
+  .lang-chip:hover {
+    transform: scale(1.04);
+    background: var(--yellow);
+    color: #12161C;
+  }
+  .lang-chip.active {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  /* ── Action guidance & refresh bar ── */
+  .action-guide-box {
+    background: var(--green-pale); border: 2px solid var(--ink); border-radius: 14px;
+    padding: 12px 14px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;
+  }
+  .action-guide-icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
+  .action-guide-title { font-weight: 800; font-size: 13.5px; color: var(--ink); margin-bottom: 2px; }
+  .action-guide-text { font-size: 12px; font-weight: 700; color: var(--ink); opacity: .9; }
+
+  .token-refresh-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    margin-bottom: 10px; padding: 6px 10px; background: var(--card);
+    border: 1.5px solid var(--border); border-radius: 10px; font-size: 11.5px; font-weight: 700;
+  }
+  .token-refresh-btn {
+    background: none; border: 1.5px solid var(--ink); border-radius: 6px; padding: 3px 8px;
+    font-size: 11px; font-weight: 800; cursor: pointer; color: var(--ink); font-family: inherit;
+    display: inline-flex; align-items: center; gap: 4px; transition: transform .1s ease;
+  }
+  .token-refresh-btn:hover { background: var(--sky-pale); transform: scale(1.03); }
+
+  /* ── Full Dark Mode Adjustments ── */
+  html[data-theme="dark"] .rural-sms-btn {
+    background: rgba(11, 88, 114, 0.4);
+    color: #73D6F2;
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .rural-audio-btn {
+    background: rgba(255, 214, 102, 0.15);
+    color: #FFD666;
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .rural-share-btn {
+    background: #128C7E;
+    color: #fff;
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .big-token-pill {
+    background: var(--yellow);
+    color: #12161C;
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .demo-chip-btn {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .q-metric-card,
+  html[data-theme="dark"] .pi-cell {
+    background: var(--card);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .token-result-box {
+    background: #161C24;
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .modal-translate-bar {
+    background: rgba(35, 54, 66, 0.7);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .lang-chip {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .lang-chip.active {
+    background: var(--green);
+    color: #12161C;
+    border-color: var(--green);
+  }
+  html[data-theme="dark"] .action-guide-box {
+    background: rgba(31, 59, 42, 0.5);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .token-refresh-bar {
+    background: var(--card);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .token-refresh-btn {
+    border-color: var(--border);
+    color: var(--ink);
   }
 
   .toast-notification {
@@ -1050,6 +1177,20 @@
 <!-- ========== REGISTRATION MODAL ========== -->
 <div class="modal-overlay" id="registerModal">
   <div class="modal-card">
+    <!-- In-Modal Translator Bar -->
+    <div class="modal-translate-bar">
+      <span class="modal-translate-label">🌐 भाषा / Language:</span>
+      <div class="modal-lang-chips">
+        <button type="button" class="lang-chip active" data-lang="en" onclick="switchLang('en')">English</button>
+        <button type="button" class="lang-chip" data-lang="hi" onclick="switchLang('hi')">हिंदी</button>
+        <button type="button" class="lang-chip" data-lang="mr" onclick="switchLang('mr')">मराठी</button>
+        <button type="button" class="lang-chip" data-lang="gu" onclick="switchLang('gu')">ગુજરાતી</button>
+        <button type="button" class="lang-chip" data-lang="bn" onclick="switchLang('bn')">বাংলা</button>
+        <button type="button" class="lang-chip" data-lang="pa" onclick="switchLang('pa')">ਪੰਜਾਬੀ</button>
+        <button type="button" class="lang-chip" data-lang="ta" onclick="switchLang('ta')">தமிழ்</button>
+      </div>
+    </div>
+
     <button class="modal-close" id="modalCloseBtn" type="button" aria-label="Close registration form">
       <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
@@ -1103,7 +1244,7 @@
 
     <div id="successView">
       <div class="success-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <svg viewBox="0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
       </div>
       <h1>Registration Successful!</h1>
       <p class="sub">Thanks for signing up — we've got your details.</p>
@@ -1120,12 +1261,26 @@
 <!-- ========== TOKEN STATUS MODAL ========== -->
 <div class="modal-overlay" id="tokenStatusModal" role="dialog" aria-modal="true" aria-labelledby="tokenModalTitle">
   <div class="modal-card token-modal-card">
+    <!-- In-Modal Translator Bar -->
+    <div class="modal-translate-bar">
+      <span class="modal-translate-label">🌐 भाषा / Language:</span>
+      <div class="modal-lang-chips">
+        <button type="button" class="lang-chip active" data-lang="en" onclick="switchLang('en')">English</button>
+        <button type="button" class="lang-chip" data-lang="hi" onclick="switchLang('hi')">हिंदी</button>
+        <button type="button" class="lang-chip" data-lang="mr" onclick="switchLang('mr')">मराठी</button>
+        <button type="button" class="lang-chip" data-lang="gu" onclick="switchLang('gu')">ગુજરાતી</button>
+        <button type="button" class="lang-chip" data-lang="bn" onclick="switchLang('bn')">বাংলা</button>
+        <button type="button" class="lang-chip" data-lang="pa" onclick="switchLang('pa')">ਪੰਜਾਬੀ</button>
+        <button type="button" class="lang-chip" data-lang="ta" onclick="switchLang('ta')">தமிழ்</button>
+      </div>
+    </div>
+
     <button class="modal-close" id="tokenModalCloseBtn" type="button" aria-label="Close token status dialog">
       <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
 
     <div style="margin-bottom:12px;">
-      <span class="form-badge" style="background:var(--sky-pale); color:#0B5872;">
+      <span class="form-badge" style="background:var(--sky-pale); color:var(--ink);">
         🏥 PHC Sarangpur • Live OPD Queue
       </span>
       <h1 id="tokenModalTitle" style="margin:0 0 4px; font-size:24px;">टोकन स्थिति / Live Token Tracker</h1>
@@ -1181,20 +1336,43 @@
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
       pageLanguage: 'en',
-      includedLanguages: 'hi,mr,gu,bn,ta,te,kn,ml,pa,or,as,ur',
+      includedLanguages: 'en,hi,mr,gu,bn,ta,te,kn,ml,pa,or,as,ur',
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
       autoDisplay: false
     }, 'google_translate_element');
-    // Also init inside token modal if present
-    if (document.getElementById('google_translate_element_token')) {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'hi,mr,gu,bn,ta,te,kn,ml,pa,or,as,ur',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element_token');
-    }
   }
+
+  /* ===== PROGRAMMATIC IN-MODAL LANGUAGE SWITCHER ===== */
+  window.switchLang = function(langCode) {
+    document.querySelectorAll('.lang-chip').forEach(c => {
+      c.classList.toggle('active', c.getAttribute('data-lang') === langCode);
+    });
+
+    const cookieVal = '/en/' + langCode;
+    document.cookie = 'googtrans=' + cookieVal + '; path=/';
+    if (window.location.hostname) {
+      document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + window.location.hostname;
+    }
+
+    const combo = document.querySelector('.goog-te-combo');
+    if (combo) {
+      combo.value = langCode;
+      combo.dispatchEvent(new Event('change'));
+    } else {
+      window.location.reload();
+    }
+  };
+
+  // Detect active language from cookie on load
+  (function initActiveLang() {
+    const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/);
+    const active = match ? match[1] : 'en';
+    setTimeout(() => {
+      document.querySelectorAll('.lang-chip').forEach(c => {
+        c.classList.toggle('active', c.getAttribute('data-lang') === active);
+      });
+    }, 600);
+  })();
 
   /* ===== EXIT/ENTER TOKEN DEMO ===== */
   (function(){
@@ -1493,10 +1671,10 @@
 
     function getStatusInfo(status) {
       const map = {
-        'WAITING':     { label:'प्रतीक्षारत / Waiting',       emoji:'⏳', cls:'waiting',   step:1 },
-        'IN_TRIAGE':   { label:'ट्राइज / Triage',             emoji:'🩺', cls:'triage',    step:2 },
-        'WITH_DOCTOR': { label:'डॉक्टर के साथ / With Doctor', emoji:'👨‍⚕️', cls:'active',   step:3 },
-        'COMPLETED':   { label:'पूर्ण / Completed',            emoji:'✅', cls:'completed', step:4 },
+        'WAITING':     { label:'प्रतीक्षारत / Waiting',       emoji:'⏳', cls:'waiting',   step:1, spoken:'प्रतीक्षारत हैं' },
+        'IN_TRIAGE':   { label:'ट्राइज / In Triage',          emoji:'🩺', cls:'triage',    step:2, spoken:'ट्राइज कक्ष में जांच चल रही है' },
+        'WITH_DOCTOR': { label:'डॉक्टर के साथ / With Doctor', emoji:'👨‍⚕️', cls:'active',   step:3, spoken:'डॉक्टर के साथ हैं, तुरंत कमरे में जाएं' },
+        'COMPLETED':   { label:'पूर्ण / Completed',            emoji:'✅', cls:'completed', step:4, spoken:'परामर्श पूर्ण हो गया है, दवा वितरण पर जाएं' },
       };
       return map[status] || map['WAITING'];
     }
@@ -1509,10 +1687,49 @@
       return myIndex === -1 ? 0 : myIndex;
     }
 
+    function getGuideInfo(patient, si, ahead, wait) {
+      if (patient.status === 'WITH_DOCTOR') {
+        return {
+          icon: '🟢',
+          title: '🚨 तुरंत डॉक्टर कक्ष में प्रवेश करें! / Enter Doctor Room Now',
+          text: `${patient.room || 'Room 2'} • ${patient.doctor || 'OPD Doctor'} आपका इंतज़ार कर रहे हैं। (Please proceed inside now)`
+        };
+      }
+      if (patient.status === 'IN_TRIAGE') {
+        return {
+          icon: '🩺',
+          title: 'जाँच कक्ष में उपस्थित हों / Vitals & Triage Check',
+          text: 'जाँच कक्ष (Room 1) • वजन, बीपी और तापमान की नाप कराएं। (Basic vitals inspection underway)'
+        };
+      }
+      if (patient.status === 'COMPLETED') {
+        return {
+          icon: '💊',
+          title: 'दवा वितरण खिड़की पर जाएं / Collect Medicine',
+          text: 'खिड़की नं. 2 • पर्ची दिखाकर डॉक्टर द्वारा लिखी निःशुल्क दवाइयां प्राप्त करें। (Visit pharmacy counter)'
+        };
+      }
+      return {
+        icon: '🪑',
+        title: 'कृपया ओपीडी प्रतीक्षालय में बैठें / Please Wait in Hall',
+        text: `आपसे पहले ${ahead} मरीज़ हैं। लगभग ${wait} मिनट में बुलावा आएगा। लाउडस्पीकर पर आवाज़ सुनें। (Watch display screen)`
+      };
+    }
+
+    let refreshTimer = null;
+
     function renderResult(patient, patients) {
+      window._lastCheckedToken = patient.token;
       const si = getStatusInfo(patient.status);
       const ahead = getPeopleAhead(patients, patient.token);
-      const wait = patient.waitMin || (ahead * 8);
+      const wait = patient.waitMin !== undefined ? patient.waitMin : (ahead * 8);
+      const guide = getGuideInfo(patient, si, ahead, wait);
+
+      // Estimated call time
+      const now = new Date();
+      const callTime = new Date(now.getTime() + (wait * 60000));
+      const estTimeStr = patient.status === 'COMPLETED' ? 'पूर्ण / Done' : callTime.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+
       const steps = [
         { label:'पंजीकृत\nRegistered', done: true },
         { label:'कतार में\nIn Queue',  done: si.step >= 1 },
@@ -1520,20 +1737,42 @@
         { label:'डॉक्टर\nDoctor',      done: si.step >= 3 },
         { label:'पूर्ण\nDone',         done: si.step >= 4 },
       ];
-      const currentStep = si.step; // 0-based step that is 'current'
+      const currentStep = si.step;
 
       resultArea.innerHTML = `
+        <div class="token-refresh-bar">
+          <span style="display:inline-flex; align-items:center; gap:6px;">
+            <span style="width:8px; height:8px; border-radius:50%; background:var(--green); display:inline-block;"></span>
+            🔴 लाइव ओपीडी सिंक (Live OPD Sync)
+          </span>
+          <button type="button" class="token-refresh-btn" onclick="window.refreshCurrentToken()">
+            🔄 रीफ़्रेश / Refresh
+          </button>
+        </div>
+
         <div class="token-result-box">
           <!-- Header -->
           <div class="token-header-row">
-            <div class="big-token-pill">#${patient.token}</div>
+            <div>
+              <div class="big-token-pill">#${patient.token}</div>
+              <div style="font-size:11.5px; font-weight:800; color:var(--muted); margin-top:3px;">⏰ अनुमानित बुलावा: ~${estTimeStr}</div>
+            </div>
             <span class="status-tag-badge ${si.cls}">${si.emoji} ${si.label}</span>
+          </div>
+
+          <!-- Rural Action Guide Banner -->
+          <div class="action-guide-box">
+            <div class="action-guide-icon">${guide.icon}</div>
+            <div>
+              <div class="action-guide-title">${guide.title}</div>
+              <div class="action-guide-text">${guide.text}</div>
+            </div>
           </div>
 
           <!-- Patient Info Grid -->
           <div class="patient-info-grid">
             <div class="pi-cell">
-              <div class="pi-label">👤 नाम / Name</div>
+              <div class="pi-label">👤 नाम / Patient Name</div>
               <div class="pi-value">${patient.name}</div>
             </div>
             <div class="pi-cell">
@@ -1554,7 +1793,7 @@
           <div class="queue-metrics-box">
             <div class="q-metric-card">
               <div class="q-val">${ahead}</div>
-              <div class="q-lbl">आपसे पहले / People Ahead</div>
+              <div class="q-lbl">आपसे पहले मरीज़ / People Ahead</div>
             </div>
             <div class="q-metric-card">
               <div class="q-val">${patient.status === 'COMPLETED' ? '0' : (wait + ' मिनट')}</div>
@@ -1571,7 +1810,7 @@
           </div>
 
           <!-- 5-Step Journey Tracker -->
-          <div style="font-size:11.5px; font-weight:800; color:var(--muted); margin-bottom:6px;">आपकी यात्रा / Your Journey:</div>
+          <div style="font-size:11.5px; font-weight:800; color:var(--muted); margin-bottom:6px;">आपकी कतार यात्रा / Your Journey:</div>
           <div class="step-tracker">
             ${steps.map((s, i) => {
               const isDone    = s.done && i < currentStep;
@@ -1586,13 +1825,17 @@
           </div>
 
           <!-- Symptom note -->
-          ${patient.symptom ? `<div style="font-size:12.5px; color:var(--muted); font-weight:700; margin-top:4px; padding:8px 10px; background:var(--bg); border:1.5px dashed var(--border); border-radius:10px;">🩹 ${patient.symptom}</div>` : ''}
+          ${patient.symptom ? `<div style="font-size:12px; color:var(--muted); font-weight:700; margin-top:4px; padding:8px 10px; background:var(--card); border:1.5px dashed var(--border); border-radius:10px;">🩹 मुख्य समस्या / Symptom: ${patient.symptom}</div>` : ''}
         </div>
 
         <!-- Action Buttons -->
         <button class="rural-audio-btn" id="speakStatusBtn" type="button"
-          data-name="${patient.name}" data-token="${patient.token}" data-status="${si.label}" data-ahead="${ahead}" data-wait="${wait}" data-room="${patient.room || ''}">
-          🔊 बोलकर सुनें / Listen Aloud
+          data-name="${patient.name}" data-token="${patient.token}" data-spoken="${si.spoken}" data-ahead="${ahead}" data-wait="${wait}" data-room="${patient.room || ''}">
+          🔊 बोलकर सुनें / Listen in Hindi
+        </button>
+        <button class="rural-share-btn" id="shareWaBtn" type="button"
+          data-name="${patient.name}" data-token="${patient.token}" data-status="${si.label}" data-room="${patient.room || ''}" data-wait="${wait}" data-ahead="${ahead}">
+          📲 व्हाट्सएप पर शेयर करें / Share on WhatsApp
         </button>
         <button class="rural-sms-btn" id="sendSmsBtn" type="button"
           data-name="${patient.name}" data-token="${patient.token}" data-status="${si.label}" data-wait="${wait}">
@@ -1603,19 +1846,29 @@
       // Voice readout
       document.getElementById('speakStatusBtn').addEventListener('click', function(){
         const btn = this;
-        if (!window.speechSynthesis) { showToast('😔 आपका ब्राउज़र आवाज़ नहीं बोल सकता।', '', ''); return; }
+        if (!window.speechSynthesis) { showToast('😔 आवाज़ की सुविधा उपलब्ध नहीं है।', '', ''); return; }
         window.speechSynthesis.cancel();
-        const text = `Token number ${btn.dataset.token}, naam ${btn.dataset.name}. Aapki sthiti: ${btn.dataset.status}. Aap se pehle ${btn.dataset.ahead} log hain. Anumanit prateeksha samay ${btn.dataset.wait} minute. Kamra: ${btn.dataset.room}.`;
+        const text = `नमस्ते ${btn.dataset.name} जी। आपका टोकन नंबर ${btn.dataset.token} है। आपकी वर्तमान स्थिति: ${btn.dataset.spoken}। आपसे पहले ${btn.dataset.ahead} मरीज़ हैं। अनुमानित प्रतीक्षा समय ${btn.dataset.wait} मिनट है। ${btn.dataset.room ? 'कमरा नंबर ' + btn.dataset.room : ''}।`;
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'hi-IN';
-        utterance.rate = 0.88;
-        utterance.pitch = 1;
+        utterance.rate = 0.85;
+        utterance.pitch = 1.0;
         const voices = window.speechSynthesis.getVoices();
-        const hindi = voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi'));
-        if (hindi) utterance.voice = hindi;
+        const hindiVoice = voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi'));
+        if (hindiVoice) utterance.voice = hindiVoice;
         window.speechSynthesis.speak(utterance);
-        btn.textContent = '🔊 बोल रहा है… / Speaking…';
-        utterance.onend = () => { btn.textContent = '🔊 बोलकर सुनें / Listen Aloud'; };
+        btn.innerHTML = '🔊 बोल रहा है… / Speaking…';
+        utterance.onend = () => { btn.innerHTML = '🔊 बोलकर सुनें / Listen in Hindi'; };
+      });
+
+      // WhatsApp Share
+      document.getElementById('shareWaBtn').addEventListener('click', function(){
+        const msg = `🏥 *Swasthya Queue - टोकन स्थिति*\n👤 नाम: ${this.dataset.name}\n🎫 टोकन: #${this.dataset.token}\n📊 स्थिति: ${this.dataset.status}\n🚪 कमरा: ${this.dataset.room || 'Room 1'}\n👥 पहले मरीज़: ${this.dataset.ahead}\n⏳ प्रतीक्षा: ~${this.dataset.wait} मिनट\n🔗 https://swasthya-queue-app.vercel.app`;
+        if (navigator.share) {
+          navigator.share({ title: 'Swasthya Queue Token Status', text: msg }).catch(()=>{});
+        } else {
+          window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(msg), '_blank');
+        }
       });
 
       // SMS simulation
@@ -1633,13 +1886,13 @@
         <div class="empty-token-state">
           <div class="empty-icon">🔍</div>
           <h3 style="margin:0 0 8px; font-size:20px;">टोकन नहीं मिला / Token Not Found</h3>
-          <p>"${query}" से कोई रोगी नहीं मिला।<br>कृपया सही टोकन नंबर या मोबाइल नंबर दर्ज करें।<br><br>No patient found for "${query}".<br>Please enter the correct token or phone number.</p>
+          <p>"${query}" से कोई रोगी नहीं मिला।<br>कृपया सही टोकन नंबर (उदा. A-104) या मोबाइल नंबर दर्ज करें।<br><br>No patient found for "${query}".<br>Please enter your correct token or 10-digit mobile number.</p>
         </div>
       `;
     }
 
-    window.searchTokenStatus = function() {
-      const query = (searchInput.value || '').trim().toUpperCase().replace(/\s+/g, '');
+    window.searchTokenStatus = function(forcedQuery, isSilent) {
+      const query = (forcedQuery || searchInput.value || '').trim().toUpperCase().replace(/\s+/g, '');
       if (!query) { searchInput.focus(); return; }
       const patients = getPatients();
       const found = patients.find(p =>
@@ -1648,15 +1901,32 @@
       );
       if (found) {
         renderResult(found, patients);
+        if (!isSilent) showToast('टोकन लोड हो गया!', `Token #${found.token} (${found.name}) की ताज़ा स्थिति`, '🔍');
       } else {
-        renderNotFound(searchInput.value.trim());
+        renderNotFound(forcedQuery || searchInput.value.trim());
       }
     };
 
     window.quickCheckToken = function(token) {
       searchInput.value = token;
-      window.searchTokenStatus();
+      window.searchTokenStatus(token);
     };
+
+    window.refreshCurrentToken = function() {
+      if (window._lastCheckedToken) {
+        window.searchTokenStatus(window._lastCheckedToken, false);
+      } else {
+        window.quickCheckToken('A-104');
+      }
+    };
+
+    // Live Cross-Tab Sync via Storage Event
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'swasthya_queue_dashboard_patients' && overlay.classList.contains('open') && window._lastCheckedToken) {
+        window.searchTokenStatus(window._lastCheckedToken, true);
+        showToast('कतार अपडेट हुई!', 'स्टाफ द्वारा कतार में नया बदलाव किया गया है।', '🔄');
+      }
+    });
 
     function openModal() {
       overlay.classList.add('open');
@@ -1667,10 +1937,19 @@
         window.quickCheckToken('A-104');
       }
       setTimeout(() => searchInput.focus(), 400);
+
+      // Auto-sync polling every 30 seconds
+      clearInterval(refreshTimer);
+      refreshTimer = setInterval(() => {
+        if (overlay.classList.contains('open') && window._lastCheckedToken) {
+          window.searchTokenStatus(window._lastCheckedToken, true);
+        }
+      }, 30000);
     }
 
     function closeModal() {
       overlay.classList.remove('visible');
+      clearInterval(refreshTimer);
       window.speechSynthesis && window.speechSynthesis.cancel();
       setTimeout(() => {
         overlay.classList.remove('open');

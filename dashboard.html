@@ -53,7 +53,13 @@
     --error-bg: #3A2020;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; padding: 0; }
+  html {
+    overflow-x: hidden;
+    width: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     background: var(--bg);
     color: var(--ink);
@@ -61,9 +67,13 @@
     font-size: 15px;
     line-height: 1.5;
     min-height: 100vh;
-    transition: background-color .25s ease, color .25s ease;
+    width: 100%;
+    max-width: 100vw;
     overflow-x: hidden;
+    position: relative;
+    transition: background-color .25s ease, color .25s ease;
   }
+  img, svg { max-width: 100%; }
   h1, h2, h3, h4 {
     font-family: 'Baloo 2', sans-serif;
     font-weight: 700;
@@ -102,14 +112,16 @@
   .wrap {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0 clamp(16px, 3vw, 32px);
+    padding: 0 clamp(14px, 3vw, 32px);
+    width: 100%;
   }
   .nav-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
     flex-wrap: wrap;
+    width: 100%;
   }
   .brand-group {
     display: flex;
@@ -128,26 +140,32 @@
     box-shadow: var(--shadow-sm);
   }
   .brand-title {
-    font-size: 22px;
+    font-size: clamp(17px, 2.5vw, 22px);
     font-weight: 800;
+    white-space: nowrap;
   }
   .camp-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     padding: 4px 10px;
     border-radius: 99px;
     background: var(--sky-pale);
     border: 2px solid var(--ink);
     color: var(--ink);
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .camp-pill .live-pulse {
     width: 8px;
     height: 8px;
     background: var(--green);
     border-radius: 50%;
+    flex-shrink: 0;
     animation: pulse 1.6s infinite ease-in-out;
   }
   @keyframes pulse {
@@ -158,7 +176,7 @@
   .nav-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
@@ -319,7 +337,7 @@
   }
   .search-box {
     position: relative;
-    min-width: 240px;
+    min-width: min(240px, 100%);
     flex: 1;
     max-width: 380px;
   }
@@ -609,20 +627,20 @@
   /* Toast Notification */
   .toast {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: clamp(16px, 3vw, 24px);
+    right: clamp(16px, 3vw, 24px);
     background: var(--card);
     border: 3px solid var(--ink);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow);
-    padding: 14px 20px;
+    padding: 14px 18px;
     display: flex;
     align-items: center;
     gap: 12px;
     z-index: 200;
     transform: translateY(120%);
     transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    max-width: 360px;
+    max-width: min(360px, calc(100vw - 32px));
   }
   .toast.show {
     transform: translateY(0);
@@ -643,20 +661,45 @@
     border: 0;
   }
 
-  /* Responsive styling */
+  /* ── Responsive Layout ── */
+  @media (max-width: 960px) {
+    .nav-content { gap: 10px; }
+    .brand-group { gap: 10px; }
+  }
   @media (max-width: 768px) {
     .action-bar { flex-direction: column; align-items: stretch; }
     .filter-group { flex-direction: column; width: 100%; }
     .search-box { max-width: 100%; min-width: 100%; }
     .select-custom { width: 100%; }
     .camp-banner { flex-direction: column; align-items: flex-start; }
-    .banner-right { width: 100%; justify-content: space-between; }
+    .banner-right { width: 100%; justify-content: space-between; flex-wrap: wrap; }
     .stats-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .status-tabs { gap: 6px; }
+    .tab-btn { font-size: 12px; padding: 6px 12px; }
+    .modal-box { padding: 20px; }
+  }
+  @media (max-width: 560px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .nav-controls .btn-sm { padding: 6px 10px; font-size: 12px; }
+    .camp-banner { padding: 14px 16px; }
+    .banner-right .btn { padding: 8px 12px; font-size: 13px; }
+    .action-bar { padding: 14px 16px; }
   }
   @media (max-width: 480px) {
     .stats-grid { grid-template-columns: 1fr; }
     .nav-content { flex-direction: column; align-items: flex-start; }
-    .nav-controls { width: 100%; justify-content: space-between; }
+    .nav-controls { width: 100%; justify-content: flex-end; }
+    .brand-title { font-size: 18px; }
+    .queue-table th, .queue-table td { padding: 12px 12px; font-size: 13px; }
+    .modal-box { padding: 18px 14px; }
+    .toast { right: 12px; max-width: calc(100vw - 24px); }
+  }
+  @media (max-width: 380px) {
+    .logo-badge { width: 36px; height: 36px; border-radius: 10px; }
+    .brand-title { font-size: 16px; }
+    .camp-pill { display: none; }
+    .banner-right .btn { flex: 1; }
   }
 
   /* ── Google Translate ── */
@@ -672,13 +715,85 @@
   .goog-te-banner-frame.skiptranslate { display: none !important; }
   body { top: 0px !important; }
 
+  /* ── In-Modal Language Switcher ── */
+  .modal-translate-bar {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    padding: 9px 12px; border-radius: 14px; margin-bottom: 16px;
+    background: var(--sky-pale); border: 2px solid var(--ink);
+  }
+  .modal-translate-label {
+    font-size: 12px; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 4px;
+    white-space: nowrap;
+  }
+  .modal-lang-chips {
+    display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+  }
+  .lang-chip {
+    font-size: 11.5px; font-weight: 800; padding: 4px 9px;
+    border-radius: 99px; border: 1.5px solid var(--ink);
+    background: var(--card); color: var(--ink); cursor: pointer;
+    transition: all .15s ease; font-family: inherit;
+  }
+  .lang-chip:hover {
+    transform: scale(1.04);
+    background: var(--yellow);
+    color: #12161C;
+  }
+  .lang-chip.active {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  html[data-theme="dark"] .modal-translate-bar {
+    background: rgba(35, 54, 66, 0.7);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .lang-chip {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .lang-chip.active {
+    background: var(--green);
+    color: #12161C;
+    border-color: var(--green);
+  }
+
+  /* ── Full Dark Mode Refinements for Dashboard ── */
+  html[data-theme="dark"] .modal-overlay {
+    background: rgba(0, 0, 0, 0.78);
+  }
+  html[data-theme="dark"] .modal-box {
+    background: var(--card);
+    border-color: var(--border);
+    color: var(--ink);
+  }
+  html[data-theme="dark"] .form-control {
+    background: #141920;
+    color: var(--ink);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(115, 214, 242, 0.4);
+  }
+  html[data-theme="dark"] .modal-close {
+    background: #3A2020;
+    color: var(--ink);
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .camp-pill {
+    background: rgba(35, 54, 66, 0.8);
+    border-color: var(--border);
+    color: var(--ink);
+  }
+
   /* ── Toast Notification ── */
   .dash-toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px);
     background: var(--ink); color: var(--bg); padding: 14px 22px; border-radius: 14px;
-    font-weight: 800; font-size: 14.5px; z-index: 99999; max-width: 90vw;
+    font-weight: 800; font-size: 14.5px; z-index: 99999; max-width: min(92vw, 420px);
     box-shadow: 0 8px 32px rgba(0,0,0,.3); transition: transform .4s cubic-bezier(.22,1,.36,1);
     display: flex; align-items: center; gap: 10px; pointer-events: none;
+    text-align: center;
   }
   .dash-toast.show { transform: translateX(-50%) translateY(0); }
 </style>
@@ -854,6 +969,20 @@
 <!-- ADD WALK-IN PATIENT MODAL -->
 <div class="modal-overlay" id="addPatientModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="clay modal-box">
+    <!-- In-Modal Language Switcher -->
+    <div class="modal-translate-bar">
+      <span class="modal-translate-label">🌐 भाषा / Language:</span>
+      <div class="modal-lang-chips">
+        <button type="button" class="lang-chip active" data-lang="en" onclick="switchLang('en')">English</button>
+        <button type="button" class="lang-chip" data-lang="hi" onclick="switchLang('hi')">हिंदी</button>
+        <button type="button" class="lang-chip" data-lang="mr" onclick="switchLang('mr')">मराठी</button>
+        <button type="button" class="lang-chip" data-lang="gu" onclick="switchLang('gu')">ગુજરાતી</button>
+        <button type="button" class="lang-chip" data-lang="bn" onclick="switchLang('bn')">বাংলা</button>
+        <button type="button" class="lang-chip" data-lang="pa" onclick="switchLang('pa')">ਪੰਜਾਬੀ</button>
+        <button type="button" class="lang-chip" data-lang="ta" onclick="switchLang('ta')">தமிழ்</button>
+      </div>
+    </div>
+
     <div class="modal-header">
       <h3 id="modalTitle">Register Walk-in Patient</h3>
       <button class="modal-close" id="closeAddModalBtn" type="button" aria-label="Close dialog">✕</button>
@@ -1426,11 +1555,42 @@
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
       pageLanguage: 'en',
-      includedLanguages: 'hi,mr,gu,bn,ta,te,kn,ml,pa,or,as,ur',
+      includedLanguages: 'en,hi,mr,gu,bn,ta,te,kn,ml,pa,or,as,ur',
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
       autoDisplay: false
     }, 'google_translate_element');
   }
+
+  /* ── In-Modal Programmatic Language Switcher ── */
+  window.switchLang = function(langCode) {
+    document.querySelectorAll('.lang-chip').forEach(c => {
+      c.classList.toggle('active', c.getAttribute('data-lang') === langCode);
+    });
+
+    const cookieVal = '/en/' + langCode;
+    document.cookie = 'googtrans=' + cookieVal + '; path=/';
+    if (window.location.hostname) {
+      document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + window.location.hostname;
+    }
+
+    const combo = document.querySelector('.goog-te-combo');
+    if (combo) {
+      combo.value = langCode;
+      combo.dispatchEvent(new Event('change'));
+    } else {
+      window.location.reload();
+    }
+  };
+
+  (function initActiveLang() {
+    const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/);
+    const active = match ? match[1] : 'en';
+    setTimeout(() => {
+      document.querySelectorAll('.lang-chip').forEach(c => {
+        c.classList.toggle('active', c.getAttribute('data-lang') === active);
+      });
+    }, 600);
+  })();
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
 
