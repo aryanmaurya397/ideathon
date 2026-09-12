@@ -563,10 +563,179 @@
   .modal-card::-webkit-scrollbar-track{ background:transparent; }
   .modal-card::-webkit-scrollbar-thumb{ background:var(--muted); border-radius:3px; }
 
-  @media (max-width:480px){
-    .modal-card{ padding:26px 18px 22px; border-radius:20px; box-shadow:4px 4px 0 var(--ink); }
-    .modal-card h1{ font-size:22px; }
+  /* ---------- GOOGLE TRANSLATE WIDGET ---------- */
+  .translate-box {
+    display: flex; align-items: center;
   }
+  .goog-te-gadget-simple {
+    background: var(--card) !important; border: 2px solid var(--ink) !important;
+    border-radius: 100px !important; padding: 2px 10px !important; font-size: 12px !important;
+    font-family: inherit !important; color: var(--ink) !important;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .goog-te-gadget-simple .goog-te-menu-value {
+    color: var(--ink) !important; font-weight: 700 !important;
+  }
+  .goog-te-gadget-simple .goog-te-menu-value span {
+    color: var(--ink) !important;
+  }
+  .goog-te-banner-frame.skiptranslate { display: none !important; }
+  body { top: 0px !important; }
+
+  /* ---------- TOKEN STATUS MODAL STYLES ---------- */
+  .token-modal-card {
+    max-width: 560px !important;
+  }
+  .token-search-wrap {
+    display: flex; gap: 8px; margin-bottom: 10px;
+  }
+  .token-search-wrap input {
+    flex: 1; padding: 12px 14px; border-radius: 14px; border: 2.5px solid var(--ink);
+    background: var(--bg); color: var(--ink); font-family: inherit; font-size: 15px; font-weight: 700;
+    outline: none;
+  }
+  .token-search-wrap input:focus {
+    box-shadow: 0 0 0 3px var(--yellow);
+  }
+  .token-search-btn {
+    padding: 10px 18px; border-radius: 14px; border: 2.5px solid var(--ink);
+    background: var(--green); color: #fff; font-weight: 800; cursor: pointer;
+    font-family: inherit; font-size: 14.5px; box-shadow: var(--shadow-sm);
+    transition: transform .1s ease, box-shadow .1s ease;
+    white-space: nowrap;
+  }
+  .token-search-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+  
+  .demo-token-chips {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; align-items: center;
+  }
+  .demo-token-chips span { font-size: 12px; font-weight: 700; color: var(--muted); }
+  .demo-chip-btn {
+    font-size: 11.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px;
+    border: 1.5px solid var(--ink); background: var(--card); color: var(--ink);
+    cursor: pointer; transition: transform .1s ease;
+  }
+  .demo-chip-btn:hover { background: var(--yellow-pale); transform: scale(1.05); }
+
+  .token-result-box {
+    background: var(--bg); border: 2.5px solid var(--ink); border-radius: 18px;
+    padding: 16px; margin-bottom: 16px;
+  }
+  .token-header-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .big-token-pill {
+    font-family: 'Baloo 2', sans-serif; font-size: 26px; font-weight: 800;
+    padding: 2px 14px; border-radius: 12px; border: 2.5px solid var(--ink);
+    background: var(--yellow); color: #1E2A3A; line-height: 1.2;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .status-tag-badge {
+    font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 99px;
+    border: 2px solid var(--ink); display: inline-flex; align-items: center; gap: 6px;
+  }
+  .status-tag-badge.waiting { background: var(--yellow-pale); color: #8A6500; }
+  .status-tag-badge.active { background: var(--green-pale); color: #0E7739; animation: pulse 1.8s infinite; }
+  .status-tag-badge.triage { background: var(--sky-pale); color: #0C617B; }
+  .status-tag-badge.completed { background: #EAEAEF; color: #555; }
+  html[data-theme="dark"] .status-tag-badge.waiting { color: #FFE277; }
+  html[data-theme="dark"] .status-tag-badge.active { color: #57F299; }
+  html[data-theme="dark"] .status-tag-badge.triage { color: #73D6F2; }
+  html[data-theme="dark"] .status-tag-badge.completed { background: #262B33; color: #A0AAB5; }
+
+  .queue-metrics-box {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;
+  }
+  .q-metric-card {
+    background: var(--card); border: 2px solid var(--border); border-radius: 12px;
+    padding: 10px; text-align: center;
+  }
+  .q-metric-card .q-val {
+    font-family: 'Baloo 2', sans-serif; font-size: 20px; font-weight: 800; color: var(--ink); line-height: 1;
+  }
+  .q-metric-card .q-lbl {
+    font-size: 11.5px; font-weight: 700; color: var(--muted); margin-top: 2px;
+  }
+
+  /* 5-Step Journey Tracker */
+  .step-tracker {
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; margin: 16px 0 12px; padding: 0 4px;
+  }
+  .step-tracker::before {
+    content: ''; position: absolute; left: 16px; right: 16px; top: 14px; height: 3px;
+    background: var(--border); z-index: 1;
+  }
+  .step-node {
+    position: relative; z-index: 2; display: flex; flex-direction: column;
+    align-items: center; gap: 4px; font-size: 10.5px; font-weight: 800; color: var(--muted);
+  }
+  .step-dot {
+    width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--ink);
+    background: var(--card); display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+  }
+  .step-node.done .step-dot { background: var(--green); color: #fff; }
+  .step-node.current .step-dot { background: var(--yellow); color: var(--ink); transform: scale(1.15); box-shadow: 2px 2px 0 var(--ink); }
+  .step-node.current { color: var(--ink); }
+  .step-node.done { color: var(--green-dark); }
+  html[data-theme="dark"] .step-node.done { color: var(--green); }
+
+  .rural-audio-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    padding: 14px; border-radius: 14px; border: 2.5px solid var(--ink);
+    background: var(--yellow-pale); color: var(--ink); font-weight: 800; font-size: 15px;
+    cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .1s ease;
+    margin-bottom: 8px; font-family: inherit;
+  }
+  .rural-audio-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); background: var(--yellow); }
+
+  .rural-sms-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    padding: 14px; border-radius: 14px; border: 2.5px solid var(--ink);
+    background: var(--sky-pale); color: #0B5872; font-weight: 800; font-size: 15px;
+    cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .1s ease;
+    margin-bottom: 8px; font-family: inherit;
+  }
+  .rural-sms-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+
+  .token-translate-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+    padding: 8px 12px; background: var(--bg); border: 2px solid var(--border);
+    border-radius: 12px;
+  }
+  .token-translate-row .goog-te-gadget-simple {
+    border-radius: 8px !important;
+  }
+  .token-translate-label {
+    font-size: 12px; font-weight: 700; color: var(--muted); white-space: nowrap;
+  }
+
+  .toast-notification {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--ink); color: var(--bg); padding: 14px 22px; border-radius: 14px;
+    font-weight: 800; font-size: 14.5px; z-index: 99999; max-width: 90vw; text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,.3); transition: transform .4s cubic-bezier(.22,1,.36,1);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .toast-notification.show { transform: translateX(-50%) translateY(0); }
+
+  .patient-info-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;
+  }
+  .pi-cell {
+    background: var(--card); border: 2px solid var(--border); border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .pi-cell .pi-label { font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 2px; }
+  .pi-cell .pi-value { font-size: 14px; font-weight: 800; color: var(--ink); }
+
+  .empty-token-state {
+    text-align: center; padding: 32px 20px;
+  }
+  .empty-token-state .empty-icon { font-size: 52px; margin-bottom: 12px; }
+  .empty-token-state p { color: var(--muted); font-size: 14px; font-weight: 700; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -585,6 +754,7 @@
       <a href="#how">How it works</a>
       <a href="#followup">Follow-ups</a>
       <a href="#testimonials">Stories</a>
+      <button class="btn btn-sky open-token-modal" type="button" style="padding:6px 14px; font-size:13.5px; border-radius:100px;">Check Token</button>
       <a href="dashboard.html">Staff Dashboard</a>
     </div>
     <div class="nav-right">
@@ -630,7 +800,7 @@
           <div class="pr-label"><span>Today's queue</span><span class="val">65%</span></div>
           <div class="bar-track"><div class="bar-fill" style="width:65%;"></div></div>
         </div>
-        <a class="btn btn-green" href="#">Check My Token Status</a>
+        <button class="btn btn-green open-token-modal" id="openTokenModalBtn" type="button" style="width:100%;">Check My Token Status</button>
         <div class="floaty-sq fs1">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3v4M12 17v4M3 12h4M17 12h4" stroke="#1E2A3A" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="#1E2A3A" stroke-width="2"/></svg>
         </div>
@@ -947,6 +1117,44 @@
   </div>
 </div>
 
+<!-- ========== TOKEN STATUS MODAL ========== -->
+<div class="modal-overlay" id="tokenStatusModal" role="dialog" aria-modal="true" aria-labelledby="tokenModalTitle">
+  <div class="modal-card token-modal-card">
+    <button class="modal-close" id="tokenModalCloseBtn" type="button" aria-label="Close token status dialog">
+      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div style="margin-bottom:12px;">
+      <span class="form-badge" style="background:var(--sky-pale); color:#0B5872;">
+        🏥 PHC Sarangpur • Live OPD Queue
+      </span>
+      <h1 id="tokenModalTitle" style="margin:0 0 4px; font-size:24px;">टोकन स्थिति / Live Token Tracker</h1>
+      <p class="sub" style="margin:0 0 12px; font-size:13px;">अपनी कतार की सही जानकारी देखें या बोलकर सुनें। (Check or listen to live queue status)</p>
+    </div>
+
+    <!-- Search Input Form -->
+    <form id="tokenSearchForm" onsubmit="event.preventDefault(); searchTokenStatus();">
+      <div class="token-search-wrap">
+        <input type="text" id="tokenSearchInput" placeholder="टोकन # या फोन (उदा. A-104 या 9876543210)" aria-label="Enter Token or Mobile Number">
+        <button type="submit" class="token-search-btn">जांचें / Check</button>
+      </div>
+    </form>
+
+    <!-- Demo Sample Badges -->
+    <div class="demo-token-chips">
+      <span>त्वरित डेमो / Sample Tokens:</span>
+      <button type="button" class="demo-chip-btn" onclick="quickCheckToken('A-101')">#A-101 (With Doctor)</button>
+      <button type="button" class="demo-chip-btn" onclick="quickCheckToken('A-103')">#A-103 (High Priority)</button>
+      <button type="button" class="demo-chip-btn" onclick="quickCheckToken('A-104')">#A-104 (Waiting)</button>
+      <button type="button" class="demo-chip-btn" onclick="quickCheckToken('A-106')">#A-106 (Triage)</button>
+    </div>
+
+    <!-- Token Result Display Area -->
+    <div id="tokenResultArea"></div>
+
+  </div>
+</div>
+
 <script>
   /* ===== THEME TOGGLE ===== */
   (function(){
@@ -977,6 +1185,15 @@
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
       autoDisplay: false
     }, 'google_translate_element');
+    // Also init inside token modal if present
+    if (document.getElementById('google_translate_element_token')) {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'hi,mr,gu,bn,ta,te,kn,ml,pa,or,as,ur',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element_token');
+    }
   }
 
   /* ===== EXIT/ENTER TOKEN DEMO ===== */
@@ -1243,6 +1460,247 @@
       document.getElementById('successView').classList.add('show');
     });
   })();
+
+  /* ========== TOKEN STATUS MODAL ========== */
+  (function(){
+    const overlay   = document.getElementById('tokenStatusModal');
+    const closeBtn  = document.getElementById('tokenModalCloseBtn');
+    const triggers  = document.querySelectorAll('.open-token-modal');
+    const resultArea = document.getElementById('tokenResultArea');
+    const searchInput = document.getElementById('tokenSearchInput');
+
+    // ── Default demo patients (mirrors dashboard localStorage) ──
+    const DEFAULT_PATIENTS = [
+      { token:'A-101', name:'Ramesh Kumar',   phone:'9876543210', village:'Sarangpur', age:52, gender:'Male',   symptom:'Chest pain',      doctor:'Dr. Priya Sharma', room:'Room 2', status:'WITH_DOCTOR',  priority:'HIGH', waitMin:0  },
+      { token:'A-102', name:'Sunita Devi',    phone:'9812345678', village:'Barkheda',  age:34, gender:'Female', symptom:'Fever & cough',   doctor:'Dr. Rakesh Verma', room:'Room 1', status:'COMPLETED',   priority:'NORMAL', waitMin:0 },
+      { token:'A-103', name:'Baby Aarav',     phone:'9988776655', village:'Piparia',   age:2,  gender:'Male',   symptom:'High fever',      doctor:'Dr. Priya Sharma', room:'Room 2', status:'IN_TRIAGE',   priority:'HIGH', waitMin:5  },
+      { token:'A-104', name:'Rekha Sharma',   phone:'9871234560', village:'Sarangpur', age:45, gender:'Female', symptom:'BP check-up',     doctor:'Dr. Suresh Jain',  room:'Room 3', status:'WAITING',     priority:'NORMAL', waitMin:22 },
+      { token:'A-105', name:'Mohan Lal',      phone:'9765432100', village:'Ghoda Dona',age:67, gender:'Male',   symptom:'Knee pain',       doctor:'Dr. Suresh Jain',  room:'Room 3', status:'WAITING',     priority:'NORMAL', waitMin:35 },
+      { token:'A-106', name:'Meena Bai',      phone:'9700123456', village:'Umriya',    age:29, gender:'Female', symptom:'Ante-natal care', doctor:'Dr. Priya Sharma', room:'OT Room',status:'IN_TRIAGE',   priority:'NORMAL', waitMin:8  },
+      { token:'A-107', name:'Dhruv Patel',    phone:'9654321098', village:'Khujapur',  age:14, gender:'Male',   symptom:'Skin rash',       doctor:'Dr. Rakesh Verma', room:'Room 1', status:'WAITING',     priority:'NORMAL', waitMin:48 },
+    ];
+
+    function getPatients() {
+      try {
+        const raw = localStorage.getItem('swasthya_queue_dashboard_patients');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch(e) {}
+      return DEFAULT_PATIENTS;
+    }
+
+    function getStatusInfo(status) {
+      const map = {
+        'WAITING':     { label:'प्रतीक्षारत / Waiting',       emoji:'⏳', cls:'waiting',   step:1 },
+        'IN_TRIAGE':   { label:'ट्राइज / Triage',             emoji:'🩺', cls:'triage',    step:2 },
+        'WITH_DOCTOR': { label:'डॉक्टर के साथ / With Doctor', emoji:'👨‍⚕️', cls:'active',   step:3 },
+        'COMPLETED':   { label:'पूर्ण / Completed',            emoji:'✅', cls:'completed', step:4 },
+      };
+      return map[status] || map['WAITING'];
+    }
+
+    function getPeopleAhead(patients, token) {
+      const waitingTokens = patients.filter(p =>
+        p.status === 'WAITING' || p.status === 'IN_TRIAGE'
+      );
+      const myIndex = waitingTokens.findIndex(p => p.token === token);
+      return myIndex === -1 ? 0 : myIndex;
+    }
+
+    function renderResult(patient, patients) {
+      const si = getStatusInfo(patient.status);
+      const ahead = getPeopleAhead(patients, patient.token);
+      const wait = patient.waitMin || (ahead * 8);
+      const steps = [
+        { label:'पंजीकृत\nRegistered', done: true },
+        { label:'कतार में\nIn Queue',  done: si.step >= 1 },
+        { label:'ट्राइज\nTriage',      done: si.step >= 2 },
+        { label:'डॉक्टर\nDoctor',      done: si.step >= 3 },
+        { label:'पूर्ण\nDone',         done: si.step >= 4 },
+      ];
+      const currentStep = si.step; // 0-based step that is 'current'
+
+      resultArea.innerHTML = `
+        <div class="token-result-box">
+          <!-- Header -->
+          <div class="token-header-row">
+            <div class="big-token-pill">#${patient.token}</div>
+            <span class="status-tag-badge ${si.cls}">${si.emoji} ${si.label}</span>
+          </div>
+
+          <!-- Patient Info Grid -->
+          <div class="patient-info-grid">
+            <div class="pi-cell">
+              <div class="pi-label">👤 नाम / Name</div>
+              <div class="pi-value">${patient.name}</div>
+            </div>
+            <div class="pi-cell">
+              <div class="pi-label">🏘️ गाँव / Village</div>
+              <div class="pi-value">${patient.village || '—'}</div>
+            </div>
+            <div class="pi-cell">
+              <div class="pi-label">🏥 डॉक्टर / Doctor</div>
+              <div class="pi-value">${patient.doctor || '—'}</div>
+            </div>
+            <div class="pi-cell">
+              <div class="pi-label">🚪 कमरा / Room</div>
+              <div class="pi-value">${patient.room || '—'}</div>
+            </div>
+          </div>
+
+          <!-- Queue Metrics -->
+          <div class="queue-metrics-box">
+            <div class="q-metric-card">
+              <div class="q-val">${ahead}</div>
+              <div class="q-lbl">आपसे पहले / People Ahead</div>
+            </div>
+            <div class="q-metric-card">
+              <div class="q-val">${patient.status === 'COMPLETED' ? '0' : (wait + ' मिनट')}</div>
+              <div class="q-lbl">अनुमानित प्रतीक्षा / Est. Wait</div>
+            </div>
+            <div class="q-metric-card">
+              <div class="q-val">${patient.age || '—'}</div>
+              <div class="q-lbl">आयु / Age</div>
+            </div>
+            <div class="q-metric-card">
+              <div class="q-val">${patient.gender ? (patient.gender === 'Female' ? '♀ महिला' : '♂ पुरुष') : '—'}</div>
+              <div class="q-lbl">लिंग / Gender</div>
+            </div>
+          </div>
+
+          <!-- 5-Step Journey Tracker -->
+          <div style="font-size:11.5px; font-weight:800; color:var(--muted); margin-bottom:6px;">आपकी यात्रा / Your Journey:</div>
+          <div class="step-tracker">
+            ${steps.map((s, i) => {
+              const isDone    = s.done && i < currentStep;
+              const isCurrent = i === currentStep || (i === 0 && si.step === 0);
+              const cls = isDone ? 'done' : (isCurrent ? 'current' : '');
+              const dotInner = isDone ? '✓' : (i + 1);
+              return `<div class="step-node ${cls}">
+                <div class="step-dot">${dotInner}</div>
+                <span style="text-align:center; line-height:1.2; max-width:48px; font-size:9.5px;">${s.label.replace('\n','<br>')}</span>
+              </div>`;
+            }).join('')}
+          </div>
+
+          <!-- Symptom note -->
+          ${patient.symptom ? `<div style="font-size:12.5px; color:var(--muted); font-weight:700; margin-top:4px; padding:8px 10px; background:var(--bg); border:1.5px dashed var(--border); border-radius:10px;">🩹 ${patient.symptom}</div>` : ''}
+        </div>
+
+        <!-- Action Buttons -->
+        <button class="rural-audio-btn" id="speakStatusBtn" type="button"
+          data-name="${patient.name}" data-token="${patient.token}" data-status="${si.label}" data-ahead="${ahead}" data-wait="${wait}" data-room="${patient.room || ''}">
+          🔊 बोलकर सुनें / Listen Aloud
+        </button>
+        <button class="rural-sms-btn" id="sendSmsBtn" type="button"
+          data-name="${patient.name}" data-token="${patient.token}" data-status="${si.label}" data-wait="${wait}">
+          📱 SMS अलर्ट भेजें / Send SMS Alert
+        </button>
+      `;
+
+      // Voice readout
+      document.getElementById('speakStatusBtn').addEventListener('click', function(){
+        const btn = this;
+        if (!window.speechSynthesis) { showToast('😔 आपका ब्राउज़र आवाज़ नहीं बोल सकता।', '', ''); return; }
+        window.speechSynthesis.cancel();
+        const text = `Token number ${btn.dataset.token}, naam ${btn.dataset.name}. Aapki sthiti: ${btn.dataset.status}. Aap se pehle ${btn.dataset.ahead} log hain. Anumanit prateeksha samay ${btn.dataset.wait} minute. Kamra: ${btn.dataset.room}.`;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'hi-IN';
+        utterance.rate = 0.88;
+        utterance.pitch = 1;
+        const voices = window.speechSynthesis.getVoices();
+        const hindi = voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi'));
+        if (hindi) utterance.voice = hindi;
+        window.speechSynthesis.speak(utterance);
+        btn.textContent = '🔊 बोल रहा है… / Speaking…';
+        utterance.onend = () => { btn.textContent = '🔊 बोलकर सुनें / Listen Aloud'; };
+      });
+
+      // SMS simulation
+      document.getElementById('sendSmsBtn').addEventListener('click', function(){
+        const name = this.dataset.name;
+        const token = this.dataset.token;
+        const status = this.dataset.status;
+        const wait = this.dataset.wait;
+        showToast(`📱 SMS भेजा गया!`, `Token #${token} (${name}): ${status}. Prateeksha: ~${wait} min. PHC Sarangpur`, '✅');
+      });
+    }
+
+    function renderNotFound(query) {
+      resultArea.innerHTML = `
+        <div class="empty-token-state">
+          <div class="empty-icon">🔍</div>
+          <h3 style="margin:0 0 8px; font-size:20px;">टोकन नहीं मिला / Token Not Found</h3>
+          <p>"${query}" से कोई रोगी नहीं मिला।<br>कृपया सही टोकन नंबर या मोबाइल नंबर दर्ज करें।<br><br>No patient found for "${query}".<br>Please enter the correct token or phone number.</p>
+        </div>
+      `;
+    }
+
+    window.searchTokenStatus = function() {
+      const query = (searchInput.value || '').trim().toUpperCase().replace(/\s+/g, '');
+      if (!query) { searchInput.focus(); return; }
+      const patients = getPatients();
+      const found = patients.find(p =>
+        (p.token && p.token.toUpperCase() === query) ||
+        (p.phone && p.phone.replace(/\D/g,'') === query.replace(/\D/g,''))
+      );
+      if (found) {
+        renderResult(found, patients);
+      } else {
+        renderNotFound(searchInput.value.trim());
+      }
+    };
+
+    window.quickCheckToken = function(token) {
+      searchInput.value = token;
+      window.searchTokenStatus();
+    };
+
+    function openModal() {
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('visible')));
+      // Auto-load token A-104 as a demo if nothing searched yet
+      if (!resultArea.innerHTML.trim()) {
+        window.quickCheckToken('A-104');
+      }
+      setTimeout(() => searchInput.focus(), 400);
+    }
+
+    function closeModal() {
+      overlay.classList.remove('visible');
+      window.speechSynthesis && window.speechSynthesis.cancel();
+      setTimeout(() => {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }, 350);
+    }
+
+    triggers.forEach(t => t.addEventListener('click', openModal));
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+    });
+  })();
+
+  /* ========== TOAST NOTIFICATION ========== */
+  function showToast(title, msg, icon) {
+    let toast = document.getElementById('globalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'globalToast';
+      toast.className = 'toast-notification';
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML = `<span style="font-size:20px;">${icon || '💬'}</span><span><strong>${title}</strong>${msg ? '<br><span style="font-weight:600;font-size:13px;opacity:.85">' + msg + '</span>' : ''}</span>`;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), 4500);
+  }
+
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
 </body>
