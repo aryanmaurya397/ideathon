@@ -6,8 +6,21 @@
 <title>Register — Swasthya Queue</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+  (function(){
+    try {
+      var f = localStorage.getItem('sq-font-size');
+      if (f === 'large') document.documentElement.setAttribute('data-font', 'large');
+      var c = localStorage.getItem('sq-contrast');
+      if (c === 'high') document.documentElement.setAttribute('data-contrast', 'high');
+      var t = localStorage.getItem('sq-theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch(e) {}
+  })();
+</script>
 <style>
   :root{
+    --base-font-size:16px;
     --bg:#FDF6EC;
     --ink:#1E2A3A;
     --green:#33C56B;
@@ -53,7 +66,7 @@
     margin:0; min-height:100vh; width:100%; max-width:100vw;
     overflow-x:hidden; position:relative;
     background:var(--bg); color:var(--ink);
-    font-family:'Nunito', sans-serif; line-height:1.55;
+    font-family:'Nunito', sans-serif; font-size:var(--base-font-size, 16px); line-height:1.55;
     transition:background-color .25s ease, color .25s ease;
     display:flex; flex-direction:column;
   }
@@ -123,7 +136,8 @@
 
   .field{ margin-bottom:16px; }
   .field label{
-    display:block; font-weight:700; font-size:13.5px; margin-bottom:6px; color:var(--ink);
+    display:flex; align-items:center; justify-content:space-between;
+    font-weight:700; font-size:13.5px; margin-bottom:6px; color:var(--ink);
   }
   .field input, .field select{
     width:100%; padding:12px 14px; font-family:inherit; font-size:15px; color:var(--ink);
@@ -141,6 +155,60 @@
   .field input::placeholder{ color:var(--muted); opacity:.8; }
   .field.has-error input, .field.has-error select{
     border-color:var(--error); background:var(--error-bg);
+  }
+
+  /* Accessibility: Text-to-Speech (TTS) Speaker Badges */
+  .tts-speaker-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1.8px solid var(--ink); background: var(--card); color: var(--ink);
+    font-size: 13px; cursor: pointer; padding: 0; margin-left: 6px;
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: transform .12s ease, background .15s ease, box-shadow .12s ease;
+    flex-shrink: 0; line-height: 1; user-select: none;
+  }
+  .tts-speaker-btn:hover {
+    transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink);
+    background: var(--yellow);
+  }
+  .tts-speaker-btn:focus-visible {
+    outline: 2.5px solid var(--green); outline-offset: 2px;
+  }
+  .tts-speaker-btn.speaking {
+    background: var(--green); color: #fff;
+    animation: ttsPulseRing 1.2s infinite ease-in-out;
+  }
+  @keyframes ttsPulseRing {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(51, 197, 107, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(51, 197, 107, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(51, 197, 107, 0); }
+  }
+
+  .tts-form-banner {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 10px 14px; margin: 0 0 18px;
+    border-radius: var(--radius-md); border: 1.8px solid var(--ink);
+    background: #FFF9E6; color: var(--ink); font-family: inherit;
+    font-weight: 800; font-size: 13.5px; cursor: pointer;
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: transform .12s ease, background .15s ease, box-shadow .12s ease;
+  }
+  .tts-form-banner:hover {
+    transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink);
+    background: var(--yellow);
+  }
+  .tts-form-banner.speaking {
+    background: var(--green); color: #fff;
+  }
+
+  html[data-theme="dark"] .tts-speaker-btn {
+    background: var(--card); color: var(--ink);
+    border-color: var(--border); box-shadow: 2px 2px 0 var(--border);
+  }
+  html[data-theme="dark"] .tts-speaker-btn:hover { background: #2A3644; }
+  html[data-theme="dark"] .tts-speaker-btn.speaking { background: var(--green); color: #12161C; }
+  html[data-theme="dark"] .tts-form-banner {
+    background: #272115; color: #FFE082; border-color: #554422; box-shadow: 2px 2px 0 #554422;
   }
   .error-msg{
     display:none; align-items:center; gap:6px;
@@ -207,6 +275,156 @@
     .form-card{ padding:26px 18px 22px; border-radius:18px; }
     .form-card h1{ font-size:22px; }
   }
+
+  /* Accessibility: Font Size Scaling */
+  html[data-font="large"] {
+    --base-font-size: 19px;
+    font-size: 116%;
+  }
+  html[data-font="large"] p,
+  html[data-font="large"] label,
+  html[data-font="large"] input,
+  html[data-font="large"] select,
+  html[data-font="large"] .submit-btn,
+  html[data-font="large"] .back-link,
+  html[data-font="large"] .home-btn,
+  html[data-font="large"] .form-badge,
+  html[data-font="large"] .tts-form-banner {
+    font-size: 1.13em;
+  }
+  html[data-font="large"] h1 { font-size: 1.1em; }
+
+  /* Accessibility: High Contrast Mode for Sunlight & Low-Vision */
+  html[data-contrast="high"] {
+    --bg: #000000 !important;
+    --ink: #FFFFFF !important;
+    --card: #0A0A0A !important;
+    --muted: #E2E8F0 !important;
+    --border: #FFFFFF !important;
+    --green: #00FF66 !important;
+    --green-dark: #00FF66 !important;
+    --green-pale: #002B0F !important;
+    --coral: #FF6B6B !important;
+    --sky: #38BDF8 !important;
+    --error: #FF4D4D !important;
+    --error-bg: #2B0000 !important;
+    --shadow: 0 0 0 3px #FFFFFF !important;
+    --shadow-sm: 0 0 0 2px #FFFFFF !important;
+  }
+  html[data-contrast="high"] body {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+  }
+  html[data-contrast="high"] .form-card,
+  html[data-contrast="high"] .success-card {
+    background: #0A0A0A !important;
+    border: 3px solid #FFFFFF !important;
+    color: #FFFFFF !important;
+    box-shadow: 4px 4px 0 #FFFFFF !important;
+  }
+  html[data-contrast="high"] input,
+  html[data-contrast="high"] select {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #FFFFFF !important;
+  }
+  html[data-contrast="high"] .field-group label {
+    color: #FFFFFF !important;
+  }
+  html[data-contrast="high"] .submit-btn {
+    background: #00FF66 !important;
+    color: #000000 !important;
+    border: 3px solid #FFFFFF !important;
+    font-weight: 900 !important;
+  }
+  html[data-contrast="high"] .back-link,
+  html[data-contrast="high"] .home-btn {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #FFFFFF !important;
+  }
+  html[data-contrast="high"] .tts-speaker-btn,
+  html[data-contrast="high"] .a11y-btn,
+  html[data-contrast="high"] .theme-toggle {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #FFFFFF !important;
+  }
+  html[data-contrast="high"] .tts-speaker-btn:hover,
+  html[data-contrast="high"] .a11y-btn:hover,
+  html[data-contrast="high"] .theme-toggle:hover {
+    background: #FFE600 !important;
+    color: #000000 !important;
+  }
+  html[data-contrast="high"] .a11y-btn.active,
+  html[data-contrast="high"] .a11y-btn[aria-pressed="true"] {
+    background: #00FF66 !important;
+    color: #000000 !important;
+  }
+  html[data-contrast="high"] .tts-form-banner {
+    background: #000000 !important;
+    color: #FFE600 !important;
+    border: 2px solid #FFFFFF !important;
+  }
+
+  /* Accessibility Toolbar & Buttons */
+  .a11y-controls-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .a11y-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--ink);
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform .15s ease, background-color .25s ease, border-color .25s ease, color .15s ease;
+    user-select: none;
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .a11y-btn:hover {
+    transform: translateY(-2px);
+    background: var(--green-pale);
+  }
+  .a11y-btn:focus-visible {
+    outline: 3px solid var(--green);
+    outline-offset: 2px;
+  }
+  .a11y-btn.active,
+  .a11y-btn[aria-pressed="true"] {
+    background: var(--green);
+    color: #FFFFFF;
+    border-color: var(--green-dark);
+  }
+  .a11y-btn .a-sup {
+    font-size: 10px;
+    font-weight: 900;
+    vertical-align: super;
+    margin-left: 1px;
+  }
+  html[data-theme="dark"] .a11y-btn {
+    border-color: var(--border);
+  }
+  html[data-theme="dark"] .a11y-btn:hover {
+    background: #2A3644;
+    color: #FFFFFF;
+  }
+  html[data-theme="dark"] .a11y-btn.active,
+  html[data-theme="dark"] .a11y-btn[aria-pressed="true"] {
+    background: var(--green);
+    color: #12161C;
+  }
 </style>
 </head>
 <body>
@@ -216,10 +434,14 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Back to Home
   </a>
-  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode">
-    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-  </button>
+  <div class="a11y-controls-group">
+    <button class="a11y-btn" id="fontToggle" type="button" aria-label="Toggle font size (Normal / Large)" aria-pressed="false" title="फॉन्ट आकार / Font Size (A/A+)">A<span class="a-sup">+</span></button>
+    <button class="a11y-btn" id="contrastToggle" type="button" aria-label="Toggle high contrast mode" aria-pressed="false" title="उच्च कंट्रास्ट / High Contrast">◑</button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
 </div>
 
 <main>
@@ -227,23 +449,41 @@
 
     <form id="registerForm" novalidate>
       <span class="form-badge">Ideathon Registration</span>
-      <h1>Register Now</h1>
-      <p class="sub">Fill in your details below to secure your spot.</p>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+        <h1 id="formHeading" style="margin:0;">Register Now</h1>
+        <button type="button" class="tts-speaker-btn" data-tts="पंजीकरण फॉर्म। कृपया अपना विवरण दर्ज करें। Register Now. Please fill in your details below." aria-label="सुनें: शीर्षक / Listen: Heading" title="सुनें / Listen">🔊</button>
+      </div>
+      <p class="sub" id="formSub" style="margin-top:6px;">Fill in your details below to secure your spot.</p>
+
+      <!-- Read Full Form Banner Button -->
+      <button type="button" class="tts-form-banner" id="readFormAloudBtn" aria-label="पूरा फॉर्म बोलकर सुनें / Read entire form aloud">
+        <span>🔊</span>
+        <span>पूरा फॉर्म बोलकर सुनें / Read Form Aloud</span>
+      </button>
 
       <div class="field" id="nameField">
-        <label for="fullName">Full Name</label>
+        <label for="fullName">
+          <span>Full Name <span style="font-weight:600; font-size:12px; color:var(--muted);">(पूरा नाम)</span></span>
+          <button type="button" class="tts-speaker-btn" data-tts="पूरा नाम। कृपया अपना पूरा नाम दर्ज करें। Full Name." aria-label="सुनें: पूरा नाम" title="बोलकर सुनें / Listen">🔊</button>
+        </label>
         <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" autocomplete="name">
         <div class="error-msg">Please enter your full name (at least 3 characters).</div>
       </div>
 
       <div class="field" id="phoneField">
-        <label for="phone">Phone Number</label>
+        <label for="phone">
+          <span>Phone Number <span style="font-weight:600; font-size:12px; color:var(--muted);">(मोबाइल नंबर)</span></span>
+          <button type="button" class="tts-speaker-btn" data-tts="मोबाइल नंबर। कृपया अपना दस अंकों का मोबाइल नंबर दर्ज करें। Enter 10-digit mobile number." aria-label="सुनें: फोन नंबर" title="बोलकर सुनें / Listen">🔊</button>
+        </label>
         <input type="tel" id="phone" name="phone" placeholder="Enter your 10-digit mobile number" autocomplete="tel" inputmode="numeric" maxlength="10">
         <div class="error-msg">Please enter a valid 10-digit Indian mobile number.</div>
       </div>
 
       <div class="field" id="idTypeField">
-        <label for="idType">Select Identity Proof</label>
+        <label for="idType">
+          <span>Select Identity Proof <span style="font-weight:600; font-size:12px; color:var(--muted);">(पहचान पत्र)</span></span>
+          <button type="button" class="tts-speaker-btn" data-tts="पहचान पत्र चुनें। आधार कार्ड, पैन कार्ड, वोटर आईडी, या किसान योजना कार्ड में से एक चुनें। Select identity proof." aria-label="सुनें: पहचान पत्र" title="बोलकर सुनें / Listen">🔊</button>
+        </label>
         <select id="idType" name="idType">
           <option value="" disabled selected>Select Identity Proof</option>
           <option value="Aadhaar Card">Aadhaar Card</option>
@@ -257,7 +497,10 @@
       </div>
 
       <div class="field" id="idNumberField">
-        <label for="idNumber" id="idNumberLabel">Identity Proof Number</label>
+        <label for="idNumber" id="idNumberLabel">
+          <span>Identity Proof Number <span style="font-weight:600; font-size:12px; color:var(--muted);">(आईडी नंबर)</span></span>
+          <button type="button" class="tts-speaker-btn" data-tts="पहचान पत्र संख्या। चुने हुए पहचान पत्र का नंबर दर्ज करें। Enter identity proof number." aria-label="सुनें: पहचान पत्र संख्या" title="बोलकर सुनें / Listen">🔊</button>
+        </label>
         <input type="text" id="idNumber" name="idNumber" placeholder="Enter your identity proof number" autocomplete="off">
         <div class="error-msg" id="idNumberError">Please enter a valid identity proof number.</div>
       </div>
@@ -302,6 +545,66 @@
     function setTheme(theme){
       root.setAttribute('data-theme', theme);
       btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+  })();
+
+  /* ===== ACCESSIBILITY: FONT SIZE & HIGH CONTRAST ===== */
+  (function(){
+    const root = document.documentElement;
+    const fontBtn = document.getElementById('fontToggle');
+    const contrastBtn = document.getElementById('contrastToggle');
+
+    if (root.getAttribute('data-font') === 'large' && fontBtn) {
+      fontBtn.classList.add('active');
+      fontBtn.setAttribute('aria-pressed', 'true');
+      fontBtn.setAttribute('title', 'सामान्य फॉन्ट / Normal Font (A)');
+    }
+    if (root.getAttribute('data-contrast') === 'high' && contrastBtn) {
+      contrastBtn.classList.add('active');
+      contrastBtn.setAttribute('aria-pressed', 'true');
+      contrastBtn.setAttribute('title', 'सामान्य कंट्रास्ट / Normal Contrast');
+    }
+
+    if (fontBtn) {
+      fontBtn.addEventListener('click', () => {
+        const isLarge = root.getAttribute('data-font') === 'large';
+        if (isLarge) {
+          root.removeAttribute('data-font');
+          localStorage.setItem('sq-font-size', 'normal');
+          fontBtn.classList.remove('active');
+          fontBtn.setAttribute('aria-pressed', 'false');
+          fontBtn.setAttribute('title', 'बड़ा फॉन्ट / Large Font (A+)');
+          if (window.sqSpeak) window.sqSpeak("सामान्य फॉन्ट आकार लागू किया गया", fontBtn);
+        } else {
+          root.setAttribute('data-font', 'large');
+          localStorage.setItem('sq-font-size', 'large');
+          fontBtn.classList.add('active');
+          fontBtn.setAttribute('aria-pressed', 'true');
+          fontBtn.setAttribute('title', 'सामान्य फॉन्ट / Normal Font (A)');
+          if (window.sqSpeak) window.sqSpeak("बड़ा फॉन्ट आकार लागू किया गया", fontBtn);
+        }
+      });
+    }
+
+    if (contrastBtn) {
+      contrastBtn.addEventListener('click', () => {
+        const isHigh = root.getAttribute('data-contrast') === 'high';
+        if (isHigh) {
+          root.removeAttribute('data-contrast');
+          localStorage.setItem('sq-contrast', 'normal');
+          contrastBtn.classList.remove('active');
+          contrastBtn.setAttribute('aria-pressed', 'false');
+          contrastBtn.setAttribute('title', 'उच्च कंट्रास्ट / High Contrast');
+          if (window.sqSpeak) window.sqSpeak("सामान्य कंट्रास्ट लागू किया गया", contrastBtn);
+        } else {
+          root.setAttribute('data-contrast', 'high');
+          localStorage.setItem('sq-contrast', 'high');
+          contrastBtn.classList.add('active');
+          contrastBtn.setAttribute('aria-pressed', 'true');
+          contrastBtn.setAttribute('title', 'सामान्य कंट्रास्ट / Normal Contrast');
+          if (window.sqSpeak) window.sqSpeak("उच्च कंट्रास्ट मोड लागू किया गया", contrastBtn);
+        }
+      });
     }
   })();
 
@@ -403,6 +706,100 @@
 
       document.getElementById('registerCard').style.display = 'none';
       document.getElementById('successView').classList.add('show');
+
+      // Accessibility: Voice confirmation on success
+      if (window.sqSpeak) {
+        window.sqSpeak("पंजीकरण सफल हुआ! धन्यवाद " + fullName + " जी। आपका विवरण दर्ज कर लिया गया है। Registration successful!");
+      }
+    });
+  })();
+</script>
+
+<script>
+  /* ========== TEXT-TO-SPEECH (TTS) ACCESSIBILITY ENGINE ========== */
+  (function(){
+    let currentSpeakingBtn = null;
+
+    window.sqSpeak = function(text, btnElement, onEndCallback) {
+      if (!('speechSynthesis' in window)) {
+        alert('Your browser does not support audio speech synthesis.');
+        return;
+      }
+
+      // If clicking the currently speaking button, stop speaking (toggle)
+      if (window.speechSynthesis.speaking && currentSpeakingBtn === btnElement) {
+        window.speechSynthesis.cancel();
+        resetCurrentBtn();
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      resetCurrentBtn();
+
+      if (btnElement) {
+        currentSpeakingBtn = btnElement;
+        currentSpeakingBtn.classList.add('speaking');
+        currentSpeakingBtn.setAttribute('aria-label', 'रोकें / Stop audio');
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hi-IN';
+      utterance.rate = 0.88; // Slower, clearer cadence for elderly and rural users
+      utterance.pitch = 1.0;
+
+      const voices = window.speechSynthesis.getVoices();
+      const hiVoice = voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi')) ||
+                      voices.find(v => v.lang === 'en-IN' || v.lang.startsWith('en'));
+      if (hiVoice) utterance.voice = hiVoice;
+
+      utterance.onend = () => {
+        resetCurrentBtn();
+        if (typeof onEndCallback === 'function') onEndCallback();
+      };
+
+      utterance.onerror = (e) => {
+        if (e.error !== 'interrupted' && e.error !== 'canceled') {
+          console.warn('SpeechSynthesis error:', e);
+        }
+        resetCurrentBtn();
+      };
+
+      window.speechSynthesis.speak(utterance);
+    };
+
+    function resetCurrentBtn() {
+      if (currentSpeakingBtn) {
+        currentSpeakingBtn.classList.remove('speaking');
+        currentSpeakingBtn.setAttribute('aria-label', 'सुनें / Listen');
+        currentSpeakingBtn = null;
+      }
+    }
+
+    // Attach click handler to all individual label/heading speaker buttons
+    document.querySelectorAll('.tts-speaker-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const textToRead = btn.getAttribute('data-tts');
+        if (textToRead) {
+          window.sqSpeak(textToRead, btn);
+        }
+      });
+    });
+
+    // "Read Full Form Aloud" Banner Button
+    const readFullBtn = document.getElementById('readFormAloudBtn');
+    if (readFullBtn) {
+      readFullBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const fullScript = "स्वास्थ्य पंजीकरण फॉर्म। कृपया ध्यान से सुनें। पहला: अपना पूरा नाम लिखें। दूसरा: अपना दस अंकों का मोबाइल नंबर लिखें। तीसरा: अपना पहचान प्रमाण पत्र चुनें, जैसे आधार कार्ड या पैन कार्ड। चौथा: पहचान पत्र की संख्या दर्ज करें। फॉर्म भरने के बाद कम्पलीट रजिस्ट्रेशन बटन दबाएं।";
+        window.sqSpeak(fullScript, readFullBtn);
+      });
+    }
+
+    // Cancel speech when navigating away
+    window.addEventListener('beforeunload', () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     });
   })();
 </script>
