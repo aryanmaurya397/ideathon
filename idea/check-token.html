@@ -286,6 +286,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get('token');
+      if (urlToken && typeof performSearch === 'function') {
+        const sInput = document.getElementById('token-search-input');
+        if (sInput) sInput.value = urlToken;
+        performSearch(urlToken);
+      }
       const langSelect = document.getElementById('language-select');
       if (langSelect) {
         const savedLang = localStorage.getItem('swasthya_lang') || 'en';
