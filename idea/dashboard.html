@@ -1,1598 +1,549 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Staff Dashboard — Swasthya Queue</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #FDF6EC;
-    --ink: #1E2A3A;
-    --green: #33C56B;
-    --green-dark: #22A855;
-    --green-pale: #CFF3D8;
-    --coral: #F4A896;
-    --coral-pale: #FBDCD3;
-    --sky: #A6D9E8;
-    --sky-pale: #DDF1F6;
-    --yellow: #FFD666;
-    --yellow-pale: #FFF3C4;
-    --lavender: #D8D3F7;
-    --lavender-pale: #ECEAFB;
-    --card: #FFFFFF;
-    --muted: #5B6B7A;
-    --radius-lg: 24px;
-    --radius-md: 16px;
-    --radius-sm: 10px;
-    --shadow: 5px 5px 0 var(--ink);
-    --shadow-sm: 3px 3px 0 var(--ink);
-    --border: #E6DFD2;
-    --error: #D64545;
-    --error-bg: #FBE7E7;
-  }
-  html[data-theme="dark"] {
-    --bg: #12161C;
-    --ink: #F3EFE4;
-    --green: #33C56B;
-    --green-dark: #4FE08C;
-    --green-pale: #1F3B2A;
-    --coral: #F4A896;
-    --coral-pale: #43302B;
-    --sky: #A6D9E8;
-    --sky-pale: #233642;
-    --yellow: #FFD666;
-    --yellow-pale: #3D351B;
-    --lavender: #D8D3F7;
-    --lavender-pale: #2F2B48;
-    --card: #1B212A;
-    --muted: #9BA7B0;
-    --border: #2A313B;
-    --error: #FF8484;
-    --error-bg: #3A2020;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; }
-  * { margin: 0; padding: 0; }
-  html {
-    overflow-x: hidden;
-    width: 100%;
-    -webkit-text-size-adjust: 100%;
-  }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Nunito', sans-serif;
-    font-size: 15px;
-    line-height: 1.5;
-    min-height: 100vh;
-    width: 100%;
-    max-width: 100vw;
-    overflow-x: hidden;
-    position: relative;
-    transition: background-color .25s ease, color .25s ease;
-  }
-  img, svg { max-width: 100%; }
-  h1, h2, h3, h4 {
-    font-family: 'Baloo 2', sans-serif;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1.25;
-  }
-  a { text-decoration: none; color: inherit; }
-  button, input, select, textarea { font-family: inherit; }
-  :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
-
-  /* Neobrutalist Clay utility */
-  .clay {
-    background: var(--card);
-    border: 3px solid var(--ink);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    transition: transform .15s ease, box-shadow .15s ease, background-color .25s ease;
-  }
-
-  /* Top Bar */
-  .top-strip {
-    height: 6px;
-    background: repeating-linear-gradient(45deg, var(--coral), var(--coral) 12px, var(--yellow) 12px, var(--yellow) 24px, var(--green) 24px, var(--green) 36px, var(--sky) 36px, var(--sky) 48px);
-  }
-
-  /* Header & Navigation */
-  .header-nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: var(--bg);
-    border-bottom: 3px solid var(--ink);
-    padding: 12px 0;
-    backdrop-filter: blur(10px);
-  }
-  .wrap {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 clamp(14px, 3vw, 32px);
-    width: 100%;
-  }
-  .nav-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-    width: 100%;
-  }
-  .brand-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .logo-badge {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    border: 3px solid var(--ink);
-    background: var(--green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-sm);
-  }
-  .brand-title {
-    font-size: clamp(17px, 2.5vw, 22px);
-    font-weight: 800;
-    white-space: nowrap;
-  }
-  .camp-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 99px;
-    background: var(--sky-pale);
-    border: 2px solid var(--ink);
-    color: var(--ink);
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .camp-pill .live-pulse {
-    width: 8px;
-    height: 8px;
-    background: var(--green);
-    border-radius: 50%;
-    flex-shrink: 0;
-    animation: pulse 1.6s infinite ease-in-out;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.4); opacity: 0.6; }
-  }
-
-  .nav-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px 18px;
-    font-size: 14px;
-    font-weight: 800;
-    border-radius: var(--radius-md);
-    border: 3px solid var(--ink);
-    background: var(--card);
-    color: var(--ink);
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: transform .1s ease, box-shadow .1s ease, background-color .15s ease;
-    white-space: nowrap;
-  }
-  .btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--ink);
-  }
-  .btn:active {
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0 var(--ink);
-  }
-  .btn-green { background: var(--green); }
-  .btn-green:hover { background: #2fbc64; }
-  .btn-sky { background: var(--sky); }
-  .btn-yellow { background: var(--yellow); }
-  .btn-coral { background: var(--coral); }
-  .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: 10px; }
-  
-  .icon-btn {
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .theme-toggle svg { width: 20px; height: 20px; stroke: var(--ink); }
-  .theme-toggle .icon-moon { display: none; }
-  html[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
-  html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
-
-  /* Main Container */
-  main {
-    padding: 28px 0 60px;
-  }
-
-  /* Live Clock Bar */
-  .camp-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 22px;
-    margin-bottom: 24px;
-    background: var(--card);
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .banner-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .banner-icon {
-    font-size: 26px;
-    line-height: 1;
-  }
-  .banner-text h2 { font-size: 20px; }
-  .banner-text p { font-size: 13px; color: var(--muted); font-weight: 600; }
-  .banner-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .clock-chip {
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 12px;
-    background: var(--yellow-pale);
-    border: 2px solid var(--ink);
-  }
-
-  /* Stats Grid */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-  .stat-card {
-    padding: 18px;
-    position: relative;
-    overflow: hidden;
-  }
-  .stat-card .stat-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-  .stat-card .stat-label {
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .stat-card .stat-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    border: 2px solid var(--ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-  }
-  .stat-card .stat-value {
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 38px;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--ink);
-    margin-bottom: 4px;
-  }
-  .stat-card .stat-sub {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--muted);
-  }
-
-  /* Controls & Action Bar */
-  .action-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    padding: 16px 20px;
-  }
-  .filter-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    flex: 1;
-  }
-  .search-box {
-    position: relative;
-    min-width: min(240px, 100%);
-    flex: 1;
-    max-width: 380px;
-  }
-  .search-box input {
-    width: 100%;
-    padding: 10px 14px 10px 38px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--ink);
-    background: var(--bg);
-    color: var(--ink);
-    outline: none;
-    transition: box-shadow .15s ease;
-  }
-  .search-box input:focus {
-    box-shadow: 0 0 0 3px var(--yellow);
-  }
-  .search-box svg {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    stroke: var(--muted);
-    pointer-events: none;
-  }
-  .select-custom {
-    padding: 10px 14px;
-    font-size: 14px;
-    font-weight: 700;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--ink);
-    background: var(--bg);
-    color: var(--ink);
-    cursor: pointer;
-    outline: none;
-  }
-
-  /* Filter Tabs */
-  .status-tabs {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-  .tab-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 800;
-    border-radius: 99px;
-    border: 2px solid var(--ink);
-    background: var(--card);
-    color: var(--ink);
-    cursor: pointer;
-    box-shadow: 2px 2px 0 var(--ink);
-    transition: all .15s ease;
-  }
-  .tab-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 3px 3px 0 var(--ink);
-  }
-  .tab-btn.active {
-    background: var(--ink);
-    color: var(--bg);
-    box-shadow: 0 0 0 var(--ink);
-  }
-  .tab-btn .badge-count {
-    margin-left: 6px;
-    padding: 2px 6px;
-    border-radius: 99px;
-    font-size: 11px;
-    background: var(--yellow);
-    color: #1E2A3A;
-  }
-  .tab-btn.active .badge-count {
-    background: var(--green);
-    color: #1E2A3A;
-  }
-
-  /* Queue Table Section */
-  .table-container {
-    overflow-x: auto;
-    border-radius: var(--radius-lg);
-    background: var(--card);
-    border: 3px solid var(--ink);
-    box-shadow: var(--shadow);
-    margin-bottom: 30px;
-  }
-  .queue-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-  }
-  .queue-table th {
-    background: var(--bg);
-    padding: 14px 18px;
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    border-bottom: 3px solid var(--ink);
-    color: var(--ink);
-    white-space: nowrap;
-  }
-  .queue-table td {
-    padding: 16px 18px;
-    border-bottom: 2px solid var(--border);
-    vertical-align: middle;
-  }
-  .queue-table tr:last-child td { border-bottom: none; }
-  .queue-table tr:hover td {
-    background: rgba(0,0,0,0.02);
-  }
-  html[data-theme="dark"] .queue-table tr:hover td {
-    background: rgba(255,255,255,0.03);
-  }
-
-  /* Row Highlights */
-  .token-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 17px;
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 10px;
-    border: 2px solid var(--ink);
-    background: var(--yellow-pale);
-    color: var(--ink);
-  }
-  .token-chip.priority {
-    background: var(--coral-pale);
-    border-color: var(--error);
-    color: var(--error);
-  }
-  .patient-meta {
-    font-weight: 800;
-    font-size: 15px;
-    color: var(--ink);
-  }
-  .patient-sub {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-
-  /* Status Badges & Selects */
-  .status-select {
-    font-size: 13px;
-    font-weight: 800;
-    padding: 6px 10px;
-    border-radius: 99px;
-    border: 2px solid var(--ink);
-    cursor: pointer;
-    box-shadow: 2px 2px 0 var(--ink);
-    outline: none;
-    transition: all .15s ease;
-  }
-  .status-waiting { background: var(--yellow-pale); color: #8A6500; }
-  .status-active { background: var(--green-pale); color: #0E7739; animation: pulse 2s infinite; }
-  .status-triage { background: var(--sky-pale); color: #0C617B; }
-  .status-completed { background: #EAEAEF; color: #555; }
-  .status-emergency { background: var(--coral-pale); color: #B31A1A; font-weight: 900; }
-
-  html[data-theme="dark"] .status-waiting { color: #FFE277; }
-  html[data-theme="dark"] .status-active { color: #57F299; }
-  html[data-theme="dark"] .status-triage { color: #73D6F2; }
-  html[data-theme="dark"] .status-completed { background: #262B33; color: #A0AAB5; }
-  html[data-theme="dark"] .status-emergency { color: #FFA1A1; }
-
-  .action-btns {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .action-icon-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    border: 2px solid var(--ink);
-    background: var(--card);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 2px 2px 0 var(--ink);
-    transition: transform .1s ease;
-  }
-  .action-icon-btn:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0 var(--ink);
-  }
-  .action-icon-btn:active {
-    transform: translate(1px, 1px);
-    box-shadow: 0 0 0 var(--ink);
-  }
-
-  /* Empty State */
-  .empty-state {
-    text-align: center;
-    padding: 48px 20px;
-    color: var(--muted);
-  }
-  .empty-state h3 { font-size: 20px; margin-bottom: 6px; }
-
-  /* Modal Overlay */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(18, 22, 28, 0.65);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s ease;
-  }
-  .modal-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .modal-box {
-    width: 100%;
-    max-width: 520px;
-    padding: 28px;
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--border);
-  }
-  .modal-header h3 { font-size: 22px; }
-  .modal-close {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    border: 2px solid var(--ink);
-    background: var(--coral-pale);
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .form-group {
-    margin-bottom: 16px;
-  }
-  .form-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 800;
-    margin-bottom: 6px;
-    color: var(--ink);
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .form-control {
-    width: 100%;
-    padding: 10px 14px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--ink);
-    background: var(--bg);
-    color: var(--ink);
-    outline: none;
-  }
-  .form-control:focus {
-    box-shadow: 0 0 0 3px var(--sky);
-  }
-
-  /* Toast Notification */
-  .toast {
-    position: fixed;
-    bottom: clamp(16px, 3vw, 24px);
-    right: clamp(16px, 3vw, 24px);
-    background: var(--card);
-    border: 3px solid var(--ink);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow);
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 200;
-    transform: translateY(120%);
-    transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    max-width: min(360px, calc(100vw - 32px));
-  }
-  .toast.show {
-    transform: translateY(0);
-  }
-  .toast-icon { font-size: 22px; }
-  .toast-text b { display: block; font-size: 14px; }
-  .toast-text span { font-size: 12px; color: var(--muted); }
-
-  /* Accessibility Notice */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-  }
-
-  /* ── Responsive Layout ── */
-  @media (max-width: 960px) {
-    .nav-content { gap: 10px; }
-    .brand-group { gap: 10px; }
-  }
-  @media (max-width: 768px) {
-    .action-bar { flex-direction: column; align-items: stretch; }
-    .filter-group { flex-direction: column; width: 100%; }
-    .search-box { max-width: 100%; min-width: 100%; }
-    .select-custom { width: 100%; }
-    .camp-banner { flex-direction: column; align-items: flex-start; }
-    .banner-right { width: 100%; justify-content: space-between; flex-wrap: wrap; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-    .status-tabs { gap: 6px; }
-    .tab-btn { font-size: 12px; padding: 6px 12px; }
-    .modal-box { padding: 20px; }
-  }
-  @media (max-width: 560px) {
-    .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .nav-controls .btn-sm { padding: 6px 10px; font-size: 12px; }
-    .camp-banner { padding: 14px 16px; }
-    .banner-right .btn { padding: 8px 12px; font-size: 13px; }
-    .action-bar { padding: 14px 16px; }
-  }
-  @media (max-width: 480px) {
-    .stats-grid { grid-template-columns: 1fr; }
-    .nav-content { flex-direction: column; align-items: flex-start; }
-    .nav-controls { width: 100%; justify-content: flex-end; }
-    .brand-title { font-size: 18px; }
-    .queue-table th, .queue-table td { padding: 12px 12px; font-size: 13px; }
-    .modal-box { padding: 18px 14px; }
-    .toast { right: 12px; max-width: calc(100vw - 24px); }
-  }
-  @media (max-width: 380px) {
-    .logo-badge { width: 36px; height: 36px; border-radius: 10px; }
-    .brand-title { font-size: 16px; }
-    .camp-pill { display: none; }
-    .banner-right .btn { flex: 1; }
-  }
-
-  /* ── Google Translate ── */
-  .translate-box { display: flex; align-items: center; }
-  .goog-te-gadget-simple {
-    background: var(--card) !important; border: 2px solid var(--ink) !important;
-    border-radius: 100px !important; padding: 2px 10px !important; font-size: 12px !important;
-    font-family: inherit !important; color: var(--ink) !important;
-    display: inline-flex; align-items: center; gap: 4px;
-  }
-  .goog-te-gadget-simple .goog-te-menu-value { color: var(--ink) !important; font-weight: 700 !important; }
-  .goog-te-gadget-simple .goog-te-menu-value span { color: var(--ink) !important; }
-  .goog-te-banner-frame.skiptranslate { display: none !important; }
-  body { top: 0px !important; }
-
-  /* ── In-Modal Language Switcher ── */
-  .modal-translate-bar {
-    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
-    padding: 9px 12px; border-radius: 14px; margin-bottom: 16px;
-    background: var(--sky-pale); border: 2px solid var(--ink);
-  }
-  .modal-translate-label {
-    font-size: 12px; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 4px;
-    white-space: nowrap;
-  }
-  .modal-lang-chips {
-    display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
-  }
-  .lang-chip {
-    font-size: 11.5px; font-weight: 800; padding: 4px 9px;
-    border-radius: 99px; border: 1.5px solid var(--ink);
-    background: var(--card); color: var(--ink); cursor: pointer;
-    transition: all .15s ease; font-family: inherit;
-  }
-  .lang-chip:hover {
-    transform: scale(1.04);
-    background: var(--yellow);
-    color: #12161C;
-  }
-  .lang-chip.active {
-    background: var(--ink);
-    color: var(--bg);
-  }
-  html[data-theme="dark"] .modal-translate-bar {
-    background: rgba(35, 54, 66, 0.7);
-    border-color: var(--border);
-  }
-  html[data-theme="dark"] .lang-chip {
-    background: var(--card);
-    color: var(--ink);
-    border-color: var(--border);
-  }
-  html[data-theme="dark"] .lang-chip.active {
-    background: var(--green);
-    color: #12161C;
-    border-color: var(--green);
-  }
-
-  /* ── Full Dark Mode Refinements for Dashboard ── */
-  html[data-theme="dark"] .modal-overlay {
-    background: rgba(0, 0, 0, 0.78);
-  }
-  html[data-theme="dark"] .modal-box {
-    background: var(--card);
-    border-color: var(--border);
-    color: var(--ink);
-  }
-  html[data-theme="dark"] .form-control {
-    background: #141920;
-    color: var(--ink);
-    border-color: var(--border);
-  }
-  html[data-theme="dark"] .form-control:focus {
-    box-shadow: 0 0 0 3px rgba(115, 214, 242, 0.4);
-  }
-  html[data-theme="dark"] .modal-close {
-    background: #3A2020;
-    color: var(--ink);
-    border-color: var(--border);
-  }
-  html[data-theme="dark"] .camp-pill {
-    background: rgba(35, 54, 66, 0.8);
-    border-color: var(--border);
-    color: var(--ink);
-  }
-
-  /* ── Toast Notification ── */
-  .dash-toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px);
-    background: var(--ink); color: var(--bg); padding: 14px 22px; border-radius: 14px;
-    font-weight: 800; font-size: 14.5px; z-index: 99999; max-width: min(92vw, 420px);
-    box-shadow: 0 8px 32px rgba(0,0,0,.3); transition: transform .4s cubic-bezier(.22,1,.36,1);
-    display: flex; align-items: center; gap: 10px; pointer-events: none;
-    text-align: center;
-  }
-  .dash-toast.show { transform: translateX(-50%) translateY(0); }
-</style>
-</head>
-<body>
-
-<div class="top-strip"></div>
-
-<!-- Top Navigation -->
-<header class="header-nav">
-  <div class="wrap nav-content">
-    <div class="brand-group">
-      <a href="index.html" class="logo-badge" title="Back to Home Page" aria-label="Swasthya Queue Home">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 13c2-6 6-9 8-9s6 3 8 9c-2 3-5 5-8 5s-6-2-8-5z" stroke="#1E2A3A" stroke-width="2.2" stroke-linejoin="round"/><path d="M8 13h2l1.5-3 2 5 1.5-2h2" stroke="#1E2A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+<!-- Live PHC Queue & Staff Dashboard -->
+<!DOCTYPE html><html lang="hi" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><title>पीएचसी स्टाफ कंसोल | PHC Staff Console - Swasthya Queue</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-tertiary-container":"#ff7f73","secondary":"#226b42","outline":"#737780","on-surface":"#131b2e","surface":"#faf8ff","on-tertiary":"#ffffff","surface-dim":"#d2d9f4","on-secondary":"#ffffff","inverse-on-surface":"#eef0ff","on-primary-fixed-variant":"#1c4974","primary-container":"#0a3d68","surface-variant":"#dae2fd","surface-container-highest":"#dae2fd","primary-fixed":"#d2e4ff","outline-variant":"#c2c7d0","secondary-container":"#a9f3bf","tertiary":"#540003","on-tertiary-fixed":"#410002","inverse-primary":"#a2c9fc","tertiary-container":"#7d0007","on-background":"#131b2e","primary-fixed-dim":"#a2c9fc","on-secondary-fixed-variant":"#00522d","on-tertiary-fixed-variant":"#93000b","tertiary-fixed-dim":"#ffb4ab","surface-container-high":"#e2e7ff","secondary-fixed":"#a9f3bf","secondary-fixed-dim":"#8ed6a5","tertiary-fixed":"#ffdad6","primary":"#002747","on-primary":"#ffffff","error":"#ba1a1a","on-error-container":"#93000a","error-container":"#ffdad6","on-secondary-container":"#297148","on-primary-fixed":"#001c37","surface-tint":"#38618e","on-secondary-fixed":"#00210f","on-error":"#ffffff","on-surface-variant":"#42474f","surface-container":"#eaedff","inverse-surface":"#283044","background":"#faf8ff","surface-container-low":"#f2f3ff","surface-bright":"#faf8ff","surface-container-lowest":"#ffffff","on-primary-container":"#81a8da"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},spacing:{"space-xs":"0.25rem",margin:"2rem",gutter:"1.5rem","space-lg":"1.5rem","space-sm":"0.5rem","space-xl":"2.5rem","space-md":"1rem","margin-mobile":"1rem","gutter-mobile":"1rem"},fontFamily:{"headline-md":["Public Sans"],"label-secondary":["Public Sans"],"token-display-mobile":["Public Sans"],"token-display-lg":["Public Sans"],"label-primary":["Public Sans"],"headline-lg":["Public Sans"],"body-lg":["Public Sans"],"body-sm":["Public Sans"],"body-md":["Public Sans"],"headline-xl-mobile":["Public Sans"],"headline-xl":["Public Sans"]},fontSize:{"headline-md":["20px",{lineHeight:"28px",fontWeight:"600"}],"label-secondary":["13px",{lineHeight:"18px",letterSpacing:"0.04em",fontWeight:"600"}],"token-display-mobile":["48px",{lineHeight:"56px",letterSpacing:"-0.01em",fontWeight:"800"}],"token-display-lg":["64px",{lineHeight:"72px",letterSpacing:"-0.02em",fontWeight:"800"}],"label-primary":["16px",{lineHeight:"22px",fontWeight:"600"}],"headline-lg":["24px",{lineHeight:"32px",fontWeight:"700"}],"body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],"body-sm":["14px",{lineHeight:"20px",fontWeight:"500"}],"body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],"headline-xl-mobile":["28px",{lineHeight:"36px",fontWeight:"700"}],"headline-xl":["36px",{lineHeight:"44px",letterSpacing:"-0.02em",fontWeight:"700"}]}}}}</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest border-r-[1.5px] border-outline-variant z-50 flex flex-col"><div class="w-full h-1 flex"><div class="flex-1 bg-[#FF9933]"></div><div class="flex-1 bg-[#FFFFFF]"></div><div class="flex-1 bg-[#138808]"></div></div><div class="p-space-md border-b-[1.5px] border-outline-variant"><div class="flex items-center gap-space-sm mb-2"><img alt="Government Emblem" class="h-9 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XXa_K_33u7huzz-4D53ZRaheXk6AdcqygUqbwAeRo3ju-X0oLaEj0oSRn1Tp4jZ870ynuV1sQsaaBOKE1NuEjnyx3exQpRJBl-Sn2YZSvr6WFqKzoNVysbjGqEeTKa9SqFqqTtBen8SWFwN76O7aVp6WaBr65uWM49aLwrnnCxqpCS8aeY4KhqtlKPNwlGsM6TDU0spRaKK5RaY_FV6B87VgQnJkaD6bqY9IMJOfExSNAIH4fsKj3vAA"><div class="flex flex-col"><a href="swasthya-queue-standalone.html" class="font-label-primary text-label-primary text-primary font-bold leading-tight hover:underline">राष्ट्रीय स्वास्थ्य कतार</a><span class="font-label-secondary text-label-secondary text-on-surface-variant">PHC Staff Portal</span></div></div><div class="px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-secondary text-label-secondary font-semibold flex items-center justify-between"><span class="">स्थान: PHC रामपुर खुर्द</span><span class="w-2 h-2 rounded-full bg-secondary"></span></div></div><div class="px-space-md py-space-sm bg-surface-container-high border-b border-outline-variant"><div class="flex items-center justify-between mb-1"><span class="font-label-secondary text-label-secondary text-primary font-bold uppercase tracking-wider flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-primary">badge</span>ड्यूटी काउंटर / COUNTER</span><span class="px-1.5 py-0.5 rounded bg-primary text-on-primary text-[11px] font-bold">STAFF</span></div><p class="font-label-primary text-label-primary text-primary font-extrabold">कमरा सं. ०२ - सामान्य चिकित्सा</p></div><nav class="flex-1 p-space-sm space-y-1 overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-bold border-l-4 border-secondary"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2.5 rounded transition-colors bg-primary-container text-on-primary font-bold border-l-4 border-secondary" data-path="staff-dashboard" href="dashboard.html">लाइव ओपीडी कतार (Live Queue)</a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-primary text-label-primary" data-path="token-dispenser-counter" href="register.html">काउंटर टोकन जारीकर्ता (Token Dispenser)</a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-primary text-label-primary" data-path="triage-priority-board" href="check-token.html">पर्ची स्थिति ट्रैकर (Token Tracker)</a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-primary text-label-primary" data-path="daily-phc-analytics" href="#">दैनिक रिपोर्ट व विश्लेषिकी (Daily Reports)</a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-primary text-label-primary" data-path="home-portal" href="swasthya-queue-standalone.html">सार्वजनिक पोर्टल (Citizen Portal)</a></nav><div class="p-space-md border-t-[1.5px] border-outline-variant bg-surface-container-low"><div class="flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="flex flex-col"><span class="font-label-secondary text-label-secondary font-bold text-on-surface">डॉ. राजेश कुमार</span><span class="font-label-secondary text-label-secondary text-on-surface-variant">मेडिकल ऑफिसर (MO)</span></div></div><a href="swasthya-queue-standalone.html" aria-label="लॉगआउट" class="text-error hover:text-on-error-container p-1 rounded hover:bg-error-container transition-colors"><span class="material-symbols-outlined text-[20px]">logout</span></a></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest border-b-[1.5px] border-outline-variant z-40 px-margin flex items-center justify-between"><div class="flex items-center gap-space-md"><span class="px-space-sm py-1 rounded bg-surface-container text-on-surface font-label-secondary text-label-secondary font-bold">सत्र: सुबह ०८:०० - दोपहर ०२:००</span><span class="px-2.5 py-1 rounded bg-primary text-on-primary font-label-secondary text-label-secondary font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-sm"><span class="material-symbols-outlined text-[16px]">lock</span>[ स्टाफ उपयोग हेतु / STAFF VIEW ONLY ]</span><span class="hidden md:inline font-body-sm text-body-sm text-secondary font-bold">• कतार स्थिति: सुचारू (Active)</span></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-md py-1 rounded bg-error text-on-error font-label-secondary text-label-secondary font-bold shadow-sm"><span class="material-symbols-outlined text-[16px]">warning</span><span class="">आपातकालीन अलर्ट: 0</span></div><div class="h-6 w-[1px] bg-outline-variant"></div><div class="flex items-center gap-2 text-on-surface"><span class="material-symbols-outlined text-[20px] text-primary">notifications</span><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-screen px-margin py-margin"><div class="flex flex-col w-full space-y-space-md">
+<!-- Operational Facility Metadata Strip -->
+<section class="bg-surface-container-lowest p-space-md rounded shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-sm">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-secondary text-label-secondary">PHC SARANGPUR #0842</span>
+<h1 class="font-headline-lg text-headline-lg text-primary leading-tight">प्राथमिक स्वास्थ्य केंद्र सारंगपुर (अलवर, राजस्थान)</h1>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-secondary">schedule</span>
+<span class="">सत्र: प्रातःकालीन ओपीडी (08:00 AM - 02:00 PM) • कक्ष सं. ०१ नियंत्रण कक्ष</span>
+</p>
+</div>
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-secondary-container text-on-secondary-container font-label-secondary text-label-secondary font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+          क्लाउड कनेक्टेड (Cloud Active)
+        </span>
+<span class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high text-on-surface font-label-secondary text-label-secondary font-semibold">
+<span class="material-symbols-outlined text-[15px] text-secondary">cell_tower</span>
+          2G/SMS बैकअप चालू
+        </span>
+<span class="px-space-sm py-1 rounded bg-surface-container text-outline font-label-secondary text-label-secondary">
+          अंतिम सिंक: 11:42 AM
+        </span>
+<button class="inline-flex items-center gap-1 px-space-md py-2 rounded bg-error text-on-error font-label-primary text-label-primary font-bold hover:bg-tertiary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">e911_emergency</span>
+<span class="">108 आपातकालीन अलर्ट</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Top Operational KPI Row -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-sm"><!-- KPI 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm border border-outline-variant/40">
+  <div class="flex items-center justify-between text-outline mb-1.5">
+    <span class="text-[15px] font-bold text-on-surface uppercase tracking-wider">कुल पंजीकृत मरीज</span>
+    <span class="material-symbols-outlined text-[24px] text-primary">groups</span>
+  </div>
+  <div class="flex items-baseline gap-2">
+    <span class="font-token-display-mobile text-token-display-mobile text-primary font-black leading-tight">220</span>
+    <span class="text-[14px] text-secondary font-bold">+18 अंतिम 1 घंटा</span>
+  </div>
+  <p class="text-[14px] text-on-surface-variant font-medium mt-1">Total OPD Registered</p>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm border border-outline-variant/40">
+  <div class="flex items-center justify-between text-outline mb-1.5">
+    <span class="text-[15px] font-bold text-on-surface uppercase tracking-wider">पूर्ण परामर्श</span>
+    <span class="material-symbols-outlined text-[24px] text-secondary">task_alt</span>
+  </div>
+  <div class="flex items-baseline gap-2">
+    <span class="font-token-display-mobile text-token-display-mobile text-secondary font-black leading-tight">142</span>
+    <span class="text-[14px] px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-extrabold">64.5%</span>
+  </div>
+  <p class="text-[14px] text-on-surface-variant font-medium mt-1">Consultations Done</p>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm border border-outline-variant/40">
+  <div class="flex items-center justify-between text-outline mb-1.5">
+    <span class="text-[15px] font-bold text-on-surface uppercase tracking-wider">कतार में प्रतीक्षारत</span>
+    <span class="material-symbols-outlined text-[24px] text-primary">hourglass_top</span>
+  </div>
+  <div class="flex items-baseline gap-2">
+    <span class="font-token-display-mobile text-token-display-mobile text-primary font-black leading-tight">78</span>
+    <span class="text-[14px] px-2 py-0.5 rounded bg-surface-container text-on-surface font-bold">सक्रिय कतार</span>
+  </div>
+  <p class="text-[14px] text-on-surface-variant font-semibold mt-1">प्राथमिकता: <span class="text-primary font-extrabold">6 ANC</span> / <span class="text-primary font-extrabold">8 वरिष्ठ</span></p>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm border border-outline-variant/40">
+  <div class="flex items-center justify-between text-outline mb-1.5">
+    <span class="text-[15px] font-bold text-on-surface uppercase tracking-wider">औसत परामर्श समय</span>
+    <span class="material-symbols-outlined text-[24px] text-primary">stethoscope</span>
+  </div>
+  <div class="flex items-baseline gap-1.5">
+    <span class="font-token-display-mobile text-token-display-mobile text-primary font-black leading-tight">4.8</span>
+    <span class="text-[18px] text-on-surface-variant font-bold">मिनट</span>
+  </div>
+  <p class="text-[14px] text-on-surface-variant font-medium mt-1">Avg Consult / Patient</p>
+</div>
+<!-- KPI 5 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm border border-outline-variant/40">
+  <div class="flex items-center justify-between text-outline mb-1.5">
+    <span class="text-[15px] font-bold text-on-surface uppercase tracking-wider">औसत प्रतीक्षा समय</span>
+    <span class="material-symbols-outlined text-[24px] text-outline">pace</span>
+  </div>
+  <div class="flex items-baseline gap-1.5">
+    <span class="font-token-display-mobile text-token-display-mobile text-primary font-black leading-tight">14</span>
+    <span class="text-[18px] text-on-surface-variant font-bold">मिनट</span>
+  </div>
+  <p class="text-[14px] text-secondary font-bold mt-1">मानक सीमा (&lt;15 मि.) के अंतर्गत</p>
+</div></section>
+<!-- Desk Console for Room 1 -->
+<section class="bg-surface-container-lowest rounded shadow-sm p-space-lg">
+<div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-space-lg">
+<!-- Current Patient Card -->
+<div class="flex flex-col md:flex-row md:items-center gap-space-lg">
+<div class="bg-primary text-on-primary p-space-md rounded flex flex-col items-center justify-center min-w-[170px] shadow-sm">
+<span class="font-label-secondary text-label-secondary tracking-widest uppercase text-surface-dim">वर्तमान टोकन</span>
+<span class="font-token-display-lg text-token-display-lg font-black leading-none my-1" id="active-token">#41</span>
+<span class="font-label-secondary text-label-secondary px-2 py-0.5 rounded bg-secondary text-on-secondary font-bold">कक्ष में उपस्थित</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-secondary text-label-secondary px-2 py-0.5 rounded bg-surface-container text-on-surface font-bold">कमरा ०१ • डॉ. एम. के. शर्मा (MOIC)</span>
+<span class="font-label-secondary text-label-secondary px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-semibold">ABHA: 91-8472-9102-14</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-primary font-extrabold" id="active-patient-name">रामस्वरूप मीणा</h2>
+<div class="flex items-center gap-space-md text-on-surface-variant font-body-md text-body-md flex-wrap">
+<span class=""><strong>आयु/लिंग:</strong> 54 वर्ष, पुरुष</span>
+<span class="">•</span>
+<span class=""><strong>श्रेणी:</strong> सामान्य चिकित्सा ओपीडी</span>
+<span class="">•</span>
+<span class=""><strong>समय:</strong> 11:38 AM (उपस्थिति 6 मिनट)</span>
+</div>
+</div>
+</div>
+<!-- Station Action Controls -->
+<div class="flex flex-wrap items-center gap-space-sm">
+  <button class="h-12 px-space-lg rounded bg-primary-container text-on-primary font-label-primary text-[18px] font-extrabold hover:bg-primary transition-all flex items-center gap-2 shadow-sm border-2 border-primary-container" id="call-next-btn" type="button">
+    <span class="material-symbols-outlined text-[24px]">record_voice_over</span>
+    <span class="">अगला मरीज बुलाएँ (Call Next: #42)</span>
+  </button>
+  <button class="h-12 px-space-md rounded bg-surface-container-lowest border-2 border-outline text-primary font-label-primary text-[16px] font-bold hover:bg-surface-container transition-colors flex items-center gap-1.5" id="recall-btn" type="button">
+    <span class="material-symbols-outlined text-[22px] text-primary">sync</span>
+    <span class="">पुनः पुकारें (#41)</span>
+  </button>
+  <button class="h-12 px-space-md rounded bg-surface-container-lowest border-2 border-outline-variant text-on-surface font-label-primary text-[16px] font-semibold hover:bg-surface-container transition-colors flex items-center gap-1.5" type="button">
+    <span class="material-symbols-outlined text-[22px] text-outline">pause_circle</span>
+    <span class="">प्रतीक्षा / होल्ड</span>
+  </button>
+  <button class="h-12 px-space-md rounded bg-surface-container-lowest border-2 border-outline-variant text-primary font-label-primary text-[16px] font-bold hover:bg-surface-container transition-colors flex items-center gap-1.5" id="pa-announcement-btn" type="button">
+    <span class="material-symbols-outlined text-[22px] text-secondary">volume_up</span>
+    <span class="">लाउडस्पीकर घोषणा 📢</span>
+  </button>
+</div>
+</div>
+<div class="hidden mt-space-md p-space-sm bg-surface-container-high text-primary rounded flex items-center justify-between" id="pa-alert-banner">
+<div class="flex items-center gap-2 font-label-primary text-label-primary">
+<span class="material-symbols-outlined text-secondary text-[20px]">campaign</span>
+<span class="">लाउडस्पीकर घोषणा प्रसारित: "टोकन नंबर 41, रामस्वरूप मीणा - कमरा नंबर 1 में आएं।"</span>
+</div>
+<span class="font-label-secondary text-label-secondary text-secondary font-bold">प्रसारण सक्रिय (Audio OK)</span>
+</div>
+</section>
+<!-- Multi-Counter Clinic Live Overview -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-primary font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">meeting_room</span>
+<span class="">बहु-काउंटर कतार स्थिति (Multi-Counter Clinic Overview)</span>
+</h3>
+<span class="font-label-secondary text-label-secondary text-outline">सभी 4 काउंटर सुचारू</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-sm"><!-- Counter 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between border border-outline-variant/40">
+  <div>
+    <div class="flex items-center justify-between mb-2">
+      <span class="px-2 py-0.5 rounded bg-primary text-on-primary text-[14px] font-bold">काउंटर ०१</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+    </div>
+    <p class="text-[18px] text-primary font-bold leading-snug">सामान्य चिकित्सा</p>
+    <p class="text-[15px] text-on-surface-variant font-medium">डॉ. एस. वर्मा (General Medicine)</p>
+  </div>
+  <div class="mt-space-md pt-space-sm bg-surface-container-low p-space-sm rounded border border-outline-variant/30">
+    <div class="flex items-center justify-between text-on-surface">
       <div>
-        <div class="brand-title">Swasthya Queue</div>
-        <div class="camp-pill" aria-label="Current camp status">
-          <span class="live-pulse" aria-hidden="true"></span>
-          PHC Sarangpur • Camp #14 (Live)
-        </div>
+        <p class="text-[13px] font-bold text-outline uppercase">वर्तमान टोकन</p>
+        <p class="text-[30px] leading-tight text-primary font-black">#41</p>
+      </div>
+      <div class="text-right">
+        <p class="text-[13px] font-bold text-outline uppercase">अगला टोकन</p>
+        <p class="text-[22px] text-secondary font-black">#42</p>
       </div>
     </div>
-
-    <div class="nav-controls">
-      <div class="translate-box"><div id="google_translate_element"></div></div>
-      <a href="index.html" class="btn btn-sm" aria-label="Return to landing page">
-        ← Back to Site
-      </a>
-      <button class="btn btn-sm btn-yellow" id="resetDataBtn" title="Reset to default demo data">
-        🔄 Reset Demo
-      </button>
-      <button class="btn icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-      </button>
+    <div class="mt-2 text-right">
+      <span class="text-[14px] px-2 py-0.5 rounded bg-surface-container text-on-surface font-bold">प्रतीक्षा: 22 मरीज</span>
     </div>
-  </div>
-</header>
-
-<main class="wrap">
-
-  <!-- Camp Banner & Clock -->
-  <section class="clay camp-banner" aria-label="Camp information">
-    <div class="banner-left">
-      <div class="banner-icon">🏥</div>
-      <div class="banner-text">
-        <h2>Camp Staff OPD Queue Dashboard</h2>
-        <p>Rural Health Camp Sarangpur • Dr. Priya Sharma &amp; Team • Realtime Patient Tracker</p>
-      </div>
-    </div>
-    <div class="banner-right">
-      <div class="clock-chip" id="liveClock" aria-label="Current time">10:30 AM</div>
-      <button class="btn btn-green" id="callNextBtn" aria-label="Call next patient in line">
-        📢 Call Next Patient
-      </button>
-      <button class="btn btn-sky" id="openAddModalBtn" aria-label="Add new walk-in patient">
-        ➕ Add Walk-in
-      </button>
-    </div>
-  </section>
-
-  <!-- Realtime Metrics Grid -->
-  <section class="stats-grid" aria-label="Queue Statistics">
-    <div class="clay stat-card">
-      <div class="stat-header">
-        <span class="stat-label">Total Registered</span>
-        <div class="stat-icon" style="background:var(--sky-pale);">📋</div>
-      </div>
-      <div class="stat-value" id="statTotal">0</div>
-      <div class="stat-sub">Today's Camp Total</div>
-    </div>
-
-    <div class="clay stat-card">
-      <div class="stat-header">
-        <span class="stat-label">Waiting in Line</span>
-        <div class="stat-icon" style="background:var(--yellow-pale);">⏳</div>
-      </div>
-      <div class="stat-value" id="statWaiting" style="color:var(--ink);">0</div>
-      <div class="stat-sub">Avg wait: ~12 mins</div>
-    </div>
-
-    <div class="clay stat-card">
-      <div class="stat-header">
-        <span class="stat-label">In Consultation</span>
-        <div class="stat-icon" style="background:var(--green-pale);">🩺</div>
-      </div>
-      <div class="stat-value" id="statActive" style="color:var(--green-dark);">0</div>
-      <div class="stat-sub">With Doctors Now</div>
-    </div>
-
-    <div class="clay stat-card">
-      <div class="stat-header">
-        <span class="stat-label">Completed</span>
-        <div class="stat-icon" style="background:var(--lavender-pale);">✅</div>
-      </div>
-      <div class="stat-value" id="statCompleted">0</div>
-      <div class="stat-sub">Discharged / Medicines given</div>
-    </div>
-
-    <div class="clay stat-card">
-      <div class="stat-header">
-        <span class="stat-label">High Priority / Triage</span>
-        <div class="stat-icon" style="background:var(--coral-pale);">🚨</div>
-      </div>
-      <div class="stat-value" id="statEmergency" style="color:var(--error);">0</div>
-      <div class="stat-sub">Urgent attention needed</div>
-    </div>
-  </section>
-
-  <!-- Filter and Search Actions -->
-  <div class="clay action-bar">
-    <div class="filter-group">
-      <div class="search-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" placeholder="Search by name, token #, or village..." aria-label="Search patients">
-      </div>
-
-      <select class="select-custom" id="deptFilter" aria-label="Filter by department">
-        <option value="ALL">All OPD Departments</option>
-        <option value="General Medicine">General Medicine</option>
-        <option value="Maternal & Child">Maternal &amp; Child</option>
-        <option value="Pediatrics">Pediatrics</option>
-        <option value="Ayush">Ayush &amp; Chronic Care</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Status Filter Tabs -->
-  <div class="status-tabs" role="tablist" aria-label="Filter queue by status">
-    <button class="tab-btn active" data-status="ALL" role="tab" aria-selected="true">
-      All Patients <span class="badge-count" id="countAll">0</span>
-    </button>
-    <button class="tab-btn" data-status="ACTIVE" role="tab" aria-selected="false">
-      🩺 With Doctor <span class="badge-count" id="countActive">0</span>
-    </button>
-    <button class="tab-btn" data-status="WAITING" role="tab" aria-selected="false">
-      ⏳ Waiting <span class="badge-count" id="countWaiting">0</span>
-    </button>
-    <button class="tab-btn" data-status="TRIAGE" role="tab" aria-selected="false">
-      🔵 In Triage <span class="badge-count" id="countTriage">0</span>
-    </button>
-    <button class="tab-btn" data-status="COMPLETED" role="tab" aria-selected="false">
-      ✅ Completed <span class="badge-count" id="countCompleted">0</span>
-    </button>
-  </div>
-
-  <!-- Queue Table Container -->
-  <div class="table-container">
-    <table class="queue-table" aria-label="Live Patient Queue">
-      <thead>
-        <tr>
-          <th>Token #</th>
-          <th>Patient Name &amp; Details</th>
-          <th>Department &amp; Doctor</th>
-          <th>Symptom / Notes</th>
-          <th>Queue Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="queueTableBody">
-        <!-- Injected via JavaScript -->
-      </tbody>
-    </table>
-    <div id="emptyState" class="empty-state" style="display:none;">
-      <h3>No patients found</h3>
-      <p>Try clearing your search or filter criteria.</p>
-    </div>
-  </div>
-
-</main>
-
-<!-- ADD WALK-IN PATIENT MODAL -->
-<div class="modal-overlay" id="addPatientModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="clay modal-box">
-    <!-- In-Modal Language Switcher -->
-    <div class="modal-translate-bar">
-      <span class="modal-translate-label">🌐 भाषा / Language:</span>
-      <div class="modal-lang-chips">
-        <button type="button" class="lang-chip active" data-lang="en" onclick="switchLang('en')">English</button>
-        <button type="button" class="lang-chip" data-lang="hi" onclick="switchLang('hi')">हिंदी</button>
-        <button type="button" class="lang-chip" data-lang="mr" onclick="switchLang('mr')">मराठी</button>
-        <button type="button" class="lang-chip" data-lang="gu" onclick="switchLang('gu')">ગુજરાતી</button>
-        <button type="button" class="lang-chip" data-lang="bn" onclick="switchLang('bn')">বাংলা</button>
-        <button type="button" class="lang-chip" data-lang="pa" onclick="switchLang('pa')">ਪੰਜਾਬੀ</button>
-        <button type="button" class="lang-chip" data-lang="ta" onclick="switchLang('ta')">தமிழ்</button>
-      </div>
-    </div>
-
-    <div class="modal-header">
-      <h3 id="modalTitle">Register Walk-in Patient</h3>
-      <button class="modal-close" id="closeAddModalBtn" type="button" aria-label="Close dialog">✕</button>
-    </div>
-    <form id="addPatientForm">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="pName">Patient Full Name *</label>
-          <input type="text" id="pName" class="form-control" required placeholder="e.g. Ramesh Patel">
-        </div>
-        <div class="form-group">
-          <label for="pAge">Age &amp; Gender *</label>
-          <input type="text" id="pAge" class="form-control" required placeholder="e.g. 42 / M">
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="pVillage">Village / Locality *</label>
-          <input type="text" id="pVillage" class="form-control" required placeholder="e.g. Sarangpur">
-        </div>
-        <div class="form-group">
-          <label for="pPhone">Phone (For SMS Alert)</label>
-          <input type="tel" id="pPhone" class="form-control" placeholder="10-digit mobile">
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="pDept">Assigned Department *</label>
-          <select id="pDept" class="form-control" required>
-            <option value="General Medicine">General Medicine</option>
-            <option value="Maternal & Child">Maternal &amp; Child</option>
-            <option value="Pediatrics">Pediatrics</option>
-            <option value="Ayush">Ayush &amp; Chronic Care</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="pPriority">Priority Triage</label>
-          <select id="pPriority" class="form-control">
-            <option value="NORMAL">Normal Queue</option>
-            <option value="HIGH">🚨 High Priority / Urgent</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="pSymptom">Chief Concern / Symptom *</label>
-        <input type="text" id="pSymptom" class="form-control" required placeholder="e.g. High fever, chest congestion, blood pressure check">
-      </div>
-
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-        <button type="button" class="btn" id="cancelAddBtn">Cancel</button>
-        <button type="submit" class="btn btn-green">➕ Add to Queue</button>
-      </div>
-    </form>
   </div>
 </div>
-
-<!-- TOAST ALERT -->
-<div class="toast" id="toastBox" role="status" aria-live="polite">
-  <div class="toast-icon" id="toastIcon">🔔</div>
-  <div class="toast-text">
-    <b id="toastTitle">Notification</b>
-    <span id="toastMsg">Action completed successfully</span>
+<!-- Counter 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between border border-outline-variant/40">
+  <div>
+    <div class="flex items-center justify-between mb-2">
+      <span class="px-2 py-0.5 rounded bg-primary text-on-primary text-[14px] font-bold">काउंटर ०२</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+    </div>
+    <p class="text-[18px] text-primary font-bold leading-snug">मातृ एवं शिशु स्वास्थ्य</p>
+    <p class="text-[15px] text-on-surface-variant font-medium">डॉ. अंजना पटेल (MCH Expert)</p>
+  </div>
+  <div class="mt-space-md pt-space-sm bg-surface-container-low p-space-sm rounded border border-outline-variant/30">
+    <div class="flex items-center justify-between text-on-surface">
+      <div>
+        <p class="text-[13px] font-bold text-outline uppercase">वर्तमान टोकन</p>
+        <p class="text-[30px] leading-tight text-primary font-black">#19</p>
+      </div>
+      <div class="text-right">
+        <p class="text-[13px] font-bold text-outline uppercase">अगला टोकन</p>
+        <p class="text-[22px] text-secondary font-black">#20</p>
+      </div>
+    </div>
+    <div class="mt-2 text-right">
+      <span class="text-[14px] px-2 py-0.5 rounded bg-surface-container text-on-surface font-bold">प्रतीक्षा: 14 मरीज</span>
+    </div>
   </div>
 </div>
-
+<!-- Counter 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between border border-outline-variant/40">
+  <div>
+    <div class="flex items-center justify-between mb-2">
+      <span class="px-2 py-0.5 rounded bg-primary text-on-primary text-[14px] font-bold">काउंटर ०३</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+    </div>
+    <p class="text-[18px] text-primary font-bold leading-snug">रक्त एवं मधुमेह जांच</p>
+    <p class="text-[15px] text-on-surface-variant font-medium">मनीष यादव (LT Diagnostics)</p>
+  </div>
+  <div class="mt-space-md pt-space-sm bg-surface-container-low p-space-sm rounded border border-outline-variant/30">
+    <div class="flex items-center justify-between text-on-surface">
+      <div>
+        <p class="text-[13px] font-bold text-outline uppercase">वर्तमान टोकन</p>
+        <p class="text-[30px] leading-tight text-primary font-black">#33</p>
+      </div>
+      <div class="text-right">
+        <p class="text-[13px] font-bold text-outline uppercase">अगला टोकन</p>
+        <p class="text-[22px] text-secondary font-black">#34</p>
+      </div>
+    </div>
+    <div class="mt-2 text-right">
+      <span class="text-[14px] px-2 py-0.5 rounded bg-surface-container text-on-surface font-bold">प्रतीक्षा: 18 मरीज</span>
+    </div>
+  </div>
+</div>
+<!-- Counter 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between border border-outline-variant/40">
+  <div>
+    <div class="flex items-center justify-between mb-2">
+      <span class="px-2 py-0.5 rounded bg-primary text-on-primary text-[14px] font-bold">काउंटर ०४</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+    </div>
+    <p class="text-[18px] text-primary font-bold leading-snug">जन औषधि वितरण</p>
+    <p class="text-[15px] text-on-surface-variant font-medium">रेखा शर्मा (Chief Pharmacist)</p>
+  </div>
+  <div class="mt-space-md pt-space-sm bg-surface-container-low p-space-sm rounded border border-outline-variant/30">
+    <div class="flex items-center justify-between text-on-surface">
+      <div>
+        <p class="text-[13px] font-bold text-outline uppercase">वर्तमान टोकन</p>
+        <p class="text-[30px] leading-tight text-primary font-black">#38</p>
+      </div>
+      <div class="text-right">
+        <p class="text-[13px] font-bold text-outline uppercase">अगला टोकन</p>
+        <p class="text-[22px] text-secondary font-black">#39</p>
+      </div>
+    </div>
+    <div class="mt-2 text-right">
+      <span class="text-[14px] px-2 py-0.5 rounded bg-surface-container text-on-surface font-bold">प्रतीक्षा: 24 मरीज</span>
+    </div>
+  </div>
+</div></div>
+</section>
+<!-- Live Queue Table & Sidebar Split -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+<!-- Queue Table (8 cols) -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded shadow-sm p-space-md flex flex-col">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-sm mb-space-sm gap-2">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary font-bold">प्रतीक्षारत मरीज सूची (Live Patient Queue)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">सामान्य चिकित्सा कतार • स्वतः प्राथमिक क्रमबद्ध</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-secondary text-label-secondary px-2 py-1 rounded bg-surface-container font-semibold text-on-surface">फिल्टर: सभी प्राथमिकताएं</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left"><thead>
+  <tr class="bg-surface-container-low text-on-surface-variant text-[15px] font-bold uppercase border-b border-outline-variant">
+    <th class="py-3 px-3">टोकन सं.</th>
+    <th class="py-3 px-3">मरीज विवरण</th>
+    <th class="py-3 px-3">प्राथमिकता श्रेणी</th>
+    <th class="py-3 px-3">आगमन समय</th>
+    <th class="py-3 px-3">लक्षण / वाइटल्स</th>
+    <th class="py-3 px-3 text-right">त्वरित कार्रवाई</th>
+  </tr>
+</thead>
+<tbody class="divide-y divide-surface-container text-body-md">
+  <!-- Patient #42 -->
+  <tr class="hover:bg-surface-container-low transition-colors">
+    <td class="py-3.5 px-3">
+      <span class="text-[26px] font-black text-primary leading-none">#42</span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[19px] text-on-surface font-extrabold leading-tight">शांति देवी</p>
+      <p class="text-on-surface-variant text-[15px] font-medium mt-0.5">64 वर्ष, महिला • ABHA सत्यापित</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container-high border border-outline-variant text-on-surface text-[14px] font-bold">
+        <span class="material-symbols-outlined text-[16px] text-outline">elderly</span>वरिष्ठ नागरिक (Senior 60+)
+      </span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[16px] font-bold text-on-surface">11:15 AM</p>
+      <p class="text-error font-bold text-[14px]">प्रतीक्षा: 27 मिनट</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <span class="text-[15px] text-error font-extrabold bg-error-container/30 px-2 py-0.5 rounded border border-error inline-block">बीपी 168/104</span>
+      <p class="text-on-surface text-[15px] font-semibold mt-1">चक्कर, सिरदर्द</p>
+    </td>
+    <td class="py-3.5 px-3 text-right">
+      <button class="px-4 py-2 rounded bg-primary-container text-on-primary text-[15px] font-bold hover:bg-primary transition-colors shadow-sm" type="button">बुलाएं (Call)</button>
+    </td>
+  </tr>
+  <!-- Patient #43 -->
+  <tr class="hover:bg-surface-container-low transition-colors">
+    <td class="py-3.5 px-3">
+      <span class="text-[26px] font-black text-primary leading-none">#43</span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[19px] text-on-surface font-extrabold leading-tight">पूजा गुर्जर</p>
+      <p class="text-on-surface-variant text-[15px] font-medium mt-0.5">24 वर्ष, महिला • द्वितीय त्रैमासिक</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container border border-outline-variant text-on-surface text-[14px] font-bold">
+        <span class="material-symbols-outlined text-[16px] text-outline">pregnant_woman</span>मातृ प्राथमिकता (ANC)
+      </span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[16px] font-bold text-on-surface">11:20 AM</p>
+      <p class="text-on-surface-variant text-[14px] font-semibold">प्रतीक्षा: 22 मिनट</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <span class="text-[15px] text-primary font-bold bg-surface-container px-2 py-0.5 rounded inline-block">Hb: 9.2 g/dL</span>
+      <p class="text-on-surface text-[15px] font-medium mt-1">नियमित सोनोग्राफी समीक्षा</p>
+    </td>
+    <td class="py-3.5 px-3 text-right">
+      <span class="px-3 py-1.5 rounded bg-surface-container text-on-surface text-[14px] font-bold inline-block">कतार में</span>
+    </td>
+  </tr>
+  <!-- Patient #44 (EMERGENCY CRITICAL - STRICT SOLID RED) -->
+  <tr class="bg-error-container/20 hover:bg-error-container/30 transition-colors border-l-4 border-error">
+    <td class="py-3.5 px-3">
+      <span class="text-[26px] font-black text-error leading-none">#44</span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[19px] text-on-surface font-extrabold leading-tight">दीपक सिंह</p>
+      <p class="text-on-surface-variant text-[15px] font-medium mt-0.5">7 वर्ष, बालक • अभिभावक संग</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-error text-on-error text-[14px] font-black shadow-sm uppercase tracking-wide">
+        <span class="material-symbols-outlined text-[16px]">emergency</span>शिशु आपातकालीन
+      </span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[16px] font-extrabold text-on-surface">11:24 AM</p>
+      <p class="text-error font-bold text-[14px]">प्रतीक्षा: 18 मिनट</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <span class="text-[15px] text-error font-extrabold bg-error-container px-2 py-0.5 rounded border border-error inline-block">तीव्र ज्वर 103.4°F</span>
+      <p class="text-error text-[15px] font-bold mt-1">निर्जलीकरण लक्षण</p>
+    </td>
+    <td class="py-3.5 px-3 text-right">
+      <button class="px-3.5 py-2 rounded bg-error text-on-error text-[15px] font-extrabold hover:bg-tertiary transition-colors shadow-sm" type="button">प्राथमिकता दें</button>
+    </td>
+  </tr>
+  <!-- Patient #45 -->
+  <tr class="hover:bg-surface-container-low transition-colors">
+    <td class="py-3.5 px-3">
+      <span class="text-[26px] font-black text-primary leading-none">#45</span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[19px] text-on-surface font-extrabold leading-tight">मुकेश चंद</p>
+      <p class="text-on-surface-variant text-[15px] font-medium mt-0.5">42 वर्ष, पुरुष</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <span class="px-2.5 py-1 rounded bg-surface-container border border-outline-variant text-on-surface text-[14px] font-semibold inline-block">सामान्य ओपीडी</span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[16px] font-bold text-on-surface">11:28 AM</p>
+      <p class="text-on-surface-variant text-[14px] font-semibold">प्रतीक्षा: 14 मिनट</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-on-surface text-[16px] font-semibold">पुरानी खांसी (2 सप्ताह)</p>
+      <p class="text-on-surface-variant text-[14px] font-medium mt-0.5">बलगम जांच परामर्श</p>
+    </td>
+    <td class="py-3.5 px-3 text-right">
+      <span class="px-3 py-1.5 rounded bg-surface-container text-on-surface text-[14px] font-bold inline-block">कतार में</span>
+    </td>
+  </tr>
+  <!-- Patient #46 -->
+  <tr class="hover:bg-surface-container-low transition-colors">
+    <td class="py-3.5 px-3">
+      <span class="text-[26px] font-black text-primary leading-none">#46</span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[19px] text-on-surface font-extrabold leading-tight">हसन अली</p>
+      <p class="text-on-surface-variant text-[15px] font-medium mt-0.5">38 वर्ष, पुरुष</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <span class="px-2.5 py-1 rounded bg-surface-container border border-outline-variant text-on-surface text-[14px] font-semibold inline-block">सामान्य ओपीडी</span>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-[16px] font-bold text-on-surface">11:32 AM</p>
+      <p class="text-on-surface-variant text-[14px] font-semibold">प्रतीक्षा: 10 मिनट</p>
+    </td>
+    <td class="py-3.5 px-3">
+      <p class="text-on-surface text-[16px] font-semibold">पैर का घाव व संक्रमण</p>
+      <p class="text-on-surface-variant text-[14px] font-medium mt-0.5">ड्रेसिंग व एंटीबायोटिक</p>
+    </td>
+    <td class="py-3.5 px-3 text-right">
+      <span class="px-3 py-1.5 rounded bg-surface-container text-on-surface text-[14px] font-bold inline-block">कतार में</span>
+    </td>
+  </tr>
+</tbody></table>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="">प्रदर्शित 1-5 (कुल 78 मरीज प्रतीक्षारत)</span>
+<div class="flex items-center gap-1">
+<button class="px-2 py-1 rounded bg-surface-container text-on-surface font-semibold hover:bg-surface-container-high transition-colors" type="button">पिछला</button>
+<button class="px-2 py-1 rounded bg-primary text-on-primary font-bold" type="button">1</button>
+<button class="px-2 py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" type="button">2</button>
+<button class="px-2 py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" type="button">3</button>
+<button class="px-2 py-1 rounded bg-surface-container text-on-surface font-semibold hover:bg-surface-container-high transition-colors" type="button">अगला</button>
+</div>
+</div>
+</div>
+<!-- Logistics & Drug Status Sidebar (4 cols) -->
+<div class="lg:col-span-4 space-y-space-md">
+<!-- Drug Stock Box -->
+<div class="bg-surface-container-lowest rounded shadow-sm p-space-md space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">medication</span>
+<h3 class="font-label-primary text-label-primary text-primary font-bold">आवश्यक दवा उपलब्धता</h3>
+</div>
+<span class="font-label-secondary text-label-secondary text-outline">DVDMS Linked</span>
+</div>
+<div class="space-y-2">
+<div class="p-space-sm rounded bg-surface-container-low flex items-center justify-between">
+<div>
+<p class="font-label-primary text-label-primary text-on-surface font-bold">पैरासिटामोल 500mg</p>
+<p class="font-label-secondary text-label-secondary text-outline">Tab Paracetamol IP</p>
+</div>
+<div class="text-right">
+<p class="font-label-primary text-label-primary text-primary font-extrabold">850 गोलियां</p>
+<span class="inline-block px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-secondary text-label-secondary font-bold">पर्याप्त (Adequate)</span>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-low flex items-center justify-between">
+<div>
+<p class="font-label-primary text-label-primary text-on-surface font-bold">ओआरएस पैकेट (ORS)</p>
+<p class="font-label-secondary text-label-secondary text-outline">WHO Oral Rehydration</p>
+</div>
+<div class="text-right">
+<p class="font-label-primary text-label-primary text-primary font-extrabold">320 पैकेट</p>
+<span class="inline-block px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-secondary text-label-secondary font-bold">पर्याप्त (Adequate)</span>
+</div>
+</div>
+<div class="p-space-sm rounded bg-error-container/30 flex items-center justify-between">
+<div>
+<p class="font-label-primary text-label-primary text-tertiary-container font-bold">एमोक्सिसिलिन 250mg</p>
+<p class="font-label-secondary text-label-secondary text-outline">Cap Amoxicillin</p>
+</div>
+<div class="text-right">
+<p class="font-label-primary text-label-primary text-error font-extrabold">40 स्ट्रिप्स</p>
+<span class="inline-block px-1.5 py-0.5 rounded bg-error text-on-error font-label-secondary text-label-secondary font-bold">कम स्टॉक - पुनः मांग प्रेषित</span>
+</div>
+</div>
+</div>
+<button class="w-full py-2 rounded bg-surface-container text-primary font-label-primary text-label-primary font-bold hover:bg-surface-container-high transition-colors" type="button">
+          पूर्ण औषधि भंडार सूची देखें (Full Drug Inventory)
+        </button>
+</div>
+<!-- Offline Sync & Health Mesh Status -->
+<div class="bg-surface-container-lowest rounded shadow-sm p-space-md space-y-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-secondary">cloud_done</span>
+<h3 class="font-label-primary text-label-primary text-primary font-bold">ऑफ़लाइन सिंक स्थिति (NIC Gateway)</h3>
+</div>
+<div class="p-space-sm rounded bg-surface-container-low space-y-2 font-body-sm text-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">पेंडिंग रिकॉर्ड्स (Unsynced):</span>
+<span class="font-headline-md text-headline-md text-secondary font-black">0</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-full"></div>
+</div>
+<p class="text-secondary font-label-secondary text-label-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+            सभी 220 टोकन रिकॉर्ड सुरक्षित रूप से एनआईसी सर्वर पर सिंक हैं।
+          </p>
+</div>
+<!-- ANM Quick Note -->
+<div class="p-space-sm rounded bg-surface-container space-y-1">
+<p class="font-label-secondary text-label-secondary text-outline font-bold">ड्यूटी स्टाफ सूचना / Notice</p>
+<p class="font-body-sm text-body-sm text-on-surface">
+            आज दोपहर 12:30 बजे उप-केंद्र रामपुर से 5 गंभीर कुपोषित (SAM) बच्चों का रेफरल अपेक्षित है। पीडियाट्रिक बेड आरक्षित रखें।
+          </p>
+<span class="font-label-secondary text-label-secondary text-outline block text-right">— एएनएम सरोज यादव</span>
+</div>
+</div>
+</div>
+</div>
+</div>
 <script>
-  // Initial Mock Data (Realistic rural camp patients)
-  const INITIAL_PATIENTS = [
-    {
-      id: "p1",
-      token: "A-101",
-      name: "Ramesh Kumar",
-      age: "52",
-      gender: "M",
-      village: "Rampur",
-      phone: "9876543210",
-      dept: "General Medicine",
-      doctor: "Dr. Priya Sharma",
-      symptom: "Chronic dry cough & HTN followup",
-      status: "ACTIVE", // ACTIVE = With Doctor
-      priority: "NORMAL",
-      waitMin: 0
-    },
-    {
-      id: "p2",
-      token: "A-102",
-      name: "Sunita Devi",
-      age: "34",
-      gender: "F",
-      village: "Sarangpur",
-      phone: "9812345678",
-      dept: "Maternal & Child",
-      doctor: "Dr. Anjali Rao",
-      symptom: "2nd Trimester Antenatal checkup",
-      status: "ACTIVE",
-      priority: "NORMAL",
-      waitMin: 0
-    },
-    {
-      id: "p3",
-      token: "A-103",
-      name: "Baby Aarav",
-      age: "3",
-      gender: "M",
-      village: "Kalyanpur",
-      phone: "9923456781",
-      dept: "Pediatrics",
-      doctor: "Dr. R. Verma",
-      symptom: "Sudden spike in fever (102.5°F)",
-      status: "WAITING",
-      priority: "HIGH",
-      waitMin: 4
-    },
-    {
-      id: "p4",
-      token: "A-104",
-      name: "Rekha Sharma",
-      age: "45",
-      gender: "F",
-      village: "Rampur",
-      phone: "9734567892",
-      dept: "General Medicine",
-      doctor: "Dr. Priya Sharma",
-      symptom: "Joint pain & general body fatigue",
-      status: "WAITING",
-      priority: "NORMAL",
-      waitMin: 12
-    },
-    {
-      id: "p5",
-      token: "A-105",
-      name: "Mohan Lal",
-      age: "68",
-      gender: "M",
-      village: "Bhedaghat",
-      phone: "9645678903",
-      dept: "Ayush",
-      doctor: "Dr. S. K. Joshi",
-      symptom: "Diabetic neuropathy foot pain",
-      status: "WAITING",
-      priority: "NORMAL",
-      waitMin: 18
-    },
-    {
-      id: "p6",
-      token: "A-106",
-      name: "Meena Bai",
-      age: "28",
-      gender: "F",
-      village: "Sarangpur",
-      phone: "9556789014",
-      dept: "General Medicine",
-      doctor: "Dr. Priya Sharma",
-      symptom: "Persistent severe migraine & nausea",
-      status: "TRIAGE",
-      priority: "NORMAL",
-      waitMin: 8
-    },
-    {
-      id: "p7",
-      token: "A-107",
-      name: "Chhotelal Patel",
-      age: "41",
-      gender: "M",
-      village: "Pipariya",
-      phone: "9467890125",
-      dept: "General Medicine",
-      doctor: "Dr. Priya Sharma",
-      symptom: "Allergic skin rash after field work",
-      status: "WAITING",
-      priority: "NORMAL",
-      waitMin: 25
-    },
-    {
-      id: "p8",
-      token: "A-108",
-      name: "Geeta Yadav",
-      age: "22",
-      gender: "F",
-      village: "Kalyanpur",
-      phone: "9378901236",
-      dept: "Maternal & Child",
-      doctor: "Dr. Anjali Rao",
-      symptom: "Anemia screening & iron supplement issue",
-      status: "WAITING",
-      priority: "NORMAL",
-      waitMin: 32
-    },
-    {
-      id: "p9",
-      token: "A-099",
-      name: "Radheshyam Malviya",
-      age: "60",
-      gender: "M",
-      village: "Sarangpur",
-      phone: "9289012347",
-      dept: "General Medicine",
-      doctor: "Dr. Priya Sharma",
-      symptom: "Routine BP check & medicine renewal",
-      status: "COMPLETED",
-      priority: "NORMAL",
-      waitMin: 0
-    },
-    {
-      id: "p10",
-      token: "A-100",
-      name: "Kamla Bai",
-      age: "58",
-      gender: "F",
-      village: "Rampur",
-      phone: "9190123458",
-      dept: "Ayush",
-      doctor: "Dr. S. K. Joshi",
-      symptom: "Ayurvedic arthritis consultation",
-      status: "COMPLETED",
-      priority: "NORMAL",
-      waitMin: 0
-    }
-  ];
+  (function() {
+    const callNextBtn = document.getElementById('call-next-btn');
+    const recallBtn = document.getElementById('recall-btn');
+    const paBtn = document.getElementById('pa-announcement-btn');
+    const paAlert = document.getElementById('pa-alert-banner');
+    const activeToken = document.getElementById('active-token');
+    const activePatient = document.getElementById('active-patient-name');
 
-  // State Management via LocalStorage
-  const STORAGE_KEY = "swasthya_queue_dashboard_patients";
-  let patients = [];
-
-  function loadPatients() {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        patients = JSON.parse(stored);
-      } else {
-        patients = JSON.parse(JSON.stringify(INITIAL_PATIENTS));
-        savePatients();
-      }
-    } catch (e) {
-      patients = JSON.parse(JSON.stringify(INITIAL_PATIENTS));
-    }
-  }
-
-  function savePatients() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
-    } catch (e) {}
-  }
-
-  // Current Filters
-  let activeStatusFilter = "ALL";
-  let searchQuery = "";
-  let deptFilter = "ALL";
-
-  // Audio Chime using Web Audio API (No external sound file needed)
-  function playChime() {
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-      osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // A5
-      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.45);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.5);
-    } catch(e) {}
-  }
-
-  // Toast helper
-  let toastTimer;
-  function showToast(title, msg, icon = "🔔") {
-    const toast = document.getElementById("toastBox");
-    document.getElementById("toastTitle").textContent = title;
-    document.getElementById("toastMsg").textContent = msg;
-    document.getElementById("toastIcon").textContent = icon;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toast.classList.remove("show");
-    }, 3200);
-  }
-
-  // Update Summary Counts
-  function updateStats() {
-    const total = patients.length;
-    const waiting = patients.filter(p => p.status === "WAITING").length;
-    const active = patients.filter(p => p.status === "ACTIVE").length;
-    const completed = patients.filter(p => p.status === "COMPLETED").length;
-    const triage = patients.filter(p => p.status === "TRIAGE").length;
-    const emergency = patients.filter(p => p.priority === "HIGH" && p.status !== "COMPLETED").length;
-
-    document.getElementById("statTotal").textContent = total;
-    document.getElementById("statWaiting").textContent = waiting;
-    document.getElementById("statActive").textContent = active;
-    document.getElementById("statCompleted").textContent = completed;
-    document.getElementById("statEmergency").textContent = emergency;
-
-    document.getElementById("countAll").textContent = total;
-    document.getElementById("countActive").textContent = active;
-    document.getElementById("countWaiting").textContent = waiting;
-    document.getElementById("countTriage").textContent = triage;
-    document.getElementById("countCompleted").textContent = completed;
-  }
-
-  // Render Table
-  function renderQueue() {
-    updateStats();
-    const tbody = document.getElementById("queueTableBody");
-    const emptyState = document.getElementById("emptyState");
-    tbody.innerHTML = "";
-
-    const filtered = patients.filter(p => {
-      // Status Filter
-      if (activeStatusFilter !== "ALL" && p.status !== activeStatusFilter) {
-        return false;
-      }
-      // Department Filter
-      if (deptFilter !== "ALL" && p.dept !== deptFilter) {
-        return false;
-      }
-      // Search Query
-      if (searchQuery) {
-        const q = searchQuery.toLowerCase();
-        const matchName = p.name.toLowerCase().includes(q);
-        const matchToken = p.token.toLowerCase().includes(q);
-        const matchVillage = p.village.toLowerCase().includes(q);
-        const matchSymptom = p.symptom.toLowerCase().includes(q);
-        if (!matchName && !matchToken && !matchVillage && !matchSymptom) {
-          return false;
+    if (paBtn && paAlert) {
+      paBtn.addEventListener('click', function() {
+        paAlert.classList.remove('hidden');
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance("टोकन नंबर 41, रामस्वरूप मीणा - कमरा नंबर 1 में आएं।");
+          utterance.lang = 'hi-IN';
+          window.speechSynthesis.speak(utterance);
         }
-      }
-      return true;
-    });
-
-    if (filtered.length === 0) {
-      emptyState.style.display = "block";
-      return;
-    } else {
-      emptyState.style.display = "none";
-    }
-
-    filtered.forEach(patient => {
-      const tr = document.createElement("tr");
-
-      // Status pill class
-      let statusClass = "status-waiting";
-      if (patient.status === "ACTIVE") statusClass = "status-active";
-      if (patient.status === "TRIAGE") statusClass = "status-triage";
-      if (patient.status === "COMPLETED") statusClass = "status-completed";
-      if (patient.priority === "HIGH") statusClass += " status-emergency";
-
-      tr.innerHTML = `
-        <td>
-          <span class="token-chip ${patient.priority === 'HIGH' ? 'priority' : ''}">
-            #${patient.token}
-          </span>
-        </td>
-        <td>
-          <div class="patient-meta">${patient.name} (${patient.age}/${patient.gender})</div>
-          <div class="patient-sub">📍 ${patient.village} • 📞 ${patient.phone ? patient.phone : 'No Phone'}</div>
-        </td>
-        <td>
-          <div class="patient-meta">${patient.dept}</div>
-          <div class="patient-sub">${patient.doctor || 'Next Available Doctor'}</div>
-        </td>
-        <td>
-          <div style="font-weight:600; font-size:13px; max-width:260px;">${patient.symptom}</div>
-          ${patient.priority === 'HIGH' ? '<span style="font-size:11px; font-weight:800; color:var(--error); background:var(--error-bg); padding:2px 6px; border-radius:6px; display:inline-block; margin-top:2px;">URGENT TRIAGE</span>' : ''}
-        </td>
-        <td>
-          <select class="status-select ${statusClass}" onchange="changePatientStatus('${patient.id}', this.value)" aria-label="Change status for ${patient.name}">
-            <option value="WAITING" ${patient.status === 'WAITING' ? 'selected' : ''}>⏳ Waiting</option>
-            <option value="ACTIVE" ${patient.status === 'ACTIVE' ? 'selected' : ''}>🩺 With Doctor</option>
-            <option value="TRIAGE" ${patient.status === 'TRIAGE' ? 'selected' : ''}>🔵 In Triage</option>
-            <option value="COMPLETED" ${patient.status === 'COMPLETED' ? 'selected' : ''}>✅ Completed</option>
-          </select>
-        </td>
-        <td>
-          <div class="action-btns">
-            <button class="action-icon-btn" onclick="sendSmsAlert('${patient.id}')" title="Send SMS reminder to patient" aria-label="Send SMS to ${patient.name}">
-              💬
-            </button>
-            <button class="action-icon-btn" onclick="deletePatient('${patient.id}')" title="Remove patient" style="color:var(--error);" aria-label="Delete ${patient.name}">
-              🗑️
-            </button>
-          </div>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  // Change Status Handler
-  window.changePatientStatus = function(id, newStatus) {
-    const patient = patients.find(p => p.id === id);
-    if (patient) {
-      patient.status = newStatus;
-      savePatients();
-      renderQueue();
-      showToast("Status Updated", `${patient.name} is now ${newStatus === 'ACTIVE' ? 'with Doctor' : newStatus.toLowerCase()}`, "🔄");
-    }
-  };
-
-  // Send Fake SMS Alert
-  window.sendSmsAlert = function(id) {
-    const patient = patients.find(p => p.id === id);
-    if (patient) {
-      playChime();
-      showToast("SMS Alert Sent!", `Sent token #${patient.token} update to ${patient.name} (${patient.phone || 'SMS Gateway'})`, "📱");
-    }
-  };
-
-  // Delete Patient
-  window.deletePatient = function(id) {
-    const patient = patients.find(p => p.id === id);
-    if (patient && confirm(`Remove patient ${patient.name} (#${patient.token}) from queue?`)) {
-      patients = patients.filter(p => p.id !== id);
-      savePatients();
-      renderQueue();
-      showToast("Patient Removed", `${patient.name} was removed from today's list`, "🗑️");
-    }
-  };
-
-  // "Call Next Patient" Feature
-  document.getElementById("callNextBtn").addEventListener("click", () => {
-    // Look for urgent waiting patient first, then any waiting patient
-    let nextPatient = patients.find(p => p.status === "WAITING" && p.priority === "HIGH");
-    if (!nextPatient) {
-      nextPatient = patients.find(p => p.status === "WAITING");
-    }
-
-    if (nextPatient) {
-      playChime();
-      nextPatient.status = "ACTIVE";
-      savePatients();
-      renderQueue();
-      showToast("Patient Called!", `Now calling Token #${nextPatient.token} (${nextPatient.name}) into Doctor's OPD`, "📢");
-    } else {
-      showToast("Queue Clear", "No more waiting patients in line!", "✅");
-    }
-  });
-
-  // Filter Tabs
-  document.querySelectorAll(".status-tabs .tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".status-tabs .tab-btn").forEach(b => {
-        b.classList.remove("active");
-        b.setAttribute("aria-selected", "false");
+        setTimeout(() => {
+          paAlert.classList.add('hidden');
+        }, 5000);
       });
-      btn.classList.add("active");
-      btn.setAttribute("aria-selected", "true");
-      activeStatusFilter = btn.dataset.status;
-      renderQueue();
-    });
-  });
-
-  // Search and Dept Filters
-  document.getElementById("searchInput").addEventListener("input", (e) => {
-    searchQuery = e.target.value.trim();
-    renderQueue();
-  });
-  document.getElementById("deptFilter").addEventListener("change", (e) => {
-    deptFilter = e.target.value;
-    renderQueue();
-  });
-
-  // Reset to default demo data
-  document.getElementById("resetDataBtn").addEventListener("click", () => {
-    if (confirm("Reset the demo queue back to default sample patients?")) {
-      patients = JSON.parse(JSON.stringify(INITIAL_PATIENTS));
-      savePatients();
-      renderQueue();
-      showToast("Reset Complete", "Demo queue has been restored to default", "🔄");
-    }
-  });
-
-  // Modal Dialog handling
-  const modal = document.getElementById("addPatientModal");
-  document.getElementById("openAddModalBtn").addEventListener("click", () => {
-    modal.classList.add("active");
-    document.getElementById("pName").focus();
-  });
-  function closeModal() {
-    modal.classList.remove("active");
-    document.getElementById("addPatientForm").reset();
-  }
-  document.getElementById("closeAddModalBtn").addEventListener("click", closeModal);
-  document.getElementById("cancelAddBtn").addEventListener("click", closeModal);
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  // Add Walk-in Form Submit
-  document.getElementById("addPatientForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = document.getElementById("pName").value.trim();
-    const ageGender = document.getElementById("pAge").value.trim();
-    const village = document.getElementById("pVillage").value.trim();
-    const phone = document.getElementById("pPhone").value.trim();
-    const dept = document.getElementById("pDept").value;
-    const priority = document.getElementById("pPriority").value;
-    const symptom = document.getElementById("pSymptom").value.trim();
-
-    // Generate Token Number
-    const nextTokenNum = 100 + patients.length + 1;
-    const token = `A-${nextTokenNum}`;
-
-    let doctor = "Dr. Priya Sharma";
-    if (dept === "Maternal & Child") doctor = "Dr. Anjali Rao";
-    if (dept === "Pediatrics") doctor = "Dr. R. Verma";
-    if (dept === "Ayush") doctor = "Dr. S. K. Joshi";
-
-    const parts = ageGender.split("/");
-    const age = parts[0] ? parts[0].trim() : ageGender;
-    const gender = parts[1] ? parts[1].trim() : "M";
-
-    const newPatient = {
-      id: "p_" + Date.now(),
-      token: token,
-      name: name,
-      age: age,
-      gender: gender,
-      village: village,
-      phone: phone || "9800000000",
-      dept: dept,
-      doctor: doctor,
-      symptom: symptom,
-      status: "WAITING",
-      priority: priority,
-      waitMin: 15
-    };
-
-    patients.unshift(newPatient); // Add to top of list
-    savePatients();
-    closeModal();
-    renderQueue();
-    playChime();
-    showToast("Patient Registered!", `Token #${token} assigned to ${name}. Added to queue.`, "✅");
-  });
-
-  // Live Clock updater
-  function updateClock() {
-    const now = new Date();
-    document.getElementById("liveClock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  // Theme Toggle Sync
-  const themeToggle = document.getElementById("themeToggle");
-  const savedTheme = localStorage.getItem("sq-theme") || "light";
-  document.documentElement.setAttribute("data-theme", savedTheme);
-
-  themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    const target = current === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", target);
-    localStorage.setItem("sq-theme", target);
-  });
-
-  // Init
-  loadPatients();
-  renderQueue();
-</script>
-
-<script>
-  /* ── Google Translate ── */
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'en,hi,mr,gu,bn,ta,te,kn,ml,pa,or,as,ur',
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-      autoDisplay: false
-    }, 'google_translate_element');
-  }
-
-  /* ── In-Modal Programmatic Language Switcher ── */
-  window.switchLang = function(langCode) {
-    document.querySelectorAll('.lang-chip').forEach(c => {
-      c.classList.toggle('active', c.getAttribute('data-lang') === langCode);
-    });
-
-    const cookieVal = '/en/' + langCode;
-    document.cookie = 'googtrans=' + cookieVal + '; path=/';
-    if (window.location.hostname) {
-      document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + window.location.hostname;
     }
 
-    const combo = document.querySelector('.goog-te-combo');
-    if (combo) {
-      combo.value = langCode;
-      combo.dispatchEvent(new Event('change'));
-    } else {
-      window.location.reload();
-    }
-  };
-
-  (function initActiveLang() {
-    const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/);
-    const active = match ? match[1] : 'en';
-    setTimeout(() => {
-      document.querySelectorAll('.lang-chip').forEach(c => {
-        c.classList.toggle('active', c.getAttribute('data-lang') === active);
+    if (callNextBtn && activeToken && activePatient) {
+      callNextBtn.addEventListener('click', function() {
+        activeToken.textContent = '#42';
+        activePatient.textContent = 'शांति देवी';
+        callNextBtn.innerHTML = '<span class="material-symbols-outlined text-[22px]">record_voice_over</span><span>अगला मरीज बुलाएँ (Call Next: #43)</span>';
+        if (recallBtn) {
+          recallBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">sync</span><span>पुनः पुकारें (#42)</span>';
+        }
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance("टोकन नंबर 42, शांति देवी - कमरा नंबर 1 में उपस्थित हों।");
+          utterance.lang = 'hi-IN';
+          window.speechSynthesis.speak(utterance);
+        }
       });
-    }, 600);
+    }
   })();
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</script></main></div>
 
-</body>
-</html>
+</body></html>
