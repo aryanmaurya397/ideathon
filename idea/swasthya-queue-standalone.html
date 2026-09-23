@@ -36,6 +36,10 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Shared Motion & Signature Extras Frameworks -->
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="extras.css">
+
   <style>
     /* CSS Variables Design Tokens */
     :root {
@@ -507,6 +511,12 @@
         <!-- Left Column: Copy & Interactive 5. ECG-to-Tick Morph CTA -->
         <div class="lg:col-span-8 flex flex-col justify-center">
           
+          <!-- 2. MULTILINGUAL NAMASTE (cycles 10 Indic scripts every 3s) -->
+          <div class="namaste-ticker-wrap mb-3 w-fit" id="namaste-wrap" role="button" tabindex="0" title="Click to switch language">
+            <span class="text-xs font-bold text-gray-500">🙏 Greeting:</span> 
+            <span class="namaste-text font-bold text-[#0B3D91]" id="namaste-text">नमस्ते</span>
+          </div>
+
           <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-200 rounded-full text-[#0B3D91] font-bold text-xs sm:text-sm mb-4 w-fit">
             <span class="material-symbols-outlined text-[18px] text-[#138808]">verified</span>
             <span>National Health Mission (NHM) • Ayushman Bharat Digital Mission (ABDM) Authorized</span>
@@ -516,27 +526,38 @@
             National Rural Outpatient Queue &amp; Digital Token System
           </h1>
 
+          <!-- 11. HAND-DRAWN HEADLINE UNDERLINE -->
           <p class="text-xl sm:text-2xl font-bold text-gray-700 mb-4" data-i18n="hero_sub">
-            Zero Wait-Time Healthcare • Arrive on time, consult without crowded queues
+            <span class="draw-underline-target inline-block">Zero Wait-Time</span> Healthcare • Arrive on time, consult without crowded queues
           </p>
 
           <p class="text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed mb-6" data-i18n="hero_desc">
             100% free public service for rural citizens. Book tokens from home or through your local ASHA worker, track live queue numbers on your phone, and arrive right when it's your turn.
           </p>
 
-          <!-- INLINE TOKEN CHECKER IN HERO -->
+          <!-- INLINE TOKEN CHECKER IN HERO WITH 7. BOLIYE VOICE INPUT -->
           <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-[#0B3D91] rounded-2xl p-4 sm:p-5 shadow-sm max-w-2xl mb-8">
             <label for="quick-token-input" class="block font-extrabold text-[#0B3D91] text-base sm:text-lg mb-2 flex items-center gap-2">
               <span class="material-symbols-outlined text-[24px]">search_check</span>
               <span data-i18n="inline_search_label">Direct Token Status Lookup (Enter Token No.)</span>
             </label>
-            <form onsubmit="handleQuickTokenCheck(event)" class="flex flex-col sm:flex-row gap-2.5">
-              <input type="text" 
-                     id="quick-token-input" 
-                     placeholder="Enter Token No. (e.g. 44 or PHC-44)" 
-                     class="flex-1 min-h-[52px] px-4 rounded-xl border-2 border-gray-300 font-bold text-lg focus:border-[#0B3D91] focus:ring-2 focus:ring-[#FF9933] focus:outline-none bg-white text-gray-900" 
-                     required>
-              <button type="submit" class="ripple-target btn-press min-h-[52px] px-6 bg-[#0B3D91] hover:bg-[#082d6c] text-white font-bold text-lg rounded-xl flex items-center justify-center gap-2 shadow-md transition-all shrink-0">
+            <form onsubmit="handleQuickTokenCheck(event)" class="flex flex-col sm:flex-row items-center gap-2.5">
+              <div class="relative flex-1 w-full flex items-center">
+                <input type="text" 
+                       id="quick-token-input" 
+                       placeholder="Enter Token No. (e.g. 44 or PHC-44)" 
+                       class="w-full min-h-[52px] pl-4 pr-12 rounded-xl border-2 border-gray-300 font-bold text-lg focus:border-[#0B3D91] focus:ring-2 focus:ring-[#FF9933] focus:outline-none bg-white text-gray-900" 
+                       required>
+                <!-- 7. BOLIYE (VOICE INPUT) BUTTON -->
+                <button type="button" 
+                        id="voice-boliye-btn" 
+                        class="mic-btn-round absolute right-1.5" 
+                        title="Speak token number in Hindi / Regional language (बोलें)"
+                        aria-label="Speak token number">
+                  <span class="material-symbols-outlined text-[22px]">mic</span>
+                </button>
+              </div>
+              <button type="submit" class="ripple-target btn-press min-h-[52px] px-6 bg-[#0B3D91] hover:bg-[#082d6c] text-white font-bold text-lg rounded-xl flex items-center justify-center gap-2 shadow-md transition-all shrink-0 w-full sm:w-auto">
                 <span data-i18n="inline_search_btn">Check Status</span>
                 <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
               </button>
@@ -895,6 +916,216 @@
 
           </div>
 
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         1. SPLIT-FLAP PHC BOARD (Live Departure-Board Simulation)
+         ======================================================================= -->
+    <section class="w-full bg-[#0F172A] text-white py-12 px-3 sm:px-6 relative overflow-hidden" id="live-board-section">
+      <div class="max-w-7xl mx-auto space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-blue-900/60 border border-blue-400 text-blue-300 text-xs font-bold uppercase tracking-wider mb-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>Real-Time Citizen Tracker</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Real-time PHC Board (नागरिक लाइव ट्रैकर)
+            </h2>
+            <p class="text-sm text-gray-400">
+              Split-flap departure board simulation. Updates every 6 seconds • Zero audio autoplay.
+            </p>
+          </div>
+          <!-- Clack sound toggle (OFF by default) -->
+          <div class="flex items-center gap-3">
+            <button type="button" 
+                    id="board-clack-toggle" 
+                    class="px-3.5 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs font-bold text-gray-200 flex items-center gap-1.5 transition-colors cursor-pointer"
+                    title="Enable mechanical flap sound (AudioContext)">
+              <span class="material-symbols-outlined text-[18px]">volume_off</span>
+              <span>Mechanical Clack</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-gray-800 bg-[#0B1120] p-4 shadow-xl">
+          <table class="split-flap-table" aria-label="PHC Real-time Status Table">
+            <thead>
+              <tr>
+                <th>Primary Health Centre</th>
+                <th>Doctor on Duty</th>
+                <th>Now Serving</th>
+                <th>Avg. Wait</th>
+                <th>Live Status</th>
+              </tr>
+            </thead>
+            <tbody id="split-flap-tbody">
+              <!-- Rendered & flipped by board.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         6. OLD WAY vs TOKEN WAY (RACE BARS)
+         ======================================================================= -->
+    <section class="w-full bg-white py-12 px-3 sm:px-6 border-b border-gray-200" id="time-savings-race">
+      <div class="max-w-7xl mx-auto space-y-6">
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0B3D91] tracking-tight">
+            Old Way vs Token Way: Your Time Saved
+          </h2>
+          <p class="text-base text-gray-600">
+            समय की बचत • Scroll into view to watch the wait-time race.
+          </p>
+        </div>
+
+        <div class="race-container max-w-3xl mx-auto space-y-6" id="race-container-box">
+          <!-- Track 1: Old Way (4 hrs) -->
+          <div>
+            <div class="flex justify-between text-sm font-bold text-gray-700 mb-1">
+              <span>🚶 Old Way: Standing in physically crowded line</span>
+              <span class="text-gray-500">4 Hours (240 Mins)</span>
+            </div>
+            <div class="race-track">
+              <div class="race-bar race-bar-old" id="bar-old">
+                <div class="runner-icon text-gray-700">
+                  <span class="material-symbols-outlined text-[18px]">elderly</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Track 2: Digital Token Way (20 min) -->
+          <div>
+            <div class="flex justify-between text-sm font-bold text-[#138808] mb-1">
+              <span>⚡ Digital Token: Relax at home, arrive on time</span>
+              <span class="font-extrabold">20 Minutes</span>
+            </div>
+            <div class="race-track">
+              <div class="race-bar race-bar-new" id="bar-new">
+                <div class="runner-icon text-[#138808]">
+                  <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Announcement -->
+          <div class="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-center font-extrabold text-sm text-[#138808]" id="race-announcement" role="status" aria-live="polite">
+            You save about 3 hrs 40 min with Digital Token.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         4. SWASTH GAON VILLAGE METER & 5. MEDICINE STOCK BOTTLES
+         ======================================================================= -->
+    <section class="w-full bg-[#F7F9FC] py-12 px-3 sm:px-6 border-b border-gray-200">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- 4. Swasth Gaon Village Meter -->
+        <div class="lg:col-span-5 bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-lg text-[#0B3D91]">
+              Swasth Gaon Meter (स्वस्थ गाँव मीटर)
+            </h3>
+            <span class="text-[11px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Demo Data</span>
+          </div>
+          <p class="text-xs text-gray-600">
+            20 village households. Green houses indicate registered health-coverage cards:
+          </p>
+          <div class="village-meter-grid" id="swasth-gaon-grid">
+            <!-- 20 houses generated by extras.js -->
+          </div>
+          <div class="p-2.5 bg-blue-50 rounded-lg text-xs font-bold text-[#0B3D91]" id="swasth-gaon-pct">
+            65% Health Coverage (स्वास्थ्य आवरण)
+          </div>
+        </div>
+
+        <!-- 5. Essential Medicine Stock Bottles -->
+        <div class="lg:col-span-7 bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-lg text-[#0B3D91]">
+              PHC Essential Medicine Stock (दवा स्टॉक)
+            </h3>
+            <span class="text-[11px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Demo Data / Concept</span>
+          </div>
+          <p class="text-xs text-gray-600">
+            Tap any bottle to inspect available supply. Green &gt;60%, Amber 30-60%, Red &lt;30%:
+          </p>
+          <div class="med-bottles-grid" id="med-bottles-list">
+            <!-- Medicine bottles generated by extras.js -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         9. WEATHER HEALTH ALERT CARD & 8. EMOJI FEEDBACK
+         ======================================================================= -->
+    <section class="w-full bg-white py-12 px-3 sm:px-6 border-b border-gray-200">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        
+        <!-- 9. Weather Health Alert Card -->
+        <div class="weather-card flex items-start gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-blue-200/80 flex items-center justify-center shrink-0 text-blue-700">
+            <span class="material-symbols-outlined text-[36px]">rainy</span>
+          </div>
+          <div class="flex-1 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-blue-800">Seasonal Health Advisory</span>
+              <button type="button" 
+                      id="weather-speak-btn" 
+                      class="px-2 py-1 rounded bg-white text-blue-900 font-bold text-xs flex items-center gap-1 shadow-xs hover:bg-blue-50"
+                      data-speak="Machhar se bachein: dengue aur malaria alert. Prevent mosquito breeding.">
+                <span class="material-symbols-outlined text-[16px]">volume_up</span>
+                <span>Listen</span>
+              </button>
+            </div>
+            <p class="font-bold text-base text-blue-950 leading-tight">
+              मच्छर से बचें: डेंगू / मलेरिया से बचाव रखें
+            </p>
+            <p class="text-xs text-blue-800">
+              Prevent mosquito breeding: Keep water containers covered and visit PHC if fever persists.
+            </p>
+          </div>
+        </div>
+
+        <!-- 8. Emoji Experience Feedback -->
+        <div class="bg-[#F8FAFC] p-6 rounded-2xl border border-gray-200 text-center space-y-3">
+          <h3 class="font-extrabold text-base text-gray-900">
+            Rate Your Experience Today (अनुभव साझा करें)
+          </h3>
+          <p class="text-xs text-gray-500">64px accessible tap targets • Instant feedback</p>
+          <div class="emoji-rating-wrap">
+            <button type="button" class="emoji-btn" data-rating="Very Dissatisfied" aria-label="Very Dissatisfied (बहुत असंतुष्ट)" title="Very Dissatisfied">
+              <span class="text-2xl">😡</span>
+              <span class="text-[10px] font-bold text-gray-600 mt-0.5">Bad</span>
+            </button>
+            <button type="button" class="emoji-btn" data-rating="Dissatisfied" aria-label="Dissatisfied (असंतुष्ट)" title="Dissatisfied">
+              <span class="text-2xl">🙁</span>
+              <span class="text-[10px] font-bold text-gray-600 mt-0.5">Poor</span>
+            </button>
+            <button type="button" class="emoji-btn" data-rating="Neutral" aria-label="Neutral (ठीक)" title="Neutral">
+              <span class="text-2xl">😐</span>
+              <span class="text-[10px] font-bold text-gray-600 mt-0.5">Okay</span>
+            </button>
+            <button type="button" class="emoji-btn" data-rating="Satisfied" aria-label="Satisfied (संतुष्ट)" title="Satisfied">
+              <span class="text-2xl">🙂</span>
+              <span class="text-[10px] font-bold text-gray-600 mt-0.5">Good</span>
+            </button>
+            <button type="button" class="emoji-btn" data-rating="Very Satisfied" aria-label="Very Satisfied (बहुत संतुष्ट)" title="Very Satisfied">
+              <span class="text-2xl">😄</span>
+              <span class="text-[10px] font-bold text-gray-600 mt-0.5">Great</span>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -1682,9 +1913,13 @@
       checkRangoliLoad();
 
       // 5. Start FPS Monitor
-      requestAnimationFrame(monitorFPS);
     });
   </script>
+
+  <!-- Shared Modular Scripts (Features 1 to 11) -->
+  <script src="motion.js"></script>
+  <script src="extras.js"></script>
+  <script src="board.js"></script>
 
 </body>
 </html>

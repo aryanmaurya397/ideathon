@@ -1,0 +1,127 @@
+/* ==========================================================================
+   RASHTRIYA SWASTHYA QUEUE - MOTION FRAMEWORK (motion.css)
+   Gated by <html data-motion="full|lite|off">
+   WCAG 2.2.2 & 2.3.1 compliant. Zero flashes > 3/sec. GPU transforms only.
+   ========================================================================== */
+
+/* Base Page Transition (250ms fade + slide up 12px) */
+body {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 250ms cubic-bezier(0.16, 1, 0.3, 1), transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+body.page-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* OFF TIER & PREFERS-REDUCED-MOTION (Calm Mode) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+html[data-motion="off"] .dynamic-motion,
+html[data-motion="off"] .looping-anim {
+  animation: none !important;
+}
+
+/* LITE TIER (Strictly transform & opacity fades, no complex loops or 3D) */
+html[data-motion="lite"] .looping-anim,
+html[data-motion="lite"] .full-tier-only {
+  animation: none !important;
+  display: none !important;
+}
+
+html[data-motion="lite"] .lite-static {
+  display: block !important;
+}
+
+/* Pause All Animations Class (WCAG 2.2.2 Pause Toggle) */
+html.motion-paused *,
+html.motion-paused *::before,
+html.motion-paused *::after {
+  animation-play-state: paused !important;
+}
+
+/* Global Micro-Delight: Button Ripples & Sliding Tab Underline */
+.ripple-surface {
+  position: relative;
+  overflow: hidden;
+}
+.ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: rippleEffect 500ms ease-out;
+  background: rgba(255, 153, 51, 0.25);
+  pointer-events: none;
+}
+@keyframes rippleEffect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Desktop Hover Card Tilt (2deg max) */
+@media (hover: hover) and (pointer: fine) {
+  html[data-motion="full"] .tilt-hover {
+    transition: transform 200ms cubic-bezier(0.2, 0, 0.2, 1);
+    will-change: transform;
+  }
+  html[data-motion="full"] .tilt-hover:hover {
+    transform: translateY(-2px) rotate(0.8deg);
+  }
+}
+
+/* Accessible Toast Notification Container */
+#global-toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.toast-msg {
+  pointer-events: auto;
+  min-width: 260px;
+  max-width: 380px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: #0B3D91;
+  color: #FFFFFF;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  border-left: 5px solid #FF9933;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: toastSlideUp 260ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes toastSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.toast-msg.toast-fadeout {
+  animation: toastFadeOut 200ms ease forwards;
+}
+@keyframes toastFadeOut {
+  to { opacity: 0; transform: translateY(-8px); }
+}
