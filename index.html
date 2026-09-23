@@ -3,15 +3,19 @@
   Rashtriya Swasthya Queue (राष्ट्रीय स्वास्थ्य कतार)
   National Rural Outpatient Queue & Digital Token System
   Senior UI/UX Redesign - Built for Rural Patients, Low Literacy & Low-End Phones
-  Changes Applied:
-  1. Fix Overlap / Clipping: 3-layer header (36px gov strip, 72px sticky bar, 56px+ non-sticky SMS strip).
-  2. Reduce Mixing: Hindi default, clear switcher (हिन्दी | English), secondary subtitles below buttons.
-  3. Typography: Noto Sans Devanagari + Inter, base 18px, clamp(2rem, 5vw, 3.2rem) headings, 48px tap targets.
-  4. Colors: CSS variables (--primary: #0B3D91, --saffron: #FF9933, --success: #138808, --danger: #D32F2F).
-  5. Hero: 64px min-height CTAs with 0.97 press effect, inline token search, solid red 104 call button.
-  6. Cards: High-contrast LIVE stats with pulsing dot, 96px ASHA image with interactive search modal.
-  7. Accessibility: A-/A/A+ root font resizer, High Contrast mode, skip-to-content, WCAG 4.5:1, reduced motion.
-  8. Mobile First: Fixed 4-item bottom bar for screens < 768px, mobile-optimized touch controls.
+  
+  LIVE ANIMATIONS & MICRO-INTERACTIONS ADDED:
+  1. Heartbeat (ECG) line in hero background & beside LIVE DATA badge (2.5s loop).
+  2. Pulsing live dot with expanding ring animation (1.5s infinite).
+  3. Now Serving ticker with flip/slide number animation every 8s + "Next: 043, 044, 045".
+  4. Live counter: 1,48,290 counts up on load, then increments by 1-3 with Indian number formatting.
+  5. Wait-time circular progress ring that counts down and smoothly transitions color (green -> amber -> red).
+  6. Queue visual: row of patient icons sliding forward when front patient leaves.
+  7. Ambulance 108 strip: tiny ambulance driving slowly across emergency bar with soft flashing beacon.
+  8. Breathing CTA: gentle glow pulse on Register button that pauses on hover.
+  9. News ticker marquee of live PHC updates that pauses on hover/focus.
+  10. Micro-interactions: fade-up on scroll (IntersectionObserver), button ripple effect, animated toast messages.
+  11. "Pause Animations" toggle in top bar + strict prefers-reduced-motion compliance.
   =============================================================================
 -->
 <!DOCTYPE html>
@@ -33,7 +37,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    /* CSS Variables Design Tokens (Requirement 4) */
+    /* CSS Variables Design Tokens */
     :root {
       --primary: #0B3D91;
       --primary-hover: #082d6c;
@@ -66,7 +70,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Requirement 1 & 3: Headings text-wrap balance and clamped responsive sizing */
     h1, h2, h3, h4, h5, h6 {
       text-wrap: balance;
     }
@@ -77,13 +80,11 @@
       letter-spacing: -0.01em;
     }
 
-    /* Requirement 3: Minimum tap target 48x48px with 8px gaps */
     .tap-target-48 {
       min-height: 48px;
       min-width: 48px;
     }
 
-    /* Requirement 4: Nav tabs with visible 3px saffron focus ring */
     .nav-tab-active {
       background-color: var(--primary) !important;
       color: #FFFFFF !important;
@@ -95,12 +96,157 @@
       outline-offset: 2px !important;
     }
 
-    /* Requirement 5: Press animation scale 0.97 */
     .btn-press:active {
       transform: scale(0.97);
     }
 
-    /* Requirement 7: High Contrast Mode */
+    /* =========================================================================
+       ANIMATIONS ENGINE (Respects prefers-reduced-motion: no-preference & Pause Toggle)
+       ========================================================================= */
+
+    @media (prefers-reduced-motion: no-preference) {
+      /* 1. Heartbeat ECG Drawing Loop (2.5s) */
+      .ecg-line {
+        stroke-dasharray: 400;
+        stroke-dashoffset: 400;
+        animation: drawEcg 2.5s linear infinite;
+      }
+      @keyframes drawEcg {
+        0% { stroke-dashoffset: 400; }
+        50% { stroke-dashoffset: 0; }
+        100% { stroke-dashoffset: -400; }
+      }
+
+      /* 2. Pulsing Live Dot with Expanding Ring (1.5s) */
+      .live-dot-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .live-dot-core {
+        width: 10px;
+        height: 10px;
+        border-radius: 9999px;
+        background-color: var(--success);
+      }
+      .live-dot-ring {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 9999px;
+        background-color: var(--success);
+        opacity: 0.75;
+        animation: pulseLiveRing 1.5s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+      }
+      @keyframes pulseLiveRing {
+        0% { transform: scale(1); opacity: 0.8; }
+        70% { transform: scale(2.4); opacity: 0; }
+        100% { transform: scale(2.4); opacity: 0; }
+      }
+
+      /* 7. Ambulance Driving Loop (14s) & Flashing Beacon */
+      .ambulance-track {
+        animation: driveAmbulance 14s linear infinite;
+      }
+      @keyframes driveAmbulance {
+        0% { transform: translateX(-60px); }
+        100% { transform: translateX(calc(100vw + 60px)); }
+      }
+      .beacon-flash {
+        animation: beaconBlink 0.8s ease-in-out infinite alternate;
+      }
+      @keyframes beaconBlink {
+        0% { opacity: 0.3; filter: drop-shadow(0 0 1px #FF0000); }
+        100% { opacity: 1; filter: drop-shadow(0 0 6px #FF1744); }
+      }
+
+      /* 8. Breathing CTA Glow (3s, pauses on hover) */
+      .cta-breathing {
+        box-shadow: 0 4px 14px rgba(11, 61, 145, 0.25);
+        animation: ctaBreath 3s ease-in-out infinite;
+      }
+      .cta-breathing:hover {
+        animation: none !important;
+        box-shadow: 0 8px 24px rgba(11, 61, 145, 0.35);
+      }
+      @keyframes ctaBreath {
+        0%, 100% {
+          box-shadow: 0 4px 14px rgba(11, 61, 145, 0.25), 0 0 0 0 rgba(255, 153, 51, 0.35);
+        }
+        50% {
+          box-shadow: 0 6px 20px rgba(11, 61, 145, 0.35), 0 0 18px 4px rgba(255, 153, 51, 0.45);
+        }
+      }
+
+      /* 9. News Ticker Marquee */
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: scrollMarquee 32s linear infinite;
+      }
+      .marquee-wrapper:hover .marquee-track,
+      .marquee-wrapper:focus-within .marquee-track {
+        animation-play-state: paused;
+      }
+      @keyframes scrollMarquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+
+      /* 10. Scroll Fade-Up Micro-Interaction */
+      .reveal-item {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+      }
+      .reveal-item.is-revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Pause Animations Override */
+    html.motion-paused *,
+    html.motion-paused *::before,
+    html.motion-paused *::after {
+      animation-play-state: paused !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    /* Button Ripple Effect */
+    .ripple-target {
+      position: relative;
+      overflow: hidden;
+    }
+    .ripple-ink {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(0);
+      animation: rippleAnim 0.55s linear;
+      pointer-events: none;
+    }
+    @keyframes rippleAnim {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* Skeleton Loader Shimmer */
+    .skeleton-box {
+      background: linear-gradient(90deg, #E5E7EB 25%, #F3F4F6 50%, #E5E7EB 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* High Contrast Theme */
     html.high-contrast {
       --primary: #000000;
       --primary-hover: #1f2937;
@@ -116,12 +262,10 @@
       --text-muted: #E5E7EB;
       --border: #FFFFFF;
     }
-
     html.high-contrast body {
       background-color: #000000 !important;
       color: #FFFFFF !important;
     }
-
     html.high-contrast .bg-white,
     html.high-contrast .bg-\[\#F7F9FC\],
     html.high-contrast .bg-slate-50,
@@ -131,19 +275,16 @@
       color: #FFFFFF !important;
       border-color: #FFFFFF !important;
     }
-
     html.high-contrast .text-gray-600,
     html.high-contrast .text-gray-700,
     html.high-contrast .text-\[\#5A3A00\] {
       color: #FFFF00 !important;
     }
-
     html.high-contrast button,
     html.high-contrast a {
       border-color: #FFFFFF !important;
     }
 
-    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
       * {
         animation-duration: 0.01ms !important;
@@ -155,18 +296,18 @@
   </style>
 </head>
 
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen relative overflow-x-hidden">
 
-  <!-- Accessibility Skip-to-Content Link (Requirement 7) -->
+  <!-- Accessibility Skip-to-Content Link -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-[#FF9933] focus:text-[#0B3D91] focus:font-extrabold focus:px-4 focus:py-2 focus:rounded-md focus:shadow-xl focus:border-2 focus:border-[#0B3D91]">
     मुख्य सामग्री पर जाएं (Skip to content)
   </a>
 
   <!-- =========================================================================
-       1. FIX OVERLAP / CLIPPING: HEADER 3-LAYER ARCHITECTURE (Requirement 1)
+       1. HEADER 3-LAYER ARCHITECTURE
        ========================================================================= -->
 
-  <!-- LAYER A: Thin 36px Government Strip with Accessibility & Language Tools -->
+  <!-- LAYER A: Thin 36px Government Strip with Controls & Animation Pause Toggle -->
   <div class="w-full bg-[#EBF2FA] border-b border-gray-300 text-gray-800 text-[14px] sm:text-[15px] select-none min-h-[36px] flex flex-col justify-center">
     <!-- Top Tricolor Thin Strip -->
     <div class="w-full h-[3px] flex shrink-0">
@@ -178,35 +319,48 @@
     <div class="max-w-7xl mx-auto w-full px-3 sm:px-6 py-1 flex items-center justify-between flex-wrap gap-2">
       <!-- Gov Identity Left -->
       <div class="flex items-center gap-2 font-semibold">
-        <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#138808]"></span>
+        <span class="live-dot-wrap mr-0.5">
+          <span class="live-dot-ring"></span>
+          <span class="live-dot-core"></span>
+        </span>
         <span class="text-[#0B3D91] font-bold">भारत सरकार</span>
         <span class="text-gray-400">|</span>
         <span class="hidden sm:inline text-gray-700">Government of India</span>
         <span class="hidden lg:inline text-gray-500 font-normal">• स्वास्थ्य एवं परिवार कल्याण मंत्रालय</span>
       </div>
 
-      <!-- Accessibility, Audio & Staff Login Right -->
+      <!-- Accessibility, Motion Pause & Staff Login Right -->
       <div class="flex items-center gap-2 sm:gap-3 ml-auto">
-        <!-- Root Font Resizer A- / A / A+ (Requirement 7) -->
+        <!-- Live Animation Pause/Play Toggle Button (User Requirement) -->
+        <button type="button" 
+                id="motion-toggle-btn" 
+                onclick="toggleAnimations()" 
+                class="flex items-center gap-1 bg-white hover:bg-gray-100 border border-gray-300 px-2 py-0.5 rounded text-xs font-bold text-gray-800 shadow-xs transition-colors" 
+                title="Pause or play live animations">
+          <span id="motion-icon">⏸️</span>
+          <span class="hidden sm:inline" id="motion-text">एनीमेशन चालू</span>
+        </button>
+
+        <!-- Root Font Resizer A- / A / A+ -->
         <div class="flex items-center bg-white border border-gray-300 rounded shadow-xs" role="group" aria-label="Font Size Controls">
           <button type="button" onclick="changeFontSize('small')" class="px-2 py-0.5 font-bold hover:bg-gray-100 border-r border-gray-200 text-xs" title="Decrease font size">A-</button>
           <button type="button" onclick="changeFontSize('normal')" class="px-2 py-0.5 font-bold hover:bg-gray-100 border-r border-gray-200 text-sm" title="Default font size">A</button>
           <button type="button" onclick="changeFontSize('large')" class="px-2 py-0.5 font-bold hover:bg-gray-100 text-base" title="Increase font size">A+</button>
         </div>
 
-        <!-- High Contrast Mode Toggle (Requirement 7) -->
+        <!-- High Contrast Mode Toggle -->
         <button type="button" onclick="toggleHighContrast()" id="contrast-btn" class="flex items-center gap-1 bg-white hover:bg-gray-100 border border-gray-300 px-2 py-0.5 rounded text-xs font-bold text-gray-800" title="High Contrast Mode">
           <span>🌓</span>
           <span class="hidden sm:inline">कंट्रास्ट</span>
         </button>
 
-        <!-- Prominent Language Switcher (Requirement 2: Default Hindi, one language at a time) -->
+        <!-- Language Switcher (Default Hindi) -->
         <div class="flex items-center bg-white border border-gray-300 rounded overflow-hidden text-xs font-bold shadow-xs">
           <button type="button" id="lang-btn-hi" onclick="setAppLanguage('hi')" class="px-2.5 py-1 bg-[#0B3D91] text-white">हिन्दी</button>
           <button type="button" id="lang-btn-en" onclick="setAppLanguage('en')" class="px-2.5 py-1 text-gray-700 hover:bg-gray-100">English</button>
         </div>
 
-        <!-- Staff Login Link at Top Right (Requirement 2) -->
+        <!-- Staff Login Link at Top Right -->
         <a href="dashboard.html" class="flex items-center gap-1 text-xs font-bold text-[#0B3D91] hover:text-[#082d6c] bg-white border border-blue-200 px-2.5 py-1 rounded shadow-xs hover:border-[#0B3D91] transition-colors" title="PHC Staff Dashboard">
           <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
           <span data-i18n="staff_login">स्टाफ लॉगिन</span>
@@ -215,7 +369,7 @@
     </div>
   </div>
 
-  <!-- LAYER B: ONE Sticky 72px Bar (Logo + Desktop Nav + Solid Red Helpline) (Requirement 1 & 4) -->
+  <!-- LAYER B: ONE Sticky 72px Bar (Logo + Desktop Nav + Solid Red Helpline) -->
   <header class="sticky top-0 z-50 bg-white border-b-2 border-gray-200 shadow-sm h-[72px] flex items-center">
     <div class="max-w-7xl mx-auto w-full px-3 sm:px-6 flex items-center justify-between gap-4">
       
@@ -234,7 +388,7 @@
         </div>
       </a>
 
-      <!-- Desktop Nav Tabs (Requirement 4: White, hover #E8F0FE, active Navy with 4px saffron border) -->
+      <!-- Desktop Nav Tabs -->
       <nav class="hidden md:flex items-center gap-2" aria-label="Desktop Primary Navigation">
         <a href="index.html" class="nav-tab-active flex items-center gap-1.5 px-4 py-2.5 rounded-t-md font-bold text-base transition-colors" aria-current="page">
           <span class="material-symbols-outlined text-[20px]">home</span>
@@ -250,8 +404,8 @@
         </a>
       </nav>
 
-      <!-- Solid Red Tap-to-Call Helpline Button (Requirement 5) -->
-      <a href="tel:104" class="btn-press flex items-center gap-2 bg-[#D32F2F] hover:bg-[#b71c1c] text-white px-3.5 sm:px-4 py-2.5 rounded-lg font-bold text-base shadow-md transition-all shrink-0 border-2 border-[#D32F2F]" aria-label="Toll-free health helpline 104">
+      <!-- Solid Red Tap-to-Call Helpline Button -->
+      <a href="tel:104" class="ripple-target btn-press flex items-center gap-2 bg-[#D32F2F] hover:bg-[#b71c1c] text-white px-3.5 sm:px-4 py-2.5 rounded-lg font-bold text-base shadow-md transition-all shrink-0 border-2 border-[#D32F2F]" aria-label="Toll-free health helpline 104">
         <span class="material-symbols-outlined text-[22px] animate-pulse">call</span>
         <div class="flex flex-col text-left leading-none">
           <span class="font-extrabold text-sm sm:text-base">104 / 108</span>
@@ -261,8 +415,8 @@
     </div>
   </header>
 
-  <!-- LAYER C: NON-sticky Notice Strip (Requirement 1 & 5: min-height 56px, wrap, no clipping, SMS chip) -->
-  <section aria-label="Offline 2G SMS Assistance Banner" class="w-full bg-[#FFF4E0] border-b-2 border-[#F5A623] text-[#5A3A00] py-3 px-3 sm:px-6 min-h-[56px] flex items-center">
+  <!-- LAYER C: NON-sticky Notice Strip (With Tap to SMS & Listen Speaker) -->
+  <section aria-label="Offline 2G SMS Assistance Banner" class="w-full bg-[#FFF4E0] border-b-2 border-[#F5A623] text-[#5A3A00] py-3 px-3 sm:px-6 min-h-[56px] flex items-center z-10 relative">
     <div class="max-w-7xl mx-auto w-full flex flex-wrap items-center justify-between gap-3">
       
       <!-- Notice Text & 2G Instruction -->
@@ -276,23 +430,26 @@
         </p>
       </div>
 
-      <!-- Action Chips Strip (Requirement 1 & 5: Never clipped, Tap to SMS + Listen Speaker) -->
+      <!-- Action Chips Strip -->
       <div class="flex items-center gap-2 flex-wrap shrink-0">
-        <!-- Tap to SMS Button (Requirement 5) -->
-        <a href="sms:56161?body=QUEUE%20" class="btn-press inline-flex items-center gap-1.5 bg-white border border-[#F5A623] text-[#5A3A00] px-3 py-1.5 rounded-full font-bold text-sm shadow-xs hover:bg-amber-50" aria-label="Send SMS to 56161">
+        <!-- Tap to SMS Button -->
+        <a href="sms:56161?body=QUEUE%20" class="btn-press ripple-target inline-flex items-center gap-1.5 bg-white border border-[#F5A623] text-[#5A3A00] px-3 py-1.5 rounded-full font-bold text-sm shadow-xs hover:bg-amber-50" aria-label="Send SMS to 56161">
           <span class="material-symbols-outlined text-[18px] text-[#0B3D91]">sms</span>
           <span data-i18n="sms_btn">SMS भेजें 56161</span>
         </a>
 
-        <!-- Unified Page Read Aloud Speaker Button (Requirement 2) -->
-        <button type="button" id="tts-audio-btn" onclick="toggleReadAloud()" class="btn-press inline-flex items-center gap-1.5 bg-white border border-[#0B3D91] text-[#0B3D91] px-3 py-1.5 rounded-full font-bold text-sm shadow-xs hover:bg-blue-50" aria-label="Listen aloud">
+        <!-- Unified Page Read Aloud Speaker Button -->
+        <button type="button" id="tts-audio-btn" onclick="toggleReadAloud()" class="btn-press ripple-target inline-flex items-center gap-1.5 bg-white border border-[#0B3D91] text-[#0B3D91] px-3 py-1.5 rounded-full font-bold text-sm shadow-xs hover:bg-blue-50" aria-label="Listen aloud">
           <span class="material-symbols-outlined text-[18px]" id="tts-icon">volume_up</span>
           <span id="tts-label" data-i18n="listen_btn">आवाज में सुनें</span>
         </button>
 
-        <!-- 24x7 Active Badge -->
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 text-[#138808] border border-emerald-300 font-bold text-xs shrink-0">
-          <span class="w-2 h-2 rounded-full bg-[#138808] animate-ping"></span>
+        <!-- 24x7 Active Badge with Pulsing Live Dot (Requirement 2) -->
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-[#138808] border border-emerald-300 font-bold text-xs shrink-0">
+          <span class="live-dot-wrap">
+            <span class="live-dot-ring"></span>
+            <span class="live-dot-core"></span>
+          </span>
           <span>24×7 सक्रिय</span>
         </span>
       </div>
@@ -300,35 +457,96 @@
   </section>
 
   <!-- =========================================================================
+       9. LIVE NEWS TICKER MARQUEE (Pauses on Hover / Focus)
+       ========================================================================= -->
+  <div class="w-full bg-[#082d6c] text-white border-b border-blue-900 py-2 px-3 overflow-hidden select-none marquee-wrapper" aria-label="Live Health Bulletins">
+    <div class="max-w-7xl mx-auto flex items-center gap-3">
+      <!-- Ticker Label -->
+      <div class="flex items-center gap-1.5 bg-[#FF9933] text-black font-extrabold text-xs px-2.5 py-1 rounded-md shrink-0 shadow-sm">
+        <span class="material-symbols-outlined text-[16px]">campaign</span>
+        <span>ताज़ा समाचार (LIVE)</span>
+      </div>
+
+      <!-- Scrolling Marquee Track -->
+      <div class="overflow-hidden whitespace-nowrap flex-1 relative">
+        <div class="marquee-track text-xs sm:text-sm font-semibold flex items-center gap-8 text-blue-100">
+          <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#FF9933]"></span>
+            <span>प्राथमिक स्वास्थ्य केंद्र सारंगपुर: कक्ष संख्या ०२ में डॉ. एस. वर्मा उपलब्ध हैं।</span>
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>निःशुल्क टीकाकरण शिविर: आगामी शुक्रवार को उपकेंद्र पर सुबह ०९ बजे से।</span>
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+            <span>गर्भवती महिलाओं (ANC) व वरिष्ठ नागरिकों हेतु काउंटर ०१ पर विशेष प्राथमिकता व्यवस्था।</span>
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+            <span>2G फोन पर बिना इंटरनेट पर्ची जांचने हेतु 56161 पर QUEUE व टोकन नंबर भेजें।</span>
+          </span>
+          <!-- Duplicate for seamless continuous looping -->
+          <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#FF9933]"></span>
+            <span>प्राथमिक स्वास्थ्य केंद्र सारंगपुर: कक्ष संख्या ०२ में डॉ. एस. वर्मा उपलब्ध हैं।</span>
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>निःशुल्क टीकाकरण शिविर: आगामी शुक्रवार को उपकेंद्र पर सुबह ०९ बजे से।</span>
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+            <span>गर्भवती महिलाओं (ANC) व वरिष्ठ नागरिकों हेतु काउंटर ०१ पर विशेष प्राथमिकता व्यवस्था।</span>
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+            <span>2G फोन पर बिना इंटरनेट पर्ची जांचने हेतु 56161 पर QUEUE व टोकन नंबर भेजें।</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        MAIN CONTENT CONTAINER
        ========================================================================= -->
-  <main id="main-content" class="flex-1 w-full pb-24 md:pb-12">
+  <main id="main-content" class="flex-1 w-full pb-24 md:pb-12 relative">
     
     <!-- =======================================================================
-         HERO SECTION (Requirement 1, 2 & 5)
-         - 12-16px spacing between H1 and subtitle
-         - text-wrap: balance
-         - 64px min-height primary CTAs
-         - Inline token search directly inside the hero
+         HERO SECTION WITH 1. HEARTBEAT (ECG) BACKGROUND & 8. BREATHING CTA
          ======================================================================= -->
-    <section class="w-full bg-white border-b border-gray-200 py-8 sm:py-12 px-3 sm:px-6">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <section class="w-full bg-white border-b border-gray-200 py-8 sm:py-12 px-3 sm:px-6 relative overflow-hidden">
+      
+      <!-- 1. Background Heartbeat (ECG) Line Decoration (Subtle 12% opacity) -->
+      <div class="absolute inset-0 pointer-events-none select-none opacity-15 overflow-hidden flex items-center justify-center" aria-hidden="true">
+        <svg class="w-[1200px] h-[160px] text-[#138808]" viewBox="0 0 1200 160" fill="none">
+          <path class="ecg-line" 
+                d="M0 80 L350 80 L370 40 L385 130 L400 20 L415 110 L430 75 L445 80 L750 80 L770 40 L785 130 L800 20 L815 110 L830 75 L845 80 L1200 80" 
+                stroke="currentColor" 
+                stroke-width="3" 
+                stroke-linecap="round" 
+                stroke-linejoin="round" />
+        </svg>
+      </div>
+
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         
         <!-- Left Column: Primary Copy & Actions (8 Cols) -->
-        <div class="lg:col-span-8 flex flex-col justify-center">
+        <div class="lg:col-span-8 flex flex-col justify-center reveal-item">
           
-          <!-- Single Trust Badge (Requirement 2 & 8: Show ABDM Authorized only once) -->
+          <!-- Single Trust Badge -->
           <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-200 rounded-full text-[#0B3D91] font-bold text-xs sm:text-sm mb-4 w-fit">
             <span class="material-symbols-outlined text-[18px] text-[#138808]">verified</span>
             <span>राष्ट्रीय स्वास्थ्य मिशन (NHM) • आयुष्मान भारत डिजिटल मिशन (ABDM) प्राधिकृत</span>
           </div>
 
-          <!-- Main Hero Heading with text-wrap balance -->
+          <!-- Main Hero Heading -->
           <h1 class="hero-heading font-extrabold text-[#0B3D91] tracking-tight mb-3.5" data-i18n="hero_h1">
             ग्रामीण स्वास्थ्य केंद्र डिजिटल कतार एवं टोकन प्रणाली
           </h1>
 
-          <!-- Subtitle with 12-16px clear spacing (Requirement 1) -->
+          <!-- Subtitle with 12-16px clear spacing -->
           <p class="text-xl sm:text-2xl font-bold text-gray-700 mb-4" data-i18n="hero_sub">
             अस्पतालों में घंटों खड़े रहने से मुक्ति • समय पर पहुंचें, बिना कतार डॉक्टर से परामर्श पाएं
           </p>
@@ -337,7 +555,7 @@
             ग्रामीण व दूरदराज के मरीजों के लिए 100% नि:शुल्क सार्वजनिक सुविधा। अपने गांव की आशा दीदी से टोकन बनवाएं या मोबाइल से पंजीकरण करें। घर बैठे लाइव टोकन नंबर देखें और अपनी बारी आने पर ही केंद्र पहुंचें।
           </p>
 
-          <!-- INLINE TOKEN CHECKER IN HERO (Requirement 5) -->
+          <!-- INLINE TOKEN CHECKER IN HERO -->
           <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-[#0B3D91] rounded-2xl p-4 sm:p-5 shadow-sm max-w-2xl mb-8">
             <label for="quick-token-input" class="block font-extrabold text-[#0B3D91] text-base sm:text-lg mb-2 flex items-center gap-2">
               <span class="material-symbols-outlined text-[24px]">search_check</span>
@@ -349,7 +567,7 @@
                      placeholder="टोकन नं. दर्ज करें (उदा. 44 या PHC-44)" 
                      class="flex-1 min-h-[52px] px-4 rounded-xl border-2 border-gray-300 font-bold text-lg focus:border-[#0B3D91] focus:ring-2 focus:ring-[#FF9933] focus:outline-none bg-white text-gray-900" 
                      required>
-              <button type="submit" class="btn-press min-h-[52px] px-6 bg-[#0B3D91] hover:bg-[#082d6c] text-white font-bold text-lg rounded-xl flex items-center justify-center gap-2 shadow-md transition-all shrink-0">
+              <button type="submit" class="ripple-target btn-press min-h-[52px] px-6 bg-[#0B3D91] hover:bg-[#082d6c] text-white font-bold text-lg rounded-xl flex items-center justify-center gap-2 shadow-md transition-all shrink-0">
                 <span data-i18n="inline_search_btn">स्थिति देखें</span>
                 <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
               </button>
@@ -357,10 +575,10 @@
             <div id="quick-check-alert" class="hidden mt-3 p-3 bg-white border-l-4 border-[#138808] rounded shadow-xs text-sm font-bold text-gray-800"></div>
           </div>
 
-          <!-- PRIMARY CTAS (Requirement 5: min-height 64px, 20px text, press animation, subtitle under button) -->
+          <!-- PRIMARY CTAS (With 8. Breathing CTA Glow on Register Button) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
-            <!-- CTA 1: Register -->
-            <a href="register.html" class="btn-press min-h-[64px] px-5 bg-[#0B3D91] hover:bg-[#082d6c] text-white rounded-xl shadow-lg flex items-center gap-3.5 border-2 border-[#0B3D91] transition-all group">
+            <!-- CTA 1: Register (Breathing subtle glow pulse, stops on hover) -->
+            <a href="register.html" class="cta-breathing ripple-target btn-press min-h-[64px] px-5 bg-[#0B3D91] hover:bg-[#082d6c] text-white rounded-xl flex items-center gap-3.5 border-2 border-[#0B3D91] transition-all group">
               <div class="w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined text-[30px] text-white">add_circle</span>
               </div>
@@ -372,7 +590,7 @@
             </a>
 
             <!-- CTA 2: Check Token -->
-            <a href="check-token.html" class="btn-press min-h-[64px] px-5 bg-white hover:bg-blue-50 text-[#0B3D91] rounded-xl shadow-md flex items-center gap-3.5 border-2 border-[#0B3D91] transition-all group">
+            <a href="check-token.html" class="ripple-target btn-press min-h-[64px] px-5 bg-white hover:bg-blue-50 text-[#0B3D91] rounded-xl shadow-md flex items-center gap-3.5 border-2 border-[#0B3D91] transition-all group">
               <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined text-[30px] text-[#0B3D91]">manage_search</span>
               </div>
@@ -404,25 +622,41 @@
 
         </div>
 
-        <!-- Right Column: High-Visibility Live Stats & ASHA Card (4 Cols) (Requirement 6) -->
-        <div class="lg:col-span-4 flex flex-col gap-5">
+        <!-- Right Column: Live Stats with 4. Animated Live Counter & 1. ECG Beside Live Badge -->
+        <div class="lg:col-span-4 flex flex-col gap-5 reveal-item">
           
-          <!-- LIVE STATS CARD (Requirement 6: 16px+ labels, darker text, LIVE badge with pulsing dot, soft shadow) -->
-          <div class="bg-white border-2 border-gray-200 rounded-2xl p-5 shadow-[0_4px_20px_-2px_rgba(11,61,145,0.08)]">
+          <!-- LIVE STATS CARD -->
+          <div class="bg-white border-2 border-gray-200 rounded-2xl p-5 shadow-[0_4px_20px_-2px_rgba(11,61,145,0.08)] relative overflow-hidden">
             <div class="flex items-center justify-between pb-3 border-b border-gray-200">
               <span class="text-base font-extrabold text-gray-900" data-i18n="stats_header">आज की डिजिटल ओपीडी स्थिति</span>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-[#138808] border border-emerald-300 font-extrabold text-xs">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#138808] animate-ping"></span>
-                <span>LIVE</span>
-              </span>
+              
+              <!-- 1. ECG Line Beside LIVE DATA Badge (User Requirement 1) -->
+              <div class="flex items-center gap-1.5">
+                <svg class="w-12 h-5 text-[#138808] shrink-0" viewBox="0 0 60 20" fill="none">
+                  <path class="ecg-line" 
+                        d="M0 10 L15 10 L20 3 L25 17 L30 1 L35 15 L40 10 L60 10" 
+                        stroke="currentColor" 
+                        stroke-width="2" 
+                        stroke-linecap="round" />
+                </svg>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 text-[#138808] border border-emerald-300 font-extrabold text-xs">
+                  <span class="live-dot-wrap">
+                    <span class="live-dot-ring"></span>
+                    <span class="live-dot-core"></span>
+                  </span>
+                  <span>LIVE</span>
+                </span>
+              </div>
             </div>
             
+            <!-- 4. LIVE COUNTER WITH INDIAN FORMATTING & CONTINUOUS INCREMENT -->
             <div class="py-4">
-              <p class="text-4xl sm:text-5xl font-extrabold text-[#0B3D91] tracking-tight" id="patients-served-stat">
+              <p class="text-4xl sm:text-5xl font-extrabold text-[#0B3D91] tracking-tight transition-all duration-300" id="patients-served-stat">
                 1,48,290
               </p>
-              <p class="text-base font-bold text-gray-900 mt-1" data-i18n="stats_sub">
-                आज बिना लाइन में खड़े इलाज पाए मरीज
+              <p class="text-base font-bold text-gray-900 mt-1 flex items-center gap-1.5" data-i18n="stats_sub">
+                <span>आज बिना लाइन में खड़े इलाज पाए मरीज</span>
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
               </p>
             </div>
 
@@ -438,7 +672,7 @@
             </div>
           </div>
 
-          <!-- ASHA WORKER CARD (Requirement 6: 96px rounded image, stronger border, Find ASHA button) -->
+          <!-- ASHA WORKER CARD -->
           <div class="bg-white border-2 border-gray-300 rounded-2xl p-5 shadow-[0_4px_20px_-2px_rgba(11,61,145,0.08)] flex flex-col gap-4">
             <div class="flex items-center gap-4">
               <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsUubboRZgY671VrAtmI7L9_9U7UArUAZ4K0-rs18gsgsoZVO8jJCdxwjMqKbcdSCLlEHEf7T03j2HWYC6Ig8pHMMVm3RR8mP92OwqcVlw_Y05r42sTaKeHK_uYS2Kj9E5i91Yemg_r1GTy7LMWg1STYySZUbdsBpQi5fIuOTjtrmQ_i1m98uRalRPdN47VSX_4bkkVSRg4foy26j93rkIjOm94iJutgPG8K1rcVUgYWkUcaOVXO5u" 
@@ -451,8 +685,8 @@
               </div>
             </div>
 
-            <!-- Find ASHA Didi Button (Requirement 6) -->
-            <button type="button" onclick="openAshaSearchModal()" class="btn-press w-full min-h-[48px] bg-[#0B3D91] hover:bg-[#082d6c] text-white font-extrabold text-base rounded-xl flex items-center justify-center gap-2 shadow-xs transition-colors">
+            <!-- Find ASHA Didi Button -->
+            <button type="button" onclick="openAshaSearchModal()" class="ripple-target btn-press w-full min-h-[48px] bg-[#0B3D91] hover:bg-[#082d6c] text-white font-extrabold text-base rounded-xl flex items-center justify-center gap-2 shadow-xs transition-colors">
               <span class="material-symbols-outlined text-[22px]">diversity_1</span>
               <span data-i18n="asha_btn">आशा दीदी खोजें (Find my ASHA)</span>
             </button>
@@ -465,23 +699,30 @@
 
     <!-- =======================================================================
          LIVE CLINIC QUEUE SNAPSHOT BOARD
+         Includes:
+         3. Now Serving Ticker (slides/flips every 8s + Next: 043, 044, 045)
+         5. Wait-Time Animated Circular Progress Ring (Countdown & Color shift)
+         6. Queue Visual (Row of patient icons sliding forward)
          ======================================================================= -->
     <section class="w-full bg-[#F7F9FC] py-8 sm:py-12 px-3 sm:px-6 border-b border-gray-200" aria-label="Live Clinic Queue Tracker">
       <div class="max-w-7xl mx-auto space-y-6">
         
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 reveal-item">
           <div>
             <span class="text-sm font-extrabold uppercase tracking-wider text-[#0B3D91]" data-i18n="queue_tag">रियल-टाइम ओपीडी ट्रैकर</span>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1" data-i18n="queue_heading">प्राथमिक स्वास्थ्य केंद्र लाइव कतार बोर्ड</h2>
           </div>
           <div class="flex items-center gap-2 text-sm font-bold text-gray-700 bg-white px-3.5 py-1.5 rounded-full border border-gray-200 w-fit shadow-xs">
-            <span class="w-2.5 h-2.5 rounded-full bg-[#138808] animate-ping"></span>
+            <span class="live-dot-wrap">
+              <span class="live-dot-ring"></span>
+              <span class="live-dot-core"></span>
+            </span>
             <span data-i18n="queue_sync">हर 10 सेकंड में ऑटो-रिफ्रेश</span>
           </div>
         </div>
 
         <!-- Main Live Card Component -->
-        <div class="bg-white border-2 border-gray-200 p-5 sm:p-7 rounded-2xl shadow-sm">
+        <div class="bg-white border-2 border-gray-200 p-5 sm:p-7 rounded-2xl shadow-sm reveal-item">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
             <!-- Facility Details Left (4 Cols) -->
@@ -503,46 +744,160 @@
               </div>
             </div>
 
-            <!-- Token Counter Center Unit (5 Cols) -->
-            <div class="lg:col-span-5 text-center lg:text-left space-y-2 px-0 lg:px-4">
-              <span class="text-sm font-extrabold uppercase tracking-wider text-gray-600 block" data-i18n="current_token_label">
-                वर्तमान में परामर्श हेतु सेवारत पर्ची संख्या
-              </span>
-              <div class="flex items-baseline justify-center lg:justify-start gap-3">
-                <span class="text-6xl sm:text-7xl font-extrabold text-[#0B3D91] tracking-tight" id="live-token-counter">
-                  #44
+            <!-- 3. NOW SERVING TICKER (Center 5 Cols) with slide number animation -->
+            <div class="lg:col-span-5 text-center lg:text-left space-y-3 px-0 lg:px-4">
+              <div class="flex items-center justify-center lg:justify-start gap-2">
+                <span class="text-sm font-extrabold uppercase tracking-wider text-gray-600 block" data-i18n="current_token_label">
+                  वर्तमान में सेवारत पर्ची (Now Serving)
                 </span>
-                <span class="px-3 py-1.5 rounded-lg border-2 border-emerald-300 bg-emerald-50 text-[#138808] text-base font-extrabold">
+                <span class="live-dot-wrap">
+                  <span class="live-dot-ring"></span>
+                  <span class="live-dot-core"></span>
+                </span>
+              </div>
+
+              <!-- Animated Token Counter Unit -->
+              <div class="flex items-baseline justify-center lg:justify-start gap-3">
+                <div class="relative overflow-hidden h-[76px] flex items-center">
+                  <span class="text-6xl sm:text-7xl font-extrabold text-[#0B3D91] tracking-tight inline-block transition-transform duration-500" id="live-token-counter">
+                    #042
+                  </span>
+                </div>
+                <span class="px-3 py-1.5 rounded-lg border-2 border-emerald-300 bg-emerald-50 text-[#138808] text-sm sm:text-base font-extrabold">
                   कमरे में परामर्श जारी
                 </span>
               </div>
 
-              <!-- Stats Bar Under Token -->
-              <div class="grid grid-cols-2 gap-3 pt-2 text-left max-w-md mx-auto lg:mx-0">
+              <!-- "Next: 043, 044, 045" Queue Stream -->
+              <div class="flex items-center justify-center lg:justify-start gap-2 text-sm font-bold text-gray-700 bg-blue-50/70 p-2 rounded-lg border border-blue-200/80">
+                <span class="text-[#0B3D91] font-extrabold">आगामी (Next):</span>
+                <div class="flex items-center gap-1.5" id="next-tokens-stream">
+                  <span class="px-2 py-0.5 rounded bg-white border border-gray-300 text-gray-900 font-extrabold shadow-2xs">#043</span>
+                  <span class="px-2 py-0.5 rounded bg-white border border-gray-300 text-gray-700 font-bold shadow-2xs">#044</span>
+                  <span class="px-2 py-0.5 rounded bg-white border border-gray-300 text-gray-600 font-bold shadow-2xs">#045</span>
+                </div>
+              </div>
+
+              <!-- Stats & Wait-Time Ring Strip -->
+              <div class="grid grid-cols-2 gap-3 pt-1 text-left max-w-md mx-auto lg:mx-0">
+                <!-- Remaining Count -->
                 <div class="bg-[#F7F9FC] p-3 rounded-xl border border-gray-200">
                   <span class="text-xs sm:text-sm font-bold text-gray-600 block" data-i18n="token_wait_label">कतार में शेष मरीज:</span>
                   <span class="text-lg sm:text-xl font-extrabold text-[#0B3D91]" id="remaining-count">21 मरीज</span>
                 </div>
-                <div class="bg-[#F7F9FC] p-3 rounded-xl border border-gray-200">
-                  <span class="text-xs sm:text-sm font-bold text-gray-600 block" data-i18n="token_time_label">अनुमानित प्रतीक्षा समय:</span>
-                  <span class="text-lg sm:text-xl font-extrabold text-[#138808]">~12 मिनट</span>
+
+                <!-- 5. ANIMATED WAIT-TIME CIRCULAR PROGRESS RING -->
+                <div class="bg-[#F7F9FC] p-2.5 rounded-xl border border-gray-200 flex items-center gap-3">
+                  <div class="relative w-12 h-12 shrink-0">
+                    <svg class="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+                      <!-- Background circle -->
+                      <circle cx="24" cy="24" r="20" stroke="#E5E7EB" stroke-width="4" fill="none" />
+                      <!-- Animated progress stroke -->
+                      <circle id="wait-ring-circle" 
+                              cx="24" cy="24" r="20" 
+                              stroke="#138808" 
+                              stroke-width="4" 
+                              stroke-linecap="round" 
+                              fill="none" 
+                              stroke-dasharray="125.6" 
+                              stroke-dashoffset="31.4" 
+                              class="transition-all duration-700" />
+                    </svg>
+                    <span class="absolute inset-0 flex items-center justify-center text-[10px] font-extrabold text-gray-900" id="wait-ring-text">
+                      12m
+                    </span>
+                  </div>
+                  <div>
+                    <span class="text-xs font-bold text-gray-500 block leading-tight">अनुमानित प्रतीक्षा</span>
+                    <strong class="text-sm sm:text-base font-extrabold text-[#138808] leading-tight block" id="wait-status-label">~12 मिनट</strong>
+                  </div>
                 </div>
               </div>
+
             </div>
 
             <!-- Actions Right (3 Cols) -->
             <div class="lg:col-span-3 flex flex-col justify-center gap-3">
-              <a href="check-token.html" class="btn-press min-h-[48px] px-4 bg-[#0B3D91] hover:bg-[#082d6c] text-white font-extrabold text-base rounded-xl flex items-center justify-center gap-2 shadow-xs transition-colors">
+              <a href="check-token.html" class="ripple-target btn-press min-h-[48px] px-4 bg-[#0B3D91] hover:bg-[#082d6c] text-white font-extrabold text-base rounded-xl flex items-center justify-center gap-2 shadow-xs transition-colors">
                 <span class="material-symbols-outlined text-[20px]">badge</span>
                 <span data-i18n="check_my_turn_btn">मेरी पर्ची का नंबर देखें</span>
               </a>
-              <a href="dashboard.html" class="btn-press min-h-[48px] px-4 bg-white hover:bg-gray-50 text-gray-800 font-extrabold text-base rounded-xl border-2 border-gray-300 flex items-center justify-center gap-2 transition-colors">
+              <a href="dashboard.html" class="ripple-target btn-press min-h-[48px] px-4 bg-white hover:bg-gray-50 text-gray-800 font-extrabold text-base rounded-xl border-2 border-gray-300 flex items-center justify-center gap-2 transition-colors">
                 <span class="material-symbols-outlined text-[20px]">table_chart</span>
                 <span data-i18n="view_full_board_btn">पूरा ओपीडी बोर्ड देखें</span>
               </a>
             </div>
 
           </div>
+
+          <!-- 6. QUEUE VISUAL: ROW OF PERSON ICONS SLIDING FORWARD AS PATIENT LEAVES -->
+          <div class="mt-6 pt-5 border-t border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs sm:text-sm font-extrabold text-gray-700 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px] text-[#0B3D91]">groups</span>
+                <span>कतार दृश्य (Live OPD Queue Simulation)</span>
+              </span>
+              <span class="text-xs font-semibold text-gray-500">प्रत्येक 8 सेकंड में कतार आगे बढ़ती है</span>
+            </div>
+
+            <!-- Queue Line Visualization Track -->
+            <div class="w-full bg-[#F7F9FC] border border-gray-200 rounded-xl p-3 overflow-hidden">
+              <div class="flex items-center justify-between gap-2 overflow-x-auto" id="queue-visual-track">
+                <!-- Doctor Room Destination -->
+                <div class="flex items-center gap-1 bg-emerald-100 border border-emerald-300 px-3 py-1.5 rounded-lg text-[#138808] font-extrabold text-xs shrink-0">
+                  <span class="material-symbols-outlined text-[18px]">meeting_room</span>
+                  <span>डॉक्टर रूम ०२</span>
+                </div>
+
+                <!-- Patient Icons Line -->
+                <div class="flex items-center gap-2 sm:gap-3 flex-1 justify-end" id="queue-patients-row">
+                  <!-- Person 1 (Now consulting) -->
+                  <div class="flex flex-col items-center queue-person transition-all duration-500" id="queue-p1">
+                    <div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                      <span class="material-symbols-outlined text-[20px]">person</span>
+                    </div>
+                    <span class="text-[10px] font-extrabold text-emerald-800 mt-0.5" id="p1-label">#042 (अंदर)</span>
+                  </div>
+
+                  <!-- Divider arrow -->
+                  <span class="material-symbols-outlined text-gray-400 text-[18px] shrink-0">arrow_back</span>
+
+                  <!-- Person 2 -->
+                  <div class="flex flex-col items-center queue-person transition-all duration-500" id="queue-p2">
+                    <div class="w-9 h-9 rounded-full bg-[#0B3D91] text-white flex items-center justify-center shadow-xs">
+                      <span class="material-symbols-outlined text-[20px]">person</span>
+                    </div>
+                    <span class="text-[10px] font-extrabold text-[#0B3D91] mt-0.5" id="p2-label">#043</span>
+                  </div>
+
+                  <!-- Person 3 -->
+                  <div class="flex flex-col items-center queue-person transition-all duration-500" id="queue-p3">
+                    <div class="w-9 h-9 rounded-full bg-blue-100 text-[#0B3D91] border border-blue-300 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[20px]">person</span>
+                    </div>
+                    <span class="text-[10px] font-bold text-gray-700 mt-0.5" id="p3-label">#044</span>
+                  </div>
+
+                  <!-- Person 4 -->
+                  <div class="flex flex-col items-center queue-person transition-all duration-500 hidden sm:flex" id="queue-p4">
+                    <div class="w-9 h-9 rounded-full bg-blue-100 text-[#0B3D91] border border-blue-300 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[20px]">person</span>
+                    </div>
+                    <span class="text-[10px] font-bold text-gray-700 mt-0.5" id="p4-label">#045</span>
+                  </div>
+
+                  <!-- Person 5 -->
+                  <div class="flex flex-col items-center queue-person transition-all duration-500 hidden sm:flex" id="queue-p5">
+                    <div class="w-9 h-9 rounded-full bg-gray-100 text-gray-600 border border-gray-300 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[20px]">person</span>
+                    </div>
+                    <span class="text-[10px] font-bold text-gray-500 mt-0.5" id="p5-label">#046</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -554,7 +909,7 @@
     <section class="w-full bg-white py-8 sm:py-12 px-3 sm:px-6 border-b border-gray-200" aria-label="How to use Swasthya Queue">
       <div class="max-w-7xl mx-auto space-y-8">
         
-        <div class="space-y-1">
+        <div class="space-y-1 reveal-item">
           <span class="text-sm font-extrabold uppercase tracking-wider text-[#0B3D91]" data-i18n="steps_tag">नागरिक सुविधाएं</span>
           <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900" data-i18n="steps_heading">कतार-मुक्त इलाज पाने के ३ आसान चरण</h2>
           <p class="text-base text-gray-600 max-w-2xl" data-i18n="steps_sub">बिना भीड़ में खड़े अपनी बारी पर डॉक्टर से मिलें और समय बचाएं।</p>
@@ -563,7 +918,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           <!-- Step 1 -->
-          <div class="bg-[#F7F9FC] border-2 border-gray-200 p-6 rounded-2xl flex flex-col justify-between space-y-4">
+          <div class="bg-[#F7F9FC] border-2 border-gray-200 p-6 rounded-2xl flex flex-col justify-between space-y-4 reveal-item">
             <div class="space-y-3">
               <div class="w-12 h-12 bg-blue-100 text-[#0B3D91] rounded-xl flex items-center justify-center">
                 <span class="material-symbols-outlined text-[28px]">badge</span>
@@ -580,7 +935,7 @@
           </div>
 
           <!-- Step 2 -->
-          <div class="bg-[#F7F9FC] border-2 border-gray-200 p-6 rounded-2xl flex flex-col justify-between space-y-4">
+          <div class="bg-[#F7F9FC] border-2 border-gray-200 p-6 rounded-2xl flex flex-col justify-between space-y-4 reveal-item">
             <div class="space-y-3">
               <div class="w-12 h-12 bg-blue-100 text-[#0B3D91] rounded-xl flex items-center justify-center">
                 <span class="material-symbols-outlined text-[28px]">notifications_active</span>
@@ -597,7 +952,7 @@
           </div>
 
           <!-- Step 3 -->
-          <div class="bg-[#F7F9FC] border-2 border-gray-200 p-6 rounded-2xl flex flex-col justify-between space-y-4">
+          <div class="bg-[#F7F9FC] border-2 border-gray-200 p-6 rounded-2xl flex flex-col justify-between space-y-4 reveal-item">
             <div class="space-y-3">
               <div class="w-12 h-12 bg-blue-100 text-[#0B3D91] rounded-xl flex items-center justify-center">
                 <span class="material-symbols-outlined text-[28px]">phone_in_talk</span>
@@ -621,7 +976,7 @@
   </main>
 
   <!-- =========================================================================
-       ASHA SEARCH MODAL (Requirement 6)
+       ASHA SEARCH MODAL
        ========================================================================= -->
   <div id="asha-modal" role="dialog" aria-modal="true" aria-labelledby="asha-modal-title" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
     <div class="bg-white max-w-lg w-full p-6 rounded-2xl shadow-2xl space-y-4 border-2 border-gray-300">
@@ -643,7 +998,7 @@
       <form onsubmit="searchAshaWorker(event)" class="space-y-3">
         <div class="flex gap-2">
           <input type="text" id="asha-search-input" placeholder="उदा. सारंगपुर या 301021" class="flex-1 min-h-[48px] px-4 rounded-xl border-2 border-gray-300 font-bold text-base focus:border-[#0B3D91] focus:outline-none" required>
-          <button type="submit" class="btn-press px-5 min-h-[48px] bg-[#0B3D91] hover:bg-[#082d6c] text-white font-extrabold rounded-xl text-base">
+          <button type="submit" class="ripple-target btn-press px-5 min-h-[48px] bg-[#0B3D91] hover:bg-[#082d6c] text-white font-extrabold rounded-xl text-base">
             खोजें
           </button>
         </div>
@@ -655,7 +1010,7 @@
         <p class="text-base font-bold text-gray-900">श्रीमती सुनीता देवी (आशा संगिनी)</p>
         <p class="text-sm font-semibold text-gray-700">सत्यापित मोबाइल: <strong>+91 98290-71420</strong></p>
         <div class="pt-2">
-          <a href="tel:9829071420" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0B3D91] text-white font-bold text-xs">
+          <a href="tel:9829071420" class="ripple-target inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0B3D91] text-white font-bold text-xs">
             <span class="material-symbols-outlined text-[16px]">call</span>
             आशा दीदी को कॉल करें
           </a>
@@ -663,7 +1018,7 @@
       </div>
 
       <div class="pt-2 flex justify-end">
-        <button type="button" onclick="closeAshaSearchModal()" class="btn-press min-h-[44px] px-5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-extrabold rounded-xl text-sm">
+        <button type="button" onclick="closeAshaSearchModal()" class="ripple-target btn-press min-h-[44px] px-5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-extrabold rounded-xl text-sm">
           बंद करें (Close)
         </button>
       </div>
@@ -672,8 +1027,12 @@
   </div>
 
   <!-- =========================================================================
-       MOBILE FIXED BOTTOM NAVIGATION BAR (< 768px) (Requirement 4 & Mobile First)
-       4 Large Touch Buttons (Min 48px Target): Home, Check Token, Register, Call 104
+       10. ANIMATED TOAST MESSAGE NOTIFICATION CONTAINER
+       ========================================================================= -->
+  <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-4 z-50 pointer-events-none flex flex-col gap-2"></div>
+
+  <!-- =========================================================================
+       MOBILE FIXED BOTTOM NAVIGATION BAR (< 768px)
        ========================================================================= -->
   <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-gray-200 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] flex items-center justify-around py-1.5 px-2 select-none" aria-label="Mobile Navigation Bar">
     
@@ -704,11 +1063,23 @@
   </nav>
 
   <!-- =========================================================================
-       FOOTER & TRUST SECTION (Requirement 8)
+       7. AMBULANCE 108 TRACK STRIP & FOOTER
        ========================================================================= -->
+  <!-- 7. Moving Ambulance Animation Strip Above Footer -->
+  <div class="w-full bg-[#D32F2F] text-white py-2 relative overflow-hidden select-none" aria-label="Emergency Ambulance Ticker">
+    <div class="ambulance-track flex items-center gap-2 font-bold text-xs sm:text-sm">
+      <div class="relative flex items-center">
+        <!-- Flashing Beacon Light -->
+        <span class="w-2.5 h-2.5 rounded-full bg-yellow-300 beacon-flash absolute -top-1.5 left-2.5"></span>
+        <span class="material-symbols-outlined text-[24px]">ambulance</span>
+      </div>
+      <span>108 आपातकालीन एम्बुलेंस सेवा • 24×7 नि:शुल्क सेवा</span>
+    </div>
+  </div>
+
   <footer class="w-full bg-[#0B3D91] text-white border-t-4 border-[#FF9933] mt-auto">
     
-    <!-- Concept Prototype Trust Disclaimer Banner (Requirement 8) -->
+    <!-- Concept Prototype Trust Disclaimer Banner -->
     <div class="w-full bg-[#082d6c] text-center py-2 px-3 border-b border-blue-900 text-xs sm:text-sm font-semibold">
       <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-blue-200">
         <span class="material-symbols-outlined text-[18px] text-[#FF9933]">info</span>
@@ -782,11 +1153,11 @@
   </footer>
 
   <!-- =========================================================================
-       CLIENT LOGIC & ACCESSIBILITY SCRIPTS
+       CLIENT LOGIC, ANIMATIONS CONTROLLER & ACCESSIBILITY SCRIPTS
        ========================================================================= -->
   <script>
     // -------------------------------------------------------------------------
-    // 1. Language Dictionary & Switcher (Requirement 2: Default Hindi, one language at a time)
+    // 1. Language Dictionary & Switcher
     // -------------------------------------------------------------------------
     const translations = {
       hi: {
@@ -819,9 +1190,8 @@
         queue_tag: "रियल-टाइम ओपीडी ट्रैकर",
         queue_heading: "प्राथमिक स्वास्थ्य केंद्र लाइव कतार बोर्ड",
         queue_sync: "हर 10 सेकंड में ऑटो-रिफ्रेश",
-        current_token_label: "वर्तमान में परामर्श हेतु सेवारत पर्ची संख्या",
+        current_token_label: "वर्तमान में सेवारत पर्ची (Now Serving)",
         token_wait_label: "कतार में शेष मरीज:",
-        token_time_label: "अनुमानित प्रतीक्षा समय:",
         check_my_turn_btn: "मेरी पर्ची का नंबर देखें",
         view_full_board_btn: "पूरा ओपीडी बोर्ड देखें",
         steps_tag: "नागरिक सुविधाएं",
@@ -872,7 +1242,6 @@
         queue_sync: "Auto-syncs every 10 seconds",
         current_token_label: "Currently Serving Token Number in OPD",
         token_wait_label: "Remaining in Queue:",
-        token_time_label: "Estimated Wait Time:",
         check_my_turn_btn: "Check My Token Position",
         view_full_board_btn: "View Full OPD Board",
         steps_tag: "Citizen Services",
@@ -900,7 +1269,6 @@
       localStorage.setItem('swasthya_lang', lang);
       document.documentElement.lang = lang;
 
-      // Update UI button highlights
       const btnHi = document.getElementById('lang-btn-hi');
       const btnEn = document.getElementById('lang-btn-en');
       if (btnHi && btnEn) {
@@ -913,18 +1281,255 @@
         }
       }
 
-      // Update all translatable elements
       const dict = translations[lang] || translations.hi;
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (dict[key]) {
-          el.textContent = dict[key];
-        }
+        if (dict[key]) el.textContent = dict[key];
       });
     }
 
     // -------------------------------------------------------------------------
-    // 2. Accessibility: Font Resizing (A- / A / A+) (Requirement 7)
+    // LIVE ANIMATION TOGGLE CONTROLLER
+    // -------------------------------------------------------------------------
+    let isAnimationsPaused = false;
+    function toggleAnimations() {
+      isAnimationsPaused = !isAnimationsPaused;
+      document.documentElement.classList.toggle('motion-paused', isAnimationsPaused);
+      localStorage.setItem('swasthya_motion_paused', isAnimationsPaused ? 'true' : 'false');
+
+      const btn = document.getElementById('motion-toggle-btn');
+      const icon = document.getElementById('motion-icon');
+      const text = document.getElementById('motion-text');
+
+      if (isAnimationsPaused) {
+        if (icon) icon.textContent = "▶️";
+        if (text) text.textContent = "एनीमेशन रोक दी गई";
+        showToast("लाइव एनीमेशन रोक दी गई है (Animations paused)");
+      } else {
+        if (icon) icon.textContent = "⏸️";
+        if (text) text.textContent = "एनीमेशन चालू";
+        showToast("लाइव एनीमेशन चालू है (Animations active)");
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. LIVE OPD COUNTER (Count up on load, then +1 to +3 dynamically)
+    // -------------------------------------------------------------------------
+    let currentPatients = 148290;
+    const indianFormatter = new Intl.NumberFormat('en-IN');
+
+    function animateValue(element, start, end, duration) {
+      if (!element) return;
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const val = Math.floor(progress * (end - start) + start);
+        element.textContent = indianFormatter.format(val);
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          element.textContent = indianFormatter.format(end);
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    function initCounter() {
+      const el = document.getElementById('patients-served-stat');
+      if (el) {
+        animateValue(el, 147800, currentPatients, 1400);
+      }
+      // Increment every 5-7 seconds
+      setInterval(() => {
+        if (isAnimationsPaused) return;
+        const add = Math.floor(Math.random() * 3) + 1;
+        currentPatients += add;
+        if (el) {
+          el.textContent = indianFormatter.format(currentPatients);
+          el.classList.add('text-emerald-700', 'scale-[1.02]');
+          setTimeout(() => el.classList.remove('text-emerald-700', 'scale-[1.02]'), 400);
+        }
+      }, 5500);
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. NOW SERVING TICKER & 6. QUEUE VISUAL STREAM
+    // -------------------------------------------------------------------------
+    let currentServing = 42;
+    let remainingInQueue = 21;
+    let waitMinutes = 12;
+
+    function advanceQueue() {
+      if (isAnimationsPaused) return;
+      currentServing++;
+      if (remainingInQueue > 1) remainingInQueue--;
+
+      const tokenEl = document.getElementById('live-token-counter');
+      const remEl = document.getElementById('remaining-count');
+      const nextStream = document.getElementById('next-tokens-stream');
+
+      if (tokenEl) {
+        // Slide / Flip Transition
+        tokenEl.style.transform = 'translateY(-100%)';
+        tokenEl.style.opacity = '0';
+        setTimeout(() => {
+          tokenEl.textContent = '#' + String(currentServing).padStart(3, '0');
+          tokenEl.style.transform = 'translateY(100%)';
+          setTimeout(() => {
+            tokenEl.style.transform = 'translateY(0)';
+            tokenEl.style.opacity = '1';
+          }, 50);
+        }, 250);
+      }
+
+      if (remEl) {
+        remEl.textContent = `${remainingInQueue} ${currentLang === 'hi' ? 'मरीज' : 'Patients'}`;
+      }
+
+      if (nextStream) {
+        const n1 = String(currentServing + 1).padStart(3, '0');
+        const n2 = String(currentServing + 2).padStart(3, '0');
+        const n3 = String(currentServing + 3).padStart(3, '0');
+        nextStream.innerHTML = `
+          <span class="px-2 py-0.5 rounded bg-white border border-gray-300 text-gray-900 font-extrabold shadow-2xs">#${n1}</span>
+          <span class="px-2 py-0.5 rounded bg-white border border-gray-300 text-gray-700 font-bold shadow-2xs">#${n2}</span>
+          <span class="px-2 py-0.5 rounded bg-white border border-gray-300 text-gray-600 font-bold shadow-2xs">#${n3}</span>
+        `;
+      }
+
+      // Update 6. Queue Person Visual
+      const p1Label = document.getElementById('p1-label');
+      const p2Label = document.getElementById('p2-label');
+      const p3Label = document.getElementById('p3-label');
+      const p4Label = document.getElementById('p4-label');
+      const p5Label = document.getElementById('p5-label');
+      if (p1Label) p1Label.textContent = `#${String(currentServing).padStart(3, '0')} (अंदर)`;
+      if (p2Label) p2Label.textContent = `#${String(currentServing + 1).padStart(3, '0')}`;
+      if (p3Label) p3Label.textContent = `#${String(currentServing + 2).padStart(3, '0')}`;
+      if (p4Label) p4Label.textContent = `#${String(currentServing + 3).padStart(3, '0')}`;
+      if (p5Label) p5Label.textContent = `#${String(currentServing + 4).padStart(3, '0')}`;
+
+      // Slide queue person effect
+      const row = document.getElementById('queue-patients-row');
+      if (row) {
+        row.classList.add('translate-x-1');
+        setTimeout(() => row.classList.remove('translate-x-1'), 400);
+      }
+
+      // 5. Update Wait-Time Progress Ring
+      updateWaitRing();
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. ANIMATED WAIT-TIME CIRCULAR PROGRESS RING
+    // -------------------------------------------------------------------------
+    function updateWaitRing() {
+      const ring = document.getElementById('wait-ring-circle');
+      const text = document.getElementById('wait-ring-text');
+      const label = document.getElementById('wait-status-label');
+
+      // Countdown wait time gently
+      if (waitMinutes > 4 && Math.random() > 0.4) {
+        waitMinutes--;
+      }
+
+      if (text) text.textContent = `${waitMinutes}m`;
+      if (label) label.textContent = `~${waitMinutes} मिनट`;
+
+      if (ring) {
+        // Circumference = 2 * PI * 20 = 125.6
+        const total = 125.6;
+        const progress = Math.max(0.15, waitMinutes / 20);
+        const offset = total * (1 - progress);
+        ring.style.strokeDashoffset = offset;
+
+        // Smooth color transition based on wait time: Green -> Amber -> Red
+        if (waitMinutes <= 6) {
+          ring.style.stroke = '#138808'; // Quick (Green)
+          if (label) label.className = 'text-sm sm:text-base font-extrabold text-[#138808] leading-tight block';
+        } else if (waitMinutes <= 14) {
+          ring.style.stroke = '#F5A623'; // Moderate (Amber)
+          if (label) label.className = 'text-sm sm:text-base font-extrabold text-[#F5A623] leading-tight block';
+        } else {
+          ring.style.stroke = '#D32F2F'; // Long (Red)
+          if (label) label.className = 'text-sm sm:text-base font-extrabold text-[#D32F2F] leading-tight block';
+        }
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 10. MICRO-INTERACTIONS: TOAST NOTIFICATIONS & BUTTON RIPPLE
+    // -------------------------------------------------------------------------
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = 'pointer-events-auto bg-gray-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border-2 border-emerald-400 transform translate-y-4 opacity-0 transition-all duration-300';
+      toast.innerHTML = `
+        <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-[18px]">check</span>
+        </div>
+        <span class="text-sm font-bold">${message}</span>
+      `;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 350);
+      }, 3500);
+    }
+
+    // Ripple click handler on all .ripple-target elements
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('.ripple-target');
+      if (!target) return;
+
+      const rect = target.getBoundingClientRect();
+      const circle = document.createElement('span');
+      const diameter = Math.max(rect.width, rect.height);
+      const radius = diameter / 2;
+
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${e.clientX - rect.left - radius}px`;
+      circle.style.top = `${e.clientY - rect.top - radius}px`;
+      circle.classList.add('ripple-ink');
+
+      const existing = target.querySelector('.ripple-ink');
+      if (existing) existing.remove();
+
+      target.appendChild(circle);
+      setTimeout(() => circle.remove(), 600);
+    });
+
+    // -------------------------------------------------------------------------
+    // 10. SCROLL REVEAL (IntersectionObserver)
+    // -------------------------------------------------------------------------
+    function initScrollReveal() {
+      const items = document.querySelectorAll('.reveal-item');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        items.forEach(el => observer.observe(el));
+      } else {
+        items.forEach(el => el.classList.add('is-revealed'));
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Accessibility: Font Resizing & High Contrast
     // -------------------------------------------------------------------------
     function changeFontSize(size) {
       let rootSize = '18px';
@@ -936,9 +1541,6 @@
       localStorage.setItem('swasthya_font_size', size);
     }
 
-    // -------------------------------------------------------------------------
-    // 3. Accessibility: High Contrast Mode (Requirement 7)
-    // -------------------------------------------------------------------------
     function toggleHighContrast() {
       const isHighContrast = document.documentElement.classList.toggle('high-contrast');
       localStorage.setItem('swasthya_contrast', isHighContrast ? 'enabled' : 'disabled');
@@ -950,7 +1552,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // 4. Web Speech API: Unified Speaker Read Aloud (Requirement 2)
+    // Web Speech API: Page Read Aloud
     // -------------------------------------------------------------------------
     let isSpeaking = false;
     function toggleReadAloud() {
@@ -960,28 +1562,14 @@
       if (!isSpeaking) {
         if ('speechSynthesis' in window) {
           window.speechSynthesis.cancel();
-          let text = "";
-          let speakLang = 'hi-IN';
-
-          if (currentLang === 'hi') {
-            text = "राष्ट्रीय स्वास्थ्य कतार में आपका स्वागत है। बिना इंटरनेट साधारण फोन पर पर्ची की स्थिति जानने के लिए, 56161 पर कतार और टोकन नंबर एसएमएस भेजें या टोल फ्री नंबर 104 डायल करें।";
-            speakLang = 'hi-IN';
-          } else {
-            text = "Welcome to Rashtriya Swasthya Queue. To check your token status on basic phones without internet, SMS QUEUE followed by token number to 56161, or dial toll-free 104.";
-            speakLang = 'en-IN';
-          }
-
+          let text = currentLang === 'hi' 
+            ? "राष्ट्रीय स्वास्थ्य कतार में आपका स्वागत है। बिना इंटरनेट साधारण फोन पर पर्ची स्थिति जानने के लिए 56161 पर कतार और टोकन नंबर भेजें या 104 पर कॉल करें।"
+            : "Welcome to Rashtriya Swasthya Queue. To check your token on basic phones without internet, SMS QUEUE followed by token number to 56161, or dial 104.";
           const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = speakLang;
-          utterance.rate = 0.95; // Slightly slower for clear rural comprehension
+          utterance.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
+          utterance.rate = 0.95;
 
-          utterance.onend = () => {
-            isSpeaking = false;
-            if (btnLabel) btnLabel.textContent = translations[currentLang].listen_btn;
-            if (btnIcon) btnIcon.textContent = "volume_up";
-          };
-
-          utterance.onerror = () => {
+          utterance.onend = utterance.onerror = () => {
             isSpeaking = false;
             if (btnLabel) btnLabel.textContent = translations[currentLang].listen_btn;
             if (btnIcon) btnIcon.textContent = "volume_up";
@@ -991,8 +1579,6 @@
           isSpeaking = true;
           if (btnLabel) btnLabel.textContent = currentLang === 'hi' ? "रोकें (Stop)" : "Stop";
           if (btnIcon) btnIcon.textContent = "stop_circle";
-        } else {
-          alert("Text to speech is not supported in this browser. Please dial 104.");
         }
       } else {
         window.speechSynthesis.cancel();
@@ -1003,14 +1589,13 @@
     }
 
     // -------------------------------------------------------------------------
-    // 5. Inline Hero Token Checker (Requirement 5)
+    // Inline Hero Search & ASHA Modal
     // -------------------------------------------------------------------------
     function handleQuickTokenCheck(e) {
       e.preventDefault();
       const input = document.getElementById('quick-token-input');
       const alertBox = document.getElementById('quick-check-alert');
       const token = input ? input.value.trim() : '';
-
       if (!token) return;
 
       if (alertBox) {
@@ -1018,20 +1603,16 @@
         alertBox.innerHTML = `
           <div class="flex items-center gap-2 text-[#0B3D91]">
             <span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>
-            <span>पर्ची #${token} की स्थिति जांची जा रही है...</span>
+            <span>पर्ची #${token} की लाइव स्थिति जांची जा रही है...</span>
           </div>
         `;
+        showToast(`पर्ची #${token} खोजी जा रही है...`);
         setTimeout(() => {
           window.location.href = `check-token.html?token=${encodeURIComponent(token)}`;
-        }, 600);
-      } else {
-        window.location.href = `check-token.html?token=${encodeURIComponent(token)}`;
+        }, 550);
       }
     }
 
-    // -------------------------------------------------------------------------
-    // 6. Interactive ASHA Search Modal (Requirement 6)
-    // -------------------------------------------------------------------------
     function openAshaSearchModal() {
       const modal = document.getElementById('asha-modal');
       if (modal) {
@@ -1062,36 +1643,21 @@
           <p class="text-base font-bold text-gray-900">श्रीमती सुनीता देवी (आशा संगिनी)</p>
           <p class="text-sm font-semibold text-gray-700">सत्यापित मोबाइल: <strong>+91 98290-71420</strong></p>
           <div class="pt-2">
-            <a href="tel:9829071420" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0B3D91] text-white font-bold text-xs">
+            <a href="tel:9829071420" class="ripple-target inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0B3D91] text-white font-bold text-xs">
               <span class="material-symbols-outlined text-[16px]">call</span>
               आशा दीदी को कॉल करें
             </a>
           </div>
         `;
+        showToast("आशा कार्यकर्ता की जानकारी मिल गई!");
       }
     }
 
     // -------------------------------------------------------------------------
-    // 7. Live Token & Stats Simulator
-    // -------------------------------------------------------------------------
-    let liveToken = 44;
-    let liveRemaining = 21;
-    setInterval(() => {
-      if (liveRemaining > 1) {
-        liveToken++;
-        liveRemaining--;
-        const tokenEl = document.getElementById('live-token-counter');
-        const remEl = document.getElementById('remaining-count');
-        if (tokenEl) tokenEl.textContent = '#' + liveToken;
-        if (remEl) remEl.textContent = liveRemaining + (currentLang === 'hi' ? ' मरीज' : ' Patients');
-      }
-    }, 25000);
-
-    // -------------------------------------------------------------------------
-    // 8. Initialization on Page Load
+    // INITIALIZATION ON DOM READY
     // -------------------------------------------------------------------------
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Language preference (Default Hindi as requested)
+      // 1. Language preference
       const savedLang = localStorage.getItem('swasthya_lang') || 'hi';
       setAppLanguage(savedLang);
 
@@ -1107,7 +1673,23 @@
         if (btn) btn.classList.add('ring-2', 'ring-yellow-400');
       }
 
-      // Close modal on Escape key
+      // 4. Motion preference
+      const savedMotion = localStorage.getItem('swasthya_motion_paused');
+      if (savedMotion === 'true') {
+        isAnimationsPaused = true;
+        document.documentElement.classList.add('motion-paused');
+        const icon = document.getElementById('motion-icon');
+        const text = document.getElementById('motion-text');
+        if (icon) icon.textContent = "▶️";
+        if (text) text.textContent = "एनीमेशन रोक दी गई";
+      }
+
+      // 5. Initialize Counters & Live Engine
+      initCounter();
+      setInterval(advanceQueue, 8000);
+      initScrollReveal();
+
+      // Close modal on Escape
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeAshaSearchModal();
       });
