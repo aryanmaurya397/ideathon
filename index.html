@@ -19,7 +19,7 @@
   =============================================================================
 -->
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -354,10 +354,10 @@
           <span class="hidden sm:inline">कंट्रास्ट</span>
         </button>
 
-        <!-- Language Switcher (Default Hindi) -->
+        <!-- Language Switcher (Default English) -->
         <div class="flex items-center bg-white border border-gray-300 rounded overflow-hidden text-xs font-bold shadow-xs">
-          <button type="button" id="lang-btn-hi" onclick="setAppLanguage('hi')" class="px-2.5 py-1 bg-[#0B3D91] text-white">हिन्दी</button>
-          <button type="button" id="lang-btn-en" onclick="setAppLanguage('en')" class="px-2.5 py-1 text-gray-700 hover:bg-gray-100">English</button>
+          <button type="button" id="lang-btn-hi" onclick="setAppLanguage('hi')" class="px-2.5 py-1 text-gray-700 hover:bg-gray-100">हिन्दी</button>
+          <button type="button" id="lang-btn-en" onclick="setAppLanguage('en')" class="px-2.5 py-1 bg-[#0B3D91] text-white">English</button>
         </div>
 
         <!-- Staff Login Link at Top Right -->
@@ -1262,7 +1262,7 @@
       }
     };
 
-    let currentLang = 'hi';
+    let currentLang = 'en';
 
     function setAppLanguage(lang) {
       currentLang = lang;
@@ -1281,7 +1281,7 @@
         }
       }
 
-      const dict = translations[lang] || translations.hi;
+      const dict = translations[lang] || translations.en;
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key]) el.textContent = dict[key];
@@ -1657,8 +1657,8 @@
     // INITIALIZATION ON DOM READY
     // -------------------------------------------------------------------------
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Language preference
-      const savedLang = localStorage.getItem('swasthya_lang') || 'hi';
+      // 1. Language preference (Default English)
+      const savedLang = localStorage.getItem('swasthya_lang') || 'en';
       setAppLanguage(savedLang);
 
       // 2. Font size preference
