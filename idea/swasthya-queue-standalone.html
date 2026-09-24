@@ -547,14 +547,13 @@
           <!-- PRIMARY CTAS + 5. ECG-TO-TICK MORPH BUTTON -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl relative">
             
-            <!-- 5. REGISTER BUTTON WITH ECG-TO-TICK MORPH & 8. CELEBRATION TRIGGER -->
+            <!-- 5. REGISTER BUTTON (PLAIN NAVIGATION TO /register) -->
             <div class="relative" id="register-cta-wrap">
-              <button type="button" 
-                      id="register-morph-btn" 
-                      onclick="triggerEcgMorphAndBook()" 
-                      class="ripple-target btn-press min-h-[64px] px-5 bg-[#0B3D91] hover:bg-[#082d6c] text-white rounded-xl shadow-lg flex items-center gap-3.5 border-2 border-[#0B3D91] transition-all group w-full relative overflow-hidden">
+              <a href="register.html" 
+                 id="register-morph-btn" 
+                 class="ripple-target btn-press min-h-[64px] px-5 bg-[#0B3D91] hover:bg-[#082d6c] text-white rounded-xl shadow-lg flex items-center gap-3.5 border-2 border-[#0B3D91] transition-all group w-full relative overflow-hidden">
                 
-                <!-- 5. SVG ECG Line that Morphs into Checkmark -->
+                <!-- 5. SVG ECG Line -->
                 <div class="w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center shrink-0" id="morph-icon-box">
                   <svg class="w-8 h-8 text-emerald-400" viewBox="0 0 32 32" fill="none" id="ecg-morph-svg">
                     <!-- ECG Path (8 matching points for smooth morph) -->
@@ -573,7 +572,7 @@
                 </div>
                 
                 <span class="material-symbols-outlined text-[22px] text-white group-hover:translate-x-1 transition-transform" id="cta-arrow">arrow_forward</span>
-              </button>
+              </a>
 
               <!-- 8. Floating Celebratory Plus / Diya Container -->
               <div id="celebration-particles" class="absolute inset-0 pointer-events-none overflow-visible"></div>
@@ -1110,64 +1109,6 @@
       </div>
     </section>
 
-    <!-- =======================================================================
-         7. 3D TOKEN TICKET MODAL (3D tilt on drag/device orientation & Odometer digits)
-         ======================================================================= -->
-    <div id="ticket-modal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="ticket-title">
-      <div class="ticket-3d-wrap max-w-md w-full">
-        <div class="ticket-3d-card bg-white rounded-2xl shadow-2xl p-6 space-y-4 border-2 border-gray-300 relative overflow-hidden" id="interactive-ticket-element">
-          
-          <div class="flex items-center justify-between border-b border-gray-200 pb-3">
-            <div class="flex items-center gap-2 text-[#0B3D91]">
-              <span class="material-symbols-outlined text-[24px] text-[#138808]">verified</span>
-              <h3 id="ticket-title" class="font-black text-lg">Official OPD Digital Pass</h3>
-            </div>
-            <button type="button" onclick="closeTicketModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500">
-              <span class="material-symbols-outlined">close</span>
-            </button>
-          </div>
-
-          <!-- Ticket Pass Body with Shine Sweep & Odometer Digits -->
-          <div class="ticket-shine-sweep bg-gradient-to-b from-blue-50 to-white border-2 border-dashed border-[#0B3D91] rounded-2xl p-5 text-center space-y-3 relative overflow-hidden shadow-inner">
-            <span class="text-xs font-extrabold text-gray-500 uppercase tracking-widest block">Primary Health Centre Sarangpur</span>
-            
-            <div class="py-2 border-y border-dashed border-gray-300">
-              <span class="text-xs font-bold text-gray-600 block">Your Confirmed Token Number</span>
-              <div class="text-5xl font-black text-[#0B3D91] tracking-tight my-1" id="ticket-token-display">
-                #047
-              </div>
-              <div class="inline-flex items-center gap-1 text-xs font-bold text-[#138808] bg-green-100 px-3 py-0.5 rounded-full">
-                <span class="material-symbols-outlined text-[16px]">check_circle</span>
-                <span>Confirmed &amp; SMS Dispatched</span>
-              </div>
-            </div>
-
-            <div class="text-left text-xs font-semibold text-gray-700 space-y-1">
-              <p>Patient: <strong class="text-gray-900" id="ticket-patient-name">Ramesh Kumar</strong></p>
-              <p>OPD Room: <strong>Room 02 — General Medicine</strong></p>
-              <p>Estimated Call: <strong>In ~14 Minutes</strong></p>
-            </div>
-          </div>
-
-          <!-- Share on WhatsApp & Save Slip Buttons -->
-          <div class="space-y-2 pt-1">
-            <a href="https://api.whatsapp.com/send?text=Rashtriya%20Swasthya%20Queue%20Token%20%23047%20confirmed%20at%20PHC%20Sarangpur." 
-               target="_blank" 
-               rel="noopener"
-               class="ripple-target btn-press w-full min-h-[48px] bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-sm rounded-xl flex items-center justify-center gap-2 shadow-md transition-all">
-              <span class="material-symbols-outlined text-[20px]">share</span>
-              <span>Share on WhatsApp (व्हाट्सएप पर भेजें)</span>
-            </a>
-
-            <button type="button" onclick="closeTicketModal()" class="w-full min-h-[44px] bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs rounded-xl">
-              Save Slip &amp; Close (पर्ची सुरक्षित करें)
-            </button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
     <!-- ASHA SEARCH MODAL -->
     <div id="asha-modal" role="dialog" aria-modal="true" aria-labelledby="asha-modal-title" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
       <div class="bg-white max-w-lg w-full p-6 rounded-2xl shadow-2xl space-y-4 border-2 border-gray-300">
@@ -1472,7 +1413,10 @@
       // Update message & increment counter
       const stream = document.getElementById('live-map-booking-msg');
       if (stream) {
-        stream.textContent = `Token #${Math.floor(Math.random()*40)+30} booked at ${target.name}.`;
+        const latest = window.RSQStore ? window.RSQStore.getLatestToken() : null;
+        if (!latest) {
+          stream.textContent = `Token #${Math.floor(Math.random()*40)+30} booked at ${target.name}.`;
+        }
       }
       incrementOdometerCounter(1);
     }
@@ -1562,120 +1506,6 @@
         const utt = new SpeechSynthesisUtterance(msgs[num]);
         utt.lang = 'hi-IN';
         window.speechSynthesis.speak(utt);
-      }
-    }
-
-    // -------------------------------------------------------------------------
-    // 5. ECG-TO-TICK MORPH & 8. SUCCESS CELEBRATION
-    // -------------------------------------------------------------------------
-    let isEcgMorphed = false;
-    function triggerEcgMorphAndBook() {
-      const path = document.getElementById('morph-path');
-      const title = document.getElementById('cta-reg-title');
-      const sub = document.getElementById('cta-reg-sub');
-      const btn = document.getElementById('register-morph-btn');
-      if (!path) return;
-
-      if (!isEcgMorphed) {
-        // Morph SVG Path into Checkmark: M 4 16 L 8 16 L 12 21 L 22 9 L 26 9 L 26 9 L 28 9 L 30 9
-        path.setAttribute('d', 'M 4 16 L 8 16 L 12 21 L 22 9 L 24 9 L 26 9 L 28 9 L 30 9');
-        path.setAttribute('stroke', '#10B981');
-        isEcgMorphed = true;
-        if (title) title.textContent = "Token #048 Generated!";
-        if (sub) sub.textContent = "पर्ची सफलतापूर्वक जारी (SMS Sent)";
-        if (btn) btn.classList.add('border-emerald-500', 'bg-emerald-900');
-
-        // 8. Launch floating plus & diya particles
-        launchSuccessParticles();
-
-        // 7. Show 3D ticket modal
-        setTimeout(() => {
-          show3DTicketModal('048', 'Ramesh Kumar');
-        }, 700);
-      } else {
-        // Reset
-        path.setAttribute('d', 'M 2 16 L 8 16 L 11 9 L 14 23 L 17 6 L 20 20 L 23 16 L 30 16');
-        path.setAttribute('stroke', 'currentColor');
-        isEcgMorphed = false;
-        if (title) title.textContent = translations[currentLang].cta_register_title;
-        if (sub) sub.textContent = translations[currentLang].cta_register_sub;
-        if (btn) btn.classList.remove('border-emerald-500', 'bg-emerald-900');
-      }
-    }
-
-    // 8. SUCCESS CELEBRATION (14 floating green pluses & diyas)
-    function launchSuccessParticles() {
-      if (currentMotionTier !== 'full') return;
-      const container = document.getElementById('celebration-particles');
-      if (!container) return;
-
-      for (let i = 0; i < 14; i++) {
-        const p = document.createElement('div');
-        p.className = 'celebration-item font-black text-emerald-400 select-none';
-        p.textContent = i % 2 === 0 ? '✚' : '🪔';
-        p.style.left = `${10 + Math.random() * 80}%`;
-        p.style.top = `${20 + Math.random() * 40}%`;
-        p.style.fontSize = `${16 + Math.random() * 12}px`;
-        p.style.animationDelay = `${Math.random() * 0.4}s`;
-        container.appendChild(p);
-
-        setTimeout(() => p.remove(), 1600);
-      }
-    }
-
-
-    // -------------------------------------------------------------------------
-    // 7. 3D TOKEN TICKET MODAL (Tilt on drag/device orientation)
-    // -------------------------------------------------------------------------
-    function show3DTicketModal(tokenNum, patientName) {
-      const modal = document.getElementById('ticket-modal');
-      const disp = document.getElementById('ticket-token-display');
-      const nameEl = document.getElementById('ticket-patient-name');
-      if (disp) disp.textContent = '#' + tokenNum;
-      if (nameEl) nameEl.textContent = patientName;
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      }
-
-      // Initialize 3D tilt tracking
-      init3DTilt();
-    }
-
-    function closeTicketModal() {
-      const modal = document.getElementById('ticket-modal');
-      if (modal) {
-        modal.classList.remove('flex');
-        modal.classList.add('hidden');
-      }
-    }
-
-    function init3DTilt() {
-      const card = document.getElementById('interactive-ticket-element');
-      if (!card || currentMotionTier !== 'full') return;
-
-      // Mouse drag / hover 3D tilt (max +-8deg)
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        const rotX = Math.max(-8, Math.min(8, (-y / rect.height) * 16));
-        const rotY = Math.max(-8, Math.min(8, (x / rect.width) * 16));
-        card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'rotateX(0deg) rotateY(0deg)';
-      });
-
-      // DeviceOrientation fallback if supported
-      if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission !== 'function') {
-        window.addEventListener('deviceorientation', (e) => {
-          if (!e.gamma || !e.beta) return;
-          const tiltX = Math.max(-8, Math.min(8, e.beta / 5));
-          const tiltY = Math.max(-8, Math.min(8, e.gamma / 5));
-          card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-        }, { passive: true });
       }
     }
 
@@ -1817,7 +1647,100 @@
       const input = document.getElementById('quick-token-input');
       const token = input ? input.value.trim() : '';
       if (!token) return;
-      window.location.href = `check-token.html?token=${encodeURIComponent(token)}`;
+
+      const alertBox = document.getElementById('quick-check-alert');
+      const found = window.RSQStore ? window.RSQStore.findToken(token) : null;
+
+      if (found) {
+        if (alertBox) {
+          alertBox.classList.remove('hidden');
+          alertBox.className = "mt-3 p-4 bg-emerald-50 border-l-4 border-[#138808] rounded-xl shadow-sm text-sm font-bold text-gray-800";
+          alertBox.innerHTML = `
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-1.5 text-[#138808]">
+                  <span class="material-symbols-outlined text-[20px]">verified</span>
+                  <span class="font-extrabold text-base">Token #${found.token} Confirmed</span>
+                </div>
+                <p class="text-xs text-gray-800 font-semibold mt-1">
+                  Patient: <strong class="text-gray-900">${found.name}</strong> • ${found.department}
+                </p>
+                <p class="text-xs text-[#0B3D91] font-bold mt-0.5">
+                  ${found.room} • Attending: ${found.doctor} • Est. Wait: ~${found.waitMins} Mins
+                </p>
+              </div>
+              <a href="check-token.html?token=${encodeURIComponent(found.token)}" class="ripple-target btn-press px-4 py-2 bg-[#0B3D91] hover:bg-[#082d6c] text-white text-xs font-bold rounded-lg text-center shrink-0">
+                View Live Tracker &rarr;
+              </a>
+            </div>
+          `;
+          alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          window.location.href = `check-token.html?token=${encodeURIComponent(found.token)}`;
+        }
+      } else {
+        if (alertBox) {
+          alertBox.classList.remove('hidden');
+          alertBox.className = "mt-3 p-3 bg-blue-50 border-l-4 border-[#0B3D91] rounded-xl shadow-sm text-sm font-bold text-gray-800";
+          alertBox.innerHTML = `
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-1.5 text-[#0B3D91]">
+                  <span class="material-symbols-outlined text-[18px]">info</span>
+                  <span class="font-bold text-sm">Searching central records for "${token}"...</span>
+                </div>
+                <p class="text-xs text-gray-600 mt-0.5">Token not found in local kiosk cache. Opening full registry tracker.</p>
+              </div>
+              <a href="check-token.html?token=${encodeURIComponent(token)}" class="ripple-target btn-press px-3.5 py-1.5 bg-[#0B3D91] hover:bg-[#082d6c] text-white text-xs font-bold rounded-lg text-center shrink-0">
+                Search Registry &rarr;
+              </a>
+            </div>
+          `;
+        } else {
+          window.location.href = `check-token.html?token=${encodeURIComponent(token)}`;
+        }
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // LIVE BOOKING STREAM STORE SYNC (BroadcastChannel & Storage Event)
+    // -------------------------------------------------------------------------
+    function updateLiveBookingStreamFromStore(animate = true) {
+      const stream = document.getElementById('live-map-booking-msg');
+      if (!stream || !window.RSQStore) return;
+      const latest = window.RSQStore.getLatestToken();
+      if (latest) {
+        const animClass = animate ? 'pass-token-single' : '';
+        stream.innerHTML = `Token <span class="${animClass} text-[#0B3D91] font-black" style="display:inline-block;">#${latest.token}</span> booked at ${latest.phc || 'PHC Sarangpur, Rajasthan'}.`;
+      }
+    }
+
+    function initLiveBookingStreamSync() {
+      updateLiveBookingStreamFromStore(false);
+
+      // Listen for localStorage changes from other tabs/windows
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'rsq_tokens') {
+          updateLiveBookingStreamFromStore(true);
+        }
+      });
+
+      // Listen for BroadcastChannel updates
+      try {
+        if (window.BroadcastChannel) {
+          const bc = new BroadcastChannel('rsq_tokens_channel');
+          bc.onmessage = (ev) => {
+            if (ev.data && ev.data.token) {
+              updateLiveBookingStreamFromStore(true);
+            }
+          };
+        }
+      } catch (err) {}
+
+      // Listen for in-window custom events
+      window.addEventListener('rsq_token_added', () => {
+        updateLiveBookingStreamFromStore(true);
+      });
     }
 
     function openAshaSearchModal() {
@@ -1879,6 +1802,7 @@
       initIndiaDotMap();
       initVillageSky();
       initScrollJourney();
+      initLiveBookingStreamSync();
 
       // 5. Start FPS Monitor
     });

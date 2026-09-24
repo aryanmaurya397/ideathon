@@ -185,7 +185,87 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     initNamaste(); initSwasthGaon(); initMeds(); initRace(); initVoice(); initEmoji(); initWeather(); initOffline(); initUnderline();
   });
 })();
+
+/* ==========================================================================
+   SHARED RSQ TOKENS STORE (localStorage key: "rsq_tokens")
+   ========================================================================== */
+window.RSQStore = {
+  getTokens: function() {
+    try {
+      var data = localStorage.getItem('rsq_tokens');
+      if (!data) {
+        var initial = [
+          {
+            token: "048",
+            name: "Ramesh Kumar",
+            age: 54,
+            gender: "Male",
+            mobile: "9876543210",
+            department: "General OPD (Fever & Cold)",
+            dept: "General OPD (Fever & Cold)",
+            priority: "General Queue",
+            phc: "Primary Health Centre Sarangpur",
+            room: "Room 02",
+            doctor: "Dr. S. K. Sharma (MD Med)",
+            waitMins: 10,
+            abha: "91-4582-7712-9901",
+            createdAt: new Date().toISOString(),
+            status: "waiting"
+          }
+        ];
+        localStorage.setItem('rsq_tokens', JSON.stringify(initial));
+        return initial;
+      }
+      return JSON.parse(data);
+    } catch(e) {
+      return [];
+    }
+  },
+  getNextTokenNumber: function() {
+    var tokens = this.getTokens();
+    var maxNum = 47;
+    tokens.forEach(function(t) {
+      var n = parseInt(String(t.token).replace(/\D/g, ''), 10);
+      if (!isNaN(n) && n > maxNum) maxNum = n;
+    });
+    var next = maxNum + 1;
+    return String(next).padStart(3, '0');
+  },
+  addToken: function(tokenObj) {
+    var tokens = this.getTokens();
+    tokens.push(tokenObj);
+    localStorage.setItem('rsq_tokens', JSON.stringify(tokens));
+    try {
+      if (window.BroadcastChannel) {
+        var bc = new BroadcastChannel('rsq_tokens_channel');
+        bc.postMessage({ type: 'NEW_TOKEN', token: tokenObj });
+      }
+    } catch(e) {}
+    window.dispatchEvent(new CustomEvent('rsq_token_added', { detail: tokenObj }));
+    return tokenObj;
+  },
+  getLatestToken: function() {
+    var tokens = this.getTokens();
+    return tokens.length > 0 ? tokens[tokens.length - 1] : null;
+  },
+  findToken: function(query) {
+    if (!query) return null;
+    var tokens = this.getTokens();
+    var clean = String(query).replace('#', '').trim().toLowerCase();
+    var cleanNum = clean.replace(/\D/g, '');
+    for (var i = tokens.length - 1; i >= 0; i--) {
+      var t = tokens[i];
+      var tNum = String(t.token).replace(/\D/g, '');
+      if (String(t.token).toLowerCase() === clean) return t;
+      if (cleanNum && tNum === cleanNum) return t;
+      if (cleanNum && String(parseInt(tNum, 10)) === String(parseInt(cleanNum, 10))) return t;
+      if (t.mobile && String(t.mobile).replace(/\D/g, '') === clean.replace(/\D/g, '')) return t;
+      if (t.name && t.name.toLowerCase().includes(clean)) return t;
+    }
+    return null;
+  }
+};

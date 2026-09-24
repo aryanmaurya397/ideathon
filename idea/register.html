@@ -82,39 +82,39 @@
 
 <!-- Stepper Indicator -->
 <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md relative">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md relative" id="stepper-container">
 <!-- Step 1 (Current Active) -->
-<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-primary text-on-primary">
-<div class="w-10 h-10 rounded-full bg-on-primary text-primary flex items-center justify-center font-headline-md text-headline-md font-black shrink-0">
+<div id="stepper-step-1" class="flex items-center gap-space-md p-space-sm rounded-lg bg-primary text-on-primary transition-all">
+<div class="stepper-num w-10 h-10 rounded-full bg-on-primary text-primary flex items-center justify-center font-headline-md text-headline-md font-black shrink-0">
               1
             </div>
 <div class="min-w-0">
 <span class="block font-label-secondary text-label-secondary text-surface-variant font-bold uppercase">Step 01 (चरण ०१)</span>
 <p class="font-label-primary text-label-primary font-bold truncate">Patient Identity (मरीज पहचान)</p>
 </div>
-<span class="material-symbols-outlined ml-auto text-[22px]">play_circle</span>
+<span class="stepper-icon material-symbols-outlined ml-auto text-[22px]">play_circle</span>
 </div>
 <!-- Step 2 -->
-<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low text-on-surface">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-headline-md text-headline-md font-black shrink-0">
+<div id="stepper-step-2" class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low text-on-surface transition-all">
+<div class="stepper-num w-10 h-10 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-headline-md text-headline-md font-black shrink-0">
               2
             </div>
 <div class="min-w-0">
 <span class="block font-label-secondary text-label-secondary text-on-surface-variant uppercase">Step 02 (चरण ०२)</span>
 <p class="font-label-primary text-label-primary font-semibold truncate">Department &amp; Symptoms (लक्षण)</p>
 </div>
-<span class="material-symbols-outlined ml-auto text-outline text-[20px]">pending</span>
+<span class="stepper-icon material-symbols-outlined ml-auto text-outline text-[20px]">pending</span>
 </div>
 <!-- Step 3 -->
-<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low text-on-surface">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-headline-md text-headline-md font-black shrink-0">
+<div id="stepper-step-3" class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low text-on-surface transition-all">
+<div class="stepper-num w-10 h-10 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-headline-md text-headline-md font-black shrink-0">
               3
             </div>
 <div class="min-w-0">
 <span class="block font-label-secondary text-label-secondary text-on-surface-variant uppercase">Step 03 (चरण ०३)</span>
 <p class="font-label-primary text-label-primary font-semibold truncate">Print Slip / SMS (पर्ची प्रिंट)</p>
 </div>
-<span class="material-symbols-outlined ml-auto text-outline text-[20px]">print</span>
+<span class="stepper-icon material-symbols-outlined ml-auto text-outline text-[20px]">print</span>
 </div>
 </div>
 </div>
@@ -139,14 +139,14 @@
 <span class="">🇮🇳</span>
 <span class="">+91</span>
 </div>
-<input class="w-full h-12 bg-transparent pr-space-md font-headline-md text-headline-md font-bold text-on-surface tracking-wider outline-none placeholder:text-outline-variant" id="patient-phone" maxlength="10" placeholder="98765 XXXXX" type="tel" value="9876541092">
-<button aria-label="Clear mobile" class="px-space-md text-outline hover:text-on-surface" type="button">
+<input class="w-full h-12 bg-transparent pr-space-md font-headline-md text-headline-md font-bold text-on-surface tracking-wider outline-none placeholder:text-outline-variant" id="patient-phone" maxlength="10" placeholder="98765 XXXXX" type="tel" value="">
+<button id="clear-phone-btn" aria-label="Clear mobile" class="px-space-md text-outline hover:text-on-surface" type="button">
 <span class="material-symbols-outlined text-[20px]">backspace</span>
 </button>
 </div>
-<p class="mt-1 font-label-secondary text-label-secondary text-secondary font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">check_circle</span>
-<span class="">Pre-registered record found (1 past OPD visit recorded)</span>
+<p id="phone-error" class="hidden mt-1 font-label-secondary text-label-secondary text-error font-semibold flex items-center gap-1">
+  <span class="material-symbols-outlined text-[16px]">error</span>
+  <span>Enter a valid 10-digit mobile number</span>
 </p>
 </div>
 <!-- Full Name with Voice Input -->
@@ -159,9 +159,13 @@
 <button class="px-space-sm py-1 rounded bg-surface-container-lowest hover:bg-surface-container border border-outline text-on-surface font-label-secondary text-label-secondary font-bold flex items-center gap-1 transition-all" id="voice-input-btn" type="button"><span class="material-symbols-outlined text-[16px] text-primary">mic</span><span class="">Speak Name (बोलें)</span></button>
 </div>
 <div class="flex items-center bg-surface-container-low rounded-lg shadow-sm focus-within:bg-surface-container-lowest focus-within:ring-2 focus-within:ring-primary transition-all">
-<input class="w-full h-12 px-space-md bg-transparent font-headline-md text-headline-md text-on-surface font-bold outline-none placeholder:text-outline-variant" id="patient-name" placeholder="Enter patient name..." type="text" value="Rameshwar Deendayal Upadhyay">
-<span class="px-space-md text-secondary material-symbols-outlined text-[22px]">verified</span>
+<input class="w-full h-12 px-space-md bg-transparent font-headline-md text-headline-md text-on-surface font-bold outline-none placeholder:text-outline-variant" id="patient-name" placeholder="Enter patient name..." type="text" value="">
+<span id="name-verified-icon" class="px-space-md text-secondary material-symbols-outlined text-[22px] hidden">verified</span>
 </div>
+<p id="name-error" class="hidden mt-1 font-label-secondary text-label-secondary text-error font-semibold flex items-center gap-1">
+  <span class="material-symbols-outlined text-[16px]">error</span>
+  <span>Name must be at least 2 characters</span>
+</p>
 </div>
 <!-- Age & Gender Toggles -->
 <div class="grid grid-cols-1 sm:grid-cols-12 gap-space-md">
@@ -169,18 +173,28 @@
 <div class="sm:col-span-4">
 <label class="block font-label-primary text-label-primary text-on-surface font-bold mb-1" for="patient-age">
                     Age (आयु in Years)
+                    <span class="text-error font-normal">*</span>
                   </label>
 <div class="flex items-center bg-surface-container-low rounded-lg shadow-sm focus-within:bg-surface-container-lowest focus-within:ring-2 focus-within:ring-primary transition-all">
-<input class="w-full h-12 px-space-md bg-transparent font-headline-md text-headline-md text-on-surface font-bold outline-none" id="patient-age" type="number" value="64">
+<input class="w-full h-12 px-space-md bg-transparent font-headline-md text-headline-md text-on-surface font-bold outline-none placeholder:text-outline-variant" id="patient-age" type="number" value="" placeholder="e.g. 45" min="0" max="120">
 <span class="px-space-md font-label-primary text-label-primary text-on-surface-variant font-bold">Years</span>
 </div>
+<p id="age-error" class="hidden mt-1 font-label-secondary text-label-secondary text-error font-semibold flex items-center gap-1">
+  <span class="material-symbols-outlined text-[16px]">error</span>
+  <span>Age must be between 0 and 120</span>
+</p>
 </div>
 <!-- Gender Selection -->
 <div class="sm:col-span-8">
 <label class="block font-label-primary text-label-primary text-on-surface font-bold mb-1">
                     Gender (लिंग)
+                    <span class="text-error font-normal">*</span>
                   </label>
-<div class="grid grid-cols-3 gap-space-xs"><button class="h-12 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-primary border-2 border-primary font-label-primary text-label-primary font-bold flex items-center justify-center gap-1 shadow-sm" type="button"><span class="material-symbols-outlined text-[20px]">man</span><span class="">Male (पुरुष)</span></button><button class="h-12 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant font-label-primary text-label-primary font-medium flex items-center justify-center gap-1 shadow-sm" type="button"><span class="material-symbols-outlined text-[20px]">woman</span><span class="">Female (महिला)</span></button><button class="h-12 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant font-label-primary text-label-primary font-medium flex items-center justify-center gap-1 shadow-sm" type="button"><span class="material-symbols-outlined text-[20px]">transgender</span><span class="">Other (अन्य)</span></button></div>
+<div class="grid grid-cols-3 gap-space-xs" id="gender-btn-group"><button class="gender-btn h-12 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant font-label-primary text-label-primary font-medium flex items-center justify-center gap-1 shadow-sm transition-all" data-gender="Male" type="button"><span class="material-symbols-outlined text-[20px]">man</span><span class="">Male (पुरुष)</span></button><button class="gender-btn h-12 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant font-label-primary text-label-primary font-medium flex items-center justify-center gap-1 shadow-sm transition-all" data-gender="Female" type="button"><span class="material-symbols-outlined text-[20px]">woman</span><span class="">Female (महिला)</span></button><button class="gender-btn h-12 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface border border-outline-variant font-label-primary text-label-primary font-medium flex items-center justify-center gap-1 shadow-sm transition-all" data-gender="Other" type="button"><span class="material-symbols-outlined text-[20px]">transgender</span><span class="">Other (अन्य)</span></button></div>
+<p id="gender-error" class="hidden mt-1 font-label-secondary text-label-secondary text-error font-semibold flex items-center gap-1">
+  <span class="material-symbols-outlined text-[16px]">error</span>
+  <span>Please select a gender</span>
+</p>
 </div>
 </div>
 <!-- Rural Privacy Guarantee Notice -->
@@ -201,17 +215,22 @@
 <div>
 <h2 class="font-headline-lg text-headline-lg text-primary font-bold">
                   Chief Complaints &amp; Department (लक्षण व परामर्श विभाग)
+                  <span class="text-error font-normal text-base">*</span>
                 </h2>
 <p class="font-body-sm text-body-sm text-on-surface-variant">
                   Select appropriate medical category (मरीज की मुख्य परेशानी चुनें)
                 </p>
 </div>
-<span class="font-label-secondary text-label-secondary bg-surface-container px-space-sm py-1 rounded text-primary font-bold">
-                1 Selected
+<span id="dept-selected-count" class="font-label-secondary text-label-secondary bg-surface-container px-space-sm py-1 rounded text-outline font-bold">
+                None Selected
               </span>
 </div>
 <!-- Pictorial Grid -->
-<div class="grid grid-cols-2 sm:grid-cols-3 gap-space-md pt-space-xs" id="symptom-grid"><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">thermostat</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Fever &amp; Cold</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">बुखार / सर्दी</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">pulmonology</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Breathing / Cough</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">खांसी / सांस कष्ट</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">pregnant_woman</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Maternal &amp; Child</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">ANC &amp; शिशु सेवा</div></div></button><button class="symptom-card p-space-md rounded-xl bg-primary-container text-on-primary text-left flex flex-col justify-between h-36 shadow-md border-2 border-primary transition-all" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-lowest text-primary flex items-center justify-center shadow-inner"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">accessibility_new</span></div><div><div class="font-headline-md text-headline-md font-bold leading-snug">Body &amp; Joint Pain</div><div class="font-label-secondary text-label-secondary text-surface-variant font-bold">जोड़ों व बदन दर्द</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">visibility</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Eye Vision Clinic</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">आंखों की जांच</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">vital_signs</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">NCD (Sugar/BP)</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">मधुमेह व बीपी जांच</div></div></button></div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-space-md pt-space-xs" id="symptom-grid"><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" data-dept="Fever &amp; Cold" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">thermostat</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Fever &amp; Cold</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">बुखार / सर्दी</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" data-dept="Breathing / Cough" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">pulmonology</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Breathing / Cough</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">खांसी / सांस कष्ट</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" data-dept="Maternal &amp; Child" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">pregnant_woman</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Maternal &amp; Child</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">ANC &amp; शिशु सेवा</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" data-dept="Body &amp; Joint Pain" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">accessibility_new</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Body &amp; Joint Pain</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">जोड़ों व बदन दर्द</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" data-dept="Eye Vision Clinic" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">visibility</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">Eye Vision Clinic</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">आंखों की जांच</div></div></button><button class="symptom-card p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant text-left flex flex-col justify-between h-36 hover:bg-surface-container transition-all shadow-sm" data-dept="NCD (Sugar/BP)" type="button"><div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center border border-outline-variant"><span class="material-symbols-outlined text-[28px]">vital_signs</span></div><div><div class="font-headline-md text-headline-md font-bold text-on-surface leading-snug">NCD (Sugar/BP)</div><div class="font-label-secondary text-label-secondary text-on-surface font-semibold">मधुमेह व बीपी जांच</div></div></button></div>
+<p id="dept-error" class="hidden mt-2 font-label-secondary text-label-secondary text-error font-semibold flex items-center gap-1">
+  <span class="material-symbols-outlined text-[16px]">error</span>
+  <span>Please select one department</span>
+</p>
 </div>
 <!-- Priority Triage Fast-Track Selection -->
 <div class="bg-surface-container-lowest rounded-xl shadow-md p-space-lg space-y-space-md">
@@ -223,43 +242,74 @@
                 Auto-assessed fast-track priority allocation based on clinical condition &amp; age
               </p>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md"><div class="p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant flex items-start gap-space-sm cursor-pointer hover:bg-surface-container"><input class="mt-1 h-5 w-5 text-primary" id="t-general" name="triage-status" type="radio"><label class="cursor-pointer" for="t-general"><span class="block font-headline-md text-headline-md font-bold text-on-surface">General Queue (सामान्य कतार)</span><span class="block font-body-sm text-body-sm text-on-surface-variant font-medium">Standard wait-time, sequential consultation</span></label></div><div class="p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant flex items-start gap-space-sm cursor-pointer hover:bg-surface-container shadow-sm"><input checked="" class="mt-1 h-5 w-5 text-primary" id="t-senior" name="triage-status" type="radio"><label class="cursor-pointer" for="t-senior"><span class="inline-flex items-center gap-1 font-headline-md text-headline-md font-bold text-on-surface"><span class="material-symbols-outlined text-[20px] text-primary">elderly</span> Senior Citizen (60+ वरिष्ठ नागरिक)</span><span class="block font-body-sm text-body-sm text-on-surface-variant font-medium">Auto fast-track priority queue allocated due to age 64</span></label></div><div class="p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant flex items-start gap-space-sm cursor-pointer hover:bg-surface-container"><input class="mt-1 h-5 w-5 text-primary" id="t-maternal" name="triage-status" type="radio"><label class="cursor-pointer" for="t-maternal"><span class="block font-headline-md text-headline-md font-bold text-on-surface">Maternal ANC (गर्भवती महिला)</span><span class="block font-body-sm text-body-sm text-on-surface-variant font-medium">Direct routing to ANC &amp; Mother-Child Health Room</span></label></div><div class="p-space-md rounded-xl bg-error-container text-on-error-container border-2 border-error flex items-start gap-space-sm cursor-pointer shadow-sm"><input class="mt-1 h-5 w-5 text-error accent-error" id="t-emergency" name="triage-status" type="radio"><label class="cursor-pointer" for="t-emergency"><span class="inline-flex items-center gap-1 font-headline-md text-headline-md font-extrabold text-error"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">emergency</span> Emergency / Critical (आपातकालीन)</span><span class="block font-body-sm text-body-sm text-on-error-container font-bold">Immediate doctor entry without queue wait</span></label></div></div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md"><div class="p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant flex items-start gap-space-sm cursor-pointer hover:bg-surface-container"><input checked="" class="mt-1 h-5 w-5 text-primary" id="t-general" name="triage-status" type="radio" value="General Queue (सामान्य कतार)"><label class="cursor-pointer" for="t-general"><span class="block font-headline-md text-headline-md font-bold text-on-surface">General Queue (सामान्य कतार)</span><span class="block font-body-sm text-body-sm text-on-surface-variant font-medium">Standard wait-time, sequential consultation</span></label></div><div class="p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant flex items-start gap-space-sm cursor-pointer hover:bg-surface-container shadow-sm"><input class="mt-1 h-5 w-5 text-primary" id="t-senior" name="triage-status" type="radio" value="Senior Citizen (60+ वरिष्ठ नागरिक)"><label class="cursor-pointer" for="t-senior"><span class="inline-flex items-center gap-1 font-headline-md text-headline-md font-bold text-on-surface"><span class="material-symbols-outlined text-[20px] text-primary">elderly</span> Senior Citizen (60+ वरिष्ठ नागरिक)</span><span class="block font-body-sm text-body-sm text-on-surface-variant font-medium">Priority queue for elderly citizens (age 60+)</span></label></div><div class="p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant flex items-start gap-space-sm cursor-pointer hover:bg-surface-container"><input class="mt-1 h-5 w-5 text-primary" id="t-maternal" name="triage-status" type="radio" value="Maternal ANC (गर्भवती महिला)"><label class="cursor-pointer" for="t-maternal"><span class="block font-headline-md text-headline-md font-bold text-on-surface">Maternal ANC (गर्भवती महिला)</span><span class="block font-body-sm text-body-sm text-on-surface-variant font-medium">Direct routing to ANC &amp; Mother-Child Health Room</span></label></div><div class="p-space-md rounded-xl bg-error-container text-on-error-container border-2 border-error flex items-start gap-space-sm cursor-pointer shadow-sm"><input class="mt-1 h-5 w-5 text-error accent-error" id="t-emergency" name="triage-status" type="radio" value="Emergency / Critical (आपातकालीन)"><label class="cursor-pointer" for="t-emergency"><span class="inline-flex items-center gap-1 font-headline-md text-headline-md font-extrabold text-error"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">emergency</span> Emergency / Critical (आपातकालीन)</span><span class="block font-body-sm text-body-sm text-on-error-container font-bold">Immediate doctor entry without queue wait</span></label></div></div>
+</div>
+
+<!-- Generate Token Button Block (Disabled until form is valid) -->
+<div class="pt-2">
+  <button id="generate-token-btn" 
+          type="button" 
+          disabled
+          class="w-full h-16 rounded-xl bg-primary hover:bg-[#082d6c] text-on-primary font-headline-md text-headline-md font-extrabold flex items-center justify-center gap-space-sm shadow-lg transition-all active:scale-[0.98] border-2 border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-primary">
+    <span class="material-symbols-outlined text-[28px]" id="generate-btn-icon">confirmation_number</span>
+    <span id="generate-btn-text">Generate Token (टोकन बनाएं)</span>
+  </button>
+  <p id="form-validation-summary" class="text-center font-label-secondary text-label-secondary text-outline mt-2 font-medium">
+    Complete mobile (10 digits), name, age (0-120), gender, and department to generate token
+  </p>
 </div>
 </div>
 <!-- Right Column: Live Token Output Preview & Immediate Actions -->
 <div class="lg:col-span-4 space-y-space-lg lg:sticky lg:top-40">
-<!-- Live Token Slip Preview Box -->
-<div class="bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden">
+
+<!-- Dashed Placeholder (Visible before submission) -->
+<div id="slip-placeholder" class="bg-surface-container-lowest rounded-xl border-2 border-dashed border-outline-variant p-space-xl text-center space-y-4 shadow-sm">
+  <div class="w-16 h-16 rounded-full bg-surface-container-low text-primary flex items-center justify-center mx-auto border border-outline-variant">
+    <span class="material-symbols-outlined text-[36px] text-outline">receipt_long</span>
+  </div>
+  <div class="space-y-1">
+    <h3 class="font-headline-md text-headline-md font-bold text-on-surface">OPD Token Slip (डिजिटल पर्ची)</h3>
+    <p class="font-label-primary text-label-primary text-outline font-semibold">
+      Token will appear after you submit
+    </p>
+  </div>
+  <p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs mx-auto">
+    Enter patient details and select a department on the left, then click <strong>"Generate Token (टोकन बनाएं)"</strong> to issue your verified digital OPD pass.
+  </p>
+</div>
+
+<!-- Live Token Slip Preview Box (Hidden until token generation & modal close) -->
+<div id="slip-active-card" class="bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden hidden transition-all">
 <!-- Slip Header -->
 <div class="bg-primary text-on-primary p-space-md text-center space-y-1">
 <div class="flex items-center justify-center gap-1 font-label-secondary text-label-secondary uppercase tracking-widest text-primary-fixed">
 <span class="material-symbols-outlined text-[16px]">local_hospital</span>
 <span class="">National Health Mission (NHM-ABDM)</span>
 </div>
-<p class="font-headline-md text-headline-md font-extrabold">Community Health Centre (CHC/PHC)</p>
+<p class="font-headline-md text-headline-md font-extrabold" id="slip-facility-title">Primary Health Centre Sarangpur</p>
 <p class="font-label-secondary text-label-secondary text-surface-dim">OPD Entry Slip • Date: Today</p>
 </div>
 <!-- Token Number Hero Banner -->
 <div class="p-space-lg text-center bg-surface-container-low space-y-space-xs">
-<span class="inline-block px-3 py-1 rounded-full bg-surface-container-highest border border-outline text-on-surface font-label-secondary text-label-secondary font-bold uppercase tracking-wide">Senior Citizen Priority Allocation</span>
+<span class="inline-block px-3 py-1 rounded-full bg-surface-container-highest border border-outline text-on-surface font-label-secondary text-label-secondary font-bold uppercase tracking-wide" id="slip-priority-tag">General Queue</span>
 <div class="py-2">
 <span class="block font-label-secondary text-label-secondary text-on-surface-variant font-bold uppercase tracking-wider">Allocated Token Number</span>
 <span class="font-token-display-lg text-token-display-lg text-primary font-black tracking-tight leading-none" id="preview-token-num">
-                  #G-42
+                  #048
                 </span>
 </div>
 <div class="bg-surface-container-lowest rounded-lg p-space-sm shadow-sm space-y-1 text-left">
 <div class="flex items-center justify-between font-label-secondary text-label-secondary text-on-surface-variant">
 <span class="">Clinic Room:</span>
-<strong class="text-on-surface font-bold">Room 01 (कमरा ०१)</strong>
+<strong class="text-on-surface font-bold" id="slip-room-name">Room 01 (कमरा ०१)</strong>
 </div>
 <div class="flex items-center justify-between font-label-secondary text-label-secondary text-on-surface-variant">
 <span class="">Attending Doctor:</span>
-<strong class="text-primary font-bold">Dr. Anil Sharma (MD Med)</strong>
+<strong class="text-primary font-bold" id="slip-doctor-name">Dr. Anil Sharma (MD Med)</strong>
 </div>
 <div class="flex items-center justify-between font-label-secondary text-label-secondary text-on-surface-variant">
 <span class="">Estimated Wait Time:</span>
-<span class="inline-flex items-center gap-1 font-bold text-secondary">
+<span class="inline-flex items-center gap-1 font-bold text-secondary" id="slip-wait-time">
 <span class="material-symbols-outlined text-[16px]">schedule</span>
                     ~14 Mins (Wait Time)
                   </span>
@@ -278,23 +328,89 @@
 <div class="p-space-md space-y-2 bg-surface-container-lowest font-body-sm text-body-sm text-on-surface">
 <div class="flex justify-between pb-1 border-b border-surface-container-high">
 <span class="text-on-surface-variant">Patient Name:</span>
-<span class="font-bold text-right truncate" id="slip-patient-name">Rameshwar Deendayal (64/M)</span>
+<span class="font-bold text-right truncate" id="slip-patient-name">-</span>
 </div>
 <div class="flex justify-between pb-1 border-b border-surface-container-high">
 <span class="text-on-surface-variant">Mobile No:</span>
-<span class="font-bold font-mono" id="slip-patient-phone">98765 41092</span>
+<span class="font-bold font-mono" id="slip-patient-phone">-</span>
 </div>
 <div class="flex justify-between">
 <span class="text-on-surface-variant">Department:</span>
-<span class="font-bold text-primary" id="slip-complaint">Body &amp; Joint Pain (OPD)</span>
+<span class="font-bold text-primary" id="slip-complaint">-</span>
 </div>
 </div>
 <!-- Action Buttons Area -->
-<div class="p-space-md space-y-space-sm bg-surface-container-lowest"><button class="w-full h-16 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-headline-md text-headline-md font-extrabold flex items-center justify-center gap-space-sm shadow-lg transition-all active:scale-[0.98] border-2 border-primary-container" id="issue-print-btn" type="button"><span class="material-symbols-outlined text-[30px]" style="font-variation-settings: 'FILL' 1;">print</span><span class="">Print Free Token Slip (निःशुल्क पर्ची)</span></button><button class="w-full h-14 rounded-xl bg-surface-container-lowest hover:bg-surface-container border-2 border-primary text-primary font-headline-md text-headline-md font-bold flex items-center justify-center gap-space-xs shadow-sm transition-all active:scale-95" id="send-sms-btn" type="button"><span class="material-symbols-outlined text-[24px] text-primary">sms</span><span class="">Send Free SMS Token (मोबाइल SMS)</span></button><p class="text-center font-label-secondary text-label-secondary text-on-surface font-semibold">100% Free Public Service • Token Number displayed on waiting hall screens</p></div>
+<div class="p-space-md space-y-space-sm bg-surface-container-lowest">
+<button class="w-full h-16 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-headline-md text-headline-md font-extrabold flex items-center justify-center gap-space-sm shadow-lg transition-all active:scale-[0.98] border-2 border-primary-container" id="issue-print-btn" type="button"><span class="material-symbols-outlined text-[30px]" style="font-variation-settings: 'FILL' 1;">print</span><span id="print-btn-text">Print Free Token Slip (निःशुल्क पर्ची)</span></button>
+<button class="w-full h-14 rounded-xl bg-surface-container-lowest hover:bg-surface-container border-2 border-primary text-primary font-headline-md text-headline-md font-bold flex items-center justify-center gap-space-xs shadow-sm transition-all active:scale-95" id="send-sms-btn" type="button"><span class="material-symbols-outlined text-[24px] text-primary">sms</span><span id="sms-btn-text">Send Free SMS Token (मोबाइल SMS)</span></button>
+<!-- New Registration Button -->
+<button class="w-full h-12 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant text-on-surface font-headline-md text-sm font-bold flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm mt-2" id="new-reg-btn" type="button" onclick="handleNewRegistration()"><span class="material-symbols-outlined text-[20px] text-primary">restart_alt</span><span>New Registration (नया पंजीकरण)</span></button>
+<p class="text-center font-label-secondary text-label-secondary text-on-surface font-semibold pt-1">100% Free Public Service • Token Number displayed on waiting hall screens</p>
+</div>
+</div>
+
 </div>
 </div>
 </div>
-</div>
+
+<!-- =======================================================================
+     OFFICIAL OPD DIGITAL PASS MODAL (TokenPassModal Component)
+     ======================================================================= -->
+<div id="ticket-modal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4 backdrop-blur-xs" role="dialog" aria-modal="true" aria-labelledby="ticket-title">
+  <div class="ticket-3d-wrap max-w-md w-full modal-dialog-animate">
+    <div class="ticket-3d-card bg-white rounded-2xl shadow-2xl p-6 space-y-4 border-2 border-gray-300 relative overflow-hidden" id="interactive-ticket-element">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+        <div class="flex items-center gap-2 text-[#0B3D91]">
+          <span class="material-symbols-outlined text-[24px] text-[#138808]">verified</span>
+          <h3 id="ticket-title" class="font-black text-lg">Official OPD Digital Pass</h3>
+        </div>
+        <button type="button" onclick="closeTokenPassModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Dashed Ticket Box with pass-ticket Animation -->
+      <div class="pass-ticket ticket-shine-sweep bg-gradient-to-b from-blue-50 to-white border-2 border-dashed border-[#0B3D91] rounded-2xl p-5 text-center space-y-3 relative overflow-hidden shadow-inner">
+        <span class="text-xs font-extrabold text-gray-500 uppercase tracking-widest block" id="ticket-phc-name">Primary Health Centre Sarangpur</span>
+        
+        <div class="py-2 border-y border-dashed border-gray-300">
+          <span class="text-xs font-bold text-gray-600 block">Your Confirmed Token Number</span>
+          <div class="text-5xl font-black text-[#0B3D91] tracking-tight my-1 pass-token" id="ticket-token-display">
+            #048
+          </div>
+          <div class="inline-flex items-center gap-1 text-xs font-bold text-[#138808] bg-green-100 px-3 py-0.5 rounded-full pass-badge-pop" id="ticket-badge-confirmed">
+            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            <span>Confirmed &amp; SMS Dispatched</span>
+          </div>
+        </div>
+
+        <div class="text-left text-xs font-semibold text-gray-700 space-y-1.5 pt-1">
+          <p class="pass-line-1">Patient: <strong class="text-gray-900" id="ticket-patient-name">-</strong></p>
+          <p class="pass-line-2">OPD Room: <strong class="text-gray-900" id="ticket-opd-room">-</strong></p>
+          <p class="pass-line-3">Estimated Call: <strong class="text-gray-900" id="ticket-estimated-call">-</strong></p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-2 pt-1">
+        <a id="ticket-whatsapp-btn"
+           href="#" 
+           target="_blank" 
+           rel="noopener"
+           class="ripple-target btn-press w-full min-h-[48px] bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-sm rounded-xl flex items-center justify-center gap-2 shadow-md transition-all">
+          <span class="material-symbols-outlined text-[20px]">share</span>
+          <span>Share on WhatsApp (व्हाट्सएप पर भेजें)</span>
+        </a>
+
+        <button type="button" onclick="closeTokenPassModal()" class="w-full min-h-[44px] bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs rounded-xl">
+          Save Slip &amp; Close (पर्ची सुरक्षित करें)
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>
 <!-- ASHA Help Modal Barrier (Hidden by default, triggered via JS) -->
 <div class="hidden fixed inset-0 z-50 bg-inverse-surface/70 backdrop-blur-sm flex items-center justify-center p-margin-mobile" id="asha-modal">
@@ -336,16 +452,310 @@
 
   function updateSlip() {
     if (nameInput && slipName) {
-      const age = ageInput ? ageInput.value : '64';
-      slipName.textContent = (nameInput.value || 'Rameshwar Upadhyay') + ' (' + age + '/M)';
+      const age = ageInput ? ageInput.value : '';
+      const gender = window._selectedGender || '';
+      slipName.textContent = (nameInput.value || '-') + (age ? ' (' + age + (gender ? '/' + gender[0] : '') + ')' : '');
     }
     if (phoneInput && slipPhone) {
-      slipPhone.textContent = phoneInput.value || '98765 41092';
+      slipPhone.textContent = phoneInput.value || '-';
     }
+    validateForm();
   }
   if (nameInput) nameInput.addEventListener('input', updateSlip);
   if (phoneInput) phoneInput.addEventListener('input', updateSlip);
   if (ageInput) ageInput.addEventListener('input', updateSlip);
+
+  // ── Gender selection tracking ──
+  window._selectedGender = '';
+  document.querySelectorAll('.gender-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.gender-btn').forEach(function(b) {
+        b.classList.remove('bg-primary', 'text-on-primary', 'border-primary');
+        b.classList.add('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant');
+      });
+      btn.classList.add('bg-primary', 'text-on-primary', 'border-primary');
+      btn.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant');
+      window._selectedGender = btn.getAttribute('data-gender') || '';
+      validateForm();
+    });
+  });
+
+  // ── Department selection tracking ──
+  window._selectedDept = '';
+  document.querySelectorAll('.symptom-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      window._selectedDept = card.getAttribute('data-dept') || card.querySelector('.font-headline-md') && card.querySelector('.font-headline-md').textContent.trim() || '';
+      validateForm();
+      var sc = document.getElementById('slip-complaint');
+      if (sc) sc.textContent = window._selectedDept + ' (OPD)';
+    });
+  });
+
+  // ── Real-time form validation → enable/disable Generate button ──
+  function validateForm() {
+    var phone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
+    var name = nameInput ? nameInput.value.trim() : '';
+    var age = ageInput ? parseInt(ageInput.value, 10) : NaN;
+    var gender = window._selectedGender || '';
+    var dept = window._selectedDept || '';
+    var ok = phone.length === 10 && name.length >= 2 && !isNaN(age) && age >= 0 && age <= 120 && gender && dept;
+    var btn = document.getElementById('generate-token-btn');
+    var summary = document.getElementById('form-validation-summary');
+    if (btn) {
+      btn.disabled = !ok;
+    }
+    if (summary) {
+      if (ok) {
+        summary.textContent = 'Ready to generate token! Click the button above.';
+        summary.classList.add('text-secondary');
+        summary.classList.remove('text-outline');
+      } else {
+        summary.textContent = 'Complete mobile (10 digits), name, age (0-120), gender, and department to generate token';
+        summary.classList.remove('text-secondary');
+        summary.classList.add('text-outline');
+      }
+    }
+    return ok;
+  }
+
+  // ── Stepper Indicator Transition ──
+  function setStepperStep(step) {
+    var s1 = document.getElementById('stepper-step-1');
+    var s2 = document.getElementById('stepper-step-2');
+    var s3 = document.getElementById('stepper-step-3');
+    if (!s1 || !s2 || !s3) return;
+
+    if (step === 3) {
+      s1.className = 'flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low text-secondary border border-outline-variant transition-all';
+      var num1 = s1.querySelector('.stepper-num');
+      if (num1) { num1.className = 'stepper-num w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-headline-md text-headline-md font-black shrink-0'; num1.textContent = '✓'; }
+      var icon1 = s1.querySelector('.stepper-icon');
+      if (icon1) icon1.textContent = 'check_circle';
+
+      s2.className = 'flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low text-secondary border border-outline-variant transition-all';
+      var num2 = s2.querySelector('.stepper-num');
+      if (num2) { num2.className = 'stepper-num w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-headline-md text-headline-md font-black shrink-0'; num2.textContent = '✓'; }
+      var icon2 = s2.querySelector('.stepper-icon');
+      if (icon2) icon2.textContent = 'check_circle';
+
+      s3.className = 'flex items-center gap-space-md p-space-sm rounded-lg bg-primary text-on-primary shadow-md transition-all active-step-pulse';
+      var num3 = s3.querySelector('.stepper-num');
+      if (num3) { num3.className = 'stepper-num w-10 h-10 rounded-full bg-on-primary text-primary flex items-center justify-center font-headline-md text-headline-md font-black shrink-0'; num3.textContent = '3'; }
+      var icon3 = s3.querySelector('.stepper-icon');
+      if (icon3) icon3.textContent = 'print';
+    } else {
+      s1.className = 'flex items-center gap-space-md p-space-sm rounded-lg bg-primary text-on-primary transition-all';
+      var num1 = s1.querySelector('.stepper-num');
+      if (num1) { num1.className = 'stepper-num w-10 h-10 rounded-full bg-on-primary text-primary flex items-center justify-center font-headline-md text-headline-md font-black shrink-0'; num1.textContent = '1'; }
+      var icon1 = s1.querySelector('.stepper-icon');
+      if (icon1) icon1.textContent = 'play_circle';
+
+      s2.className = 'flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low text-on-surface transition-all';
+      var num2 = s2.querySelector('.stepper-num');
+      if (num2) { num2.className = 'stepper-num w-10 h-10 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-headline-md text-headline-md font-black shrink-0'; num2.textContent = '2'; }
+      var icon2 = s2.querySelector('.stepper-icon');
+      if (icon2) icon2.textContent = 'pending';
+
+      s3.className = 'flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low text-on-surface transition-all';
+      var num3 = s3.querySelector('.stepper-num');
+      if (num3) { num3.className = 'stepper-num w-10 h-10 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-headline-md text-headline-md font-black shrink-0'; num3.textContent = '3'; }
+      var icon3 = s3.querySelector('.stepper-icon');
+      if (icon3) icon3.textContent = 'print';
+    }
+  }
+
+  // ── Generate Token click ──
+  var generateBtn = document.getElementById('generate-token-btn');
+  if (generateBtn) {
+    generateBtn.addEventListener('click', function() {
+      if (!validateForm() || generateBtn.disabled) return;
+      var phone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
+      var name = nameInput ? nameInput.value.trim() : '';
+      var age = ageInput ? ageInput.value : '';
+      var gender = window._selectedGender || '';
+      var dept = window._selectedDept || '';
+      var priority = '';
+      var prioRadio = document.querySelector('input[name="triage-status"]:checked');
+      if (prioRadio) priority = prioRadio.value;
+
+      // Show spinner on button for ~1s and guard against double-submit
+      generateBtn.disabled = true;
+      var btnIcon = document.getElementById('generate-btn-icon');
+      var btnText = document.getElementById('generate-btn-text');
+      if (btnIcon) {
+        btnIcon.textContent = 'autorenew';
+        btnIcon.classList.add('animate-spin');
+      }
+      if (btnText) {
+        btnText.textContent = 'Generating Token (टोकन बन रहा है)...';
+      }
+
+      setTimeout(function() {
+        // Generate token via shared store
+        var store = window.RSQStore;
+        if (!store) { alert('Store not ready, please refresh.'); return; }
+        var tokenNum = store.getNextTokenNumber();
+        var rooms = { 
+          'Fever & Cold': 'Room 01', 
+          'Breathing / Cough': 'Room 01', 
+          'Maternal & Child': 'Room 03', 
+          'Body & Joint Pain': 'Room 02', 
+          'Eye Vision Clinic': 'Room 04', 
+          'NCD (Sugar/BP)': 'Room 02' 
+        };
+        var room = rooms[dept] || 'Room 01';
+        var waitMins = 14;
+
+        var tokenObj = {
+          token: tokenNum,
+          name: name,
+          age: parseInt(age, 10) || 0,
+          gender: gender,
+          mobile: phone,
+          department: dept,
+          dept: dept,
+          priority: priority || 'General Queue',
+          phc: 'Primary Health Centre Sarangpur',
+          room: room,
+          doctor: 'Dr. Anil Sharma (MD Med)',
+          waitMins: waitMins,
+          createdAt: new Date().toISOString(),
+          status: 'waiting'
+        };
+        store.addToken(tokenObj);
+
+        // Reset button
+        generateBtn.disabled = false;
+        if (btnIcon) {
+          btnIcon.textContent = 'confirmation_number';
+          btnIcon.classList.remove('animate-spin');
+        }
+        if (btnText) {
+          btnText.textContent = 'Generate Token (टोकन बनाएं)';
+        }
+
+        // Populate the modal with real data
+        var display = '#' + String(parseInt(tokenNum, 10)).padStart(3, '0');
+        var el = function(id) { return document.getElementById(id); };
+        if (el('ticket-token-display')) el('ticket-token-display').textContent = display;
+        if (el('ticket-patient-name')) el('ticket-patient-name').textContent = name + ' (' + gender + ', ' + age + ' Yrs)';
+        if (el('ticket-opd-room')) el('ticket-opd-room').textContent = room + ' — ' + dept;
+        if (el('ticket-estimated-call')) el('ticket-estimated-call').textContent = 'In ~' + waitMins + ' Minutes';
+
+        var waLink = el('ticket-whatsapp-btn');
+        if (waLink) {
+          var waText = encodeURIComponent('OPD Token ' + display + ' confirmed for ' + name + ' at Primary Health Centre Sarangpur. OPD Room: ' + room + ' — ' + dept + '. Estimated Call: In ~' + waitMins + ' Minutes. - Rashtriya Swasthya Queue');
+          waLink.href = 'https://wa.me/?text=' + waText;
+        }
+
+        // Store for slip population
+        window._lastGeneratedToken = { 
+          token: tokenNum, 
+          tokenDisplay: display, 
+          name: name, 
+          age: age, 
+          gender: gender, 
+          dept: dept, 
+          room: room, 
+          waitMins: waitMins, 
+          priority: priority, 
+          phone: phone 
+        };
+
+        // Open modal
+        openTokenPassModal();
+      }, 1000);
+    });
+  }
+
+  // ── Modal open/close ──
+  window.openTokenPassModal = function() {
+    var modal = document.getElementById('ticket-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeTokenPassModal = function() {
+    var modal = document.getElementById('ticket-modal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    
+    // Move stepper to STEP 03
+    setStepperStep(3);
+    
+    // Populate slip panel & scroll into view
+    populateSlipPanel();
+  };
+
+  // Close modal on backdrop click & Escape key
+  var modalEl = document.getElementById('ticket-modal');
+  if (modalEl) {
+    modalEl.addEventListener('click', function(e) {
+      if (e.target === modalEl) closeTokenPassModal();
+    });
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var m = document.getElementById('ticket-modal');
+      if (m && !m.classList.contains('hidden')) {
+        closeTokenPassModal();
+      }
+    }
+  });
+
+  // ── Populate right-panel slip after modal close ──
+  function populateSlipPanel() {
+    var t = window._lastGeneratedToken;
+    if (!t) return;
+    var el = function(id) { return document.getElementById(id); };
+    if (el('preview-token-num')) el('preview-token-num').textContent = t.tokenDisplay;
+    if (el('slip-patient-name')) el('slip-patient-name').textContent = t.name + ' (' + t.age + '/' + (t.gender ? t.gender[0] : '-') + ')';
+    if (el('slip-patient-phone')) el('slip-patient-phone').textContent = t.phone;
+    if (el('slip-complaint')) el('slip-complaint').textContent = t.dept + ' (OPD)';
+    if (el('slip-room-name')) el('slip-room-name').textContent = t.room;
+    if (el('slip-priority-tag')) el('slip-priority-tag').textContent = t.priority || 'General Queue';
+    if (el('slip-wait-time')) el('slip-wait-time').innerHTML = '<span class="material-symbols-outlined text-[16px]">schedule</span>~' + t.waitMins + ' Mins (Wait Time)';
+    
+    if (el('slip-placeholder')) el('slip-placeholder').classList.add('hidden');
+    var activeCard = el('slip-active-card');
+    if (activeCard) {
+      activeCard.classList.remove('hidden');
+      activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  // ── New Registration reset ──
+  window.handleNewRegistration = function() {
+    window._lastGeneratedToken = null;
+    window._selectedGender = '';
+    window._selectedDept = '';
+    if (phoneInput) phoneInput.value = '';
+    if (nameInput) nameInput.value = '';
+    if (ageInput) ageInput.value = '';
+    document.querySelectorAll('.gender-btn').forEach(function(b) {
+      b.classList.remove('bg-primary', 'text-on-primary', 'border-primary');
+      b.classList.add('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant');
+    });
+    document.querySelectorAll('.symptom-card').forEach(function(c) {
+      c.classList.remove('bg-primary-container', 'text-on-primary', 'ring-2', 'ring-primary', 'shadow-md');
+    });
+    var gen = document.querySelector('input[name="triage-status"][value="General Queue (सामान्य कतार)"]');
+    if (gen) gen.checked = true;
+    var placeholder = document.getElementById('slip-placeholder');
+    var activeCard = document.getElementById('slip-active-card');
+    if (placeholder) placeholder.classList.remove('hidden');
+    if (activeCard) activeCard.classList.add('hidden');
+    
+    // Reset Stepper back to Step 1
+    setStepperStep(1);
+    
+    validateForm();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Dynamic symptom card toggle
   const symptomCards = document.querySelectorAll('.symptom-card');
