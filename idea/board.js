@@ -24,7 +24,7 @@
   ];
   function makeFlaps(str, old) {
     var motion = document.documentElement.getAttribute('data-motion');
-    if (motion === 'off' || motion === 'lite') return '<span class="flap-static">' + str + '</span>';
+    if (motion === 'off') return '<span class="flap-static">' + str + '</span>';
     var out = '', s = String(str).split(''), o = String(old || str).split('');
     for (var i = 0; i < s.length; i++) {
       var isChg = o[i] !== s[i];

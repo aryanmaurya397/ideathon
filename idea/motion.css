@@ -15,16 +15,7 @@ body.page-enter {
   transform: translateY(12px);
 }
 
-/* OFF TIER & PREFERS-REDUCED-MOTION (Calm Mode) */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
+/* OFF TIER (Calm Mode - activated when user clicks calm mode) */
 html[data-motion="off"] *,
 html[data-motion="off"] *::before,
 html[data-motion="off"] *::after {
@@ -37,15 +28,9 @@ html[data-motion="off"] .looping-anim {
   animation: none !important;
 }
 
-/* LITE TIER (Strictly transform & opacity fades, no complex loops or 3D) */
-html[data-motion="lite"] .looping-anim,
-html[data-motion="lite"] .full-tier-only {
-  animation: none !important;
-  display: none !important;
-}
-
-html[data-motion="lite"] .lite-static {
-  display: block !important;
+/* LITE TIER (Soft motion, prevents heavy GPU strain) */
+html[data-motion="lite"] .looping-anim {
+  animation-duration: 1.5x !important;
 }
 
 /* Pause All Animations Class (WCAG 2.2.2 Pause Toggle) */
@@ -185,40 +170,38 @@ html.motion-paused *::after {
   100% { box-shadow: 0 0 0 22px rgba(22,163,74,0); }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .modal-backdrop-animate {
-    animation: modalBackdropFadeIn 250ms ease-out forwards;
-  }
-  .modal-dialog-animate {
-    animation: modalScaleIn 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-  .pass-token {
-    animation: heartbeat 1.1s ease-in-out 300ms 3;
-    display: inline-block;
-  }
-  .pass-token-single {
-    animation: heartbeat 1.1s ease-in-out 1;
-    display: inline-block;
-  }
-  .pass-ticket {
-    animation: passRipple 1.2s ease-out 300ms 2;
-  }
-  .pass-badge-pop {
-    opacity: 0;
-    animation: badgePopIn 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
-  }
-  .pass-line-1 {
-    opacity: 0;
-    animation: lineSlideUp 300ms ease-out 1.2s forwards;
-  }
-  .pass-line-2 {
-    opacity: 0;
-    animation: lineSlideUp 300ms ease-out 1.28s forwards;
-  }
-  .pass-line-3 {
-    opacity: 0;
-    animation: lineSlideUp 300ms ease-out 1.36s forwards;
-  }
+.modal-backdrop-animate {
+  animation: modalBackdropFadeIn 250ms ease-out forwards;
+}
+.modal-dialog-animate {
+  animation: modalScaleIn 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.pass-token {
+  animation: heartbeat 1.1s ease-in-out 300ms 3;
+  display: inline-block;
+}
+.pass-token-single {
+  animation: heartbeat 1.1s ease-in-out 1;
+  display: inline-block;
+}
+.pass-ticket {
+  animation: passRipple 1.2s ease-out 300ms 2;
+}
+.pass-badge-pop {
+  opacity: 0;
+  animation: badgePopIn 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+.pass-line-1 {
+  opacity: 0;
+  animation: lineSlideUp 300ms ease-out 1.2s forwards;
+}
+.pass-line-2 {
+  opacity: 0;
+  animation: lineSlideUp 300ms ease-out 1.28s forwards;
+}
+.pass-line-3 {
+  opacity: 0;
+  animation: lineSlideUp 300ms ease-out 1.36s forwards;
 }
 
 /* ==========================================================================
@@ -276,59 +259,57 @@ html.motion-paused *::after {
   100% { background-position: 200% 0; }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .status-dot-blink {
-    animation: statusDotBlink 1.6s infinite ease-in-out;
-  }
-  .input-shake {
-    animation: inputShake 300ms ease-in-out;
-  }
-  .card-flash {
-    animation: cardFlashGreen 600ms ease-out;
-  }
-  .active-step-pulse {
-    animation: activeStepPulse 2s infinite ease-in-out;
-  }
-  .roll-out {
-    animation: numberRollOut 125ms ease-in forwards;
-  }
-  .roll-in {
-    animation: numberRollIn 125ms ease-out forwards;
-  }
-  .token-pill {
-    transition: transform 150ms ease, box-shadow 150ms ease;
-  }
-  .token-pill:hover {
-    transform: translateY(-2px);
-  }
-  .token-pill:active {
-    transform: scale(0.97);
-  }
-  .equalizer-bar-1 { animation: eqBar 0.8s infinite 0.1s; transform-origin: bottom; }
-  .equalizer-bar-2 { animation: eqBar 0.8s infinite 0.3s; transform-origin: bottom; }
-  .equalizer-bar-3 { animation: eqBar 0.8s infinite 0.5s; transform-origin: bottom; }
-  .equalizer-bar-4 { animation: eqBar 0.8s infinite 0.2s; transform-origin: bottom; }
-  .face-btn {
-    transition: transform 150ms ease, opacity 200ms ease;
-  }
-  .face-btn:hover {
-    transform: translateY(-2px) scale(1.08);
-  }
-  .face-btn:active {
-    transform: scale(0.95);
-  }
-  .face-btn.face-bounced {
-    animation: faceBounce 400ms ease;
-  }
-  .svg-check-draw {
-    stroke-dasharray: 24;
-    stroke-dashoffset: 24;
-    animation: drawCheck 400ms ease forwards;
-  }
-  .skeleton-shimmer {
-    background: linear-gradient(90deg, #eaedff 25%, #dae2fd 50%, #eaedff 75%);
-    background-size: 200% 100%;
-    animation: skeletonShimmer 1.5s infinite;
-  }
+.status-dot-blink {
+  animation: statusDotBlink 1.6s infinite ease-in-out;
+}
+.input-shake {
+  animation: inputShake 300ms ease-in-out;
+}
+.card-flash {
+  animation: cardFlashGreen 600ms ease-out;
+}
+.active-step-pulse {
+  animation: activeStepPulse 2s infinite ease-in-out;
+}
+.roll-out {
+  animation: numberRollOut 125ms ease-in forwards;
+}
+.roll-in {
+  animation: numberRollIn 125ms ease-out forwards;
+}
+.token-pill {
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.token-pill:hover {
+  transform: translateY(-2px);
+}
+.token-pill:active {
+  transform: scale(0.97);
+}
+.equalizer-bar-1 { animation: eqBar 0.8s infinite 0.1s; transform-origin: bottom; }
+.equalizer-bar-2 { animation: eqBar 0.8s infinite 0.3s; transform-origin: bottom; }
+.equalizer-bar-3 { animation: eqBar 0.8s infinite 0.5s; transform-origin: bottom; }
+.equalizer-bar-4 { animation: eqBar 0.8s infinite 0.2s; transform-origin: bottom; }
+.face-btn {
+  transition: transform 150ms ease, opacity 200ms ease;
+}
+.face-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+}
+.face-btn:active {
+  transform: scale(0.95);
+}
+.face-btn.face-bounced {
+  animation: faceBounce 400ms ease;
+}
+.svg-check-draw {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: drawCheck 400ms ease forwards;
+}
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #eaedff 25%, #dae2fd 50%, #eaedff 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s infinite;
 }
 

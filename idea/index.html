@@ -1211,23 +1211,11 @@
     function detectPerformanceTier() {
       // Check user preferences first
       const savedCalm = localStorage.getItem('swasthya_calm_mode');
-      if (savedCalm === 'true') return 'off';
-
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) return 'off';
+      if (savedCalm === 'true' || savedCalm === 'on') return 'off';
 
       const savedTier = localStorage.getItem('swasthya_motion_tier');
       if (savedTier) return savedTier;
 
-      // Hardware and connection checks
-      const hasSaveData = navigator.connection && navigator.connection.saveData;
-      const isSlowNet = navigator.connection && ['slow-2g', '2g', '3g'].includes(navigator.connection.effectiveType);
-      const isLowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
-      const isLowCores = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
-
-      if (hasSaveData || isSlowNet || isLowMemory || isLowCores) {
-        return 'lite';
-      }
       return 'full';
     }
 
@@ -1242,10 +1230,11 @@
       if (pauseIcon) pauseIcon.textContent = tier === 'off' ? '▶️' : '⏸️';
     }
 
-    // FPS Watchdog: Auto-downgrade if < 40fps for 2 seconds
+    // FPS Watchdog: Auto-downgrade only on sustained low FPS after boot grace period
     let frameTimes = [];
     let lastFrameTime = performance.now();
     let lowFpsCount = 0;
+    const pageStartTime = performance.now();
 
     function monitorFPS(now) {
       const delta = now - lastFrameTime;
@@ -1256,9 +1245,9 @@
         if (frameTimes.length > 60) frameTimes.shift();
 
         const avgFps = frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
-        if (avgFps < 40) {
+        if (now - pageStartTime > 8000 && avgFps < 20) {
           lowFpsCount++;
-          if (lowFpsCount > 120 && currentMotionTier === 'full') {
+          if (lowFpsCount > 300 && currentMotionTier === 'full') {
             setMotionTier('lite');
             console.warn("Performance: Auto-downgraded to 'lite' tier due to frame drops.");
           }
@@ -1272,7 +1261,7 @@
     }
 
     function toggleCalmMode() {
-      const isCalm = localStorage.getItem('swasthya_calm_mode') === 'true';
+      const isCalm = localStorage.getItem('swasthya_calm_mode') === 'true' || localStorage.getItem('swasthya_calm_mode') === 'on';
       const newCalm = !isCalm;
       localStorage.setItem('swasthya_calm_mode', newCalm ? 'true' : 'false');
       
@@ -1280,22 +1269,23 @@
       if (calmText) calmText.textContent = newCalm ? "Calm: On" : "Calm: Off";
 
       setMotionTier(newCalm ? 'off' : 'full');
+      if (window.showToast) window.showToast(newCalm ? 'Calm Mode ON (शांत मोड)' : 'Motion Active (एनीमेशन सक्रिय)', 'info');
     }
 
     function toggleMotionPause() {
-      if (currentMotionTier === 'off') {
-        localStorage.setItem('swasthya_calm_mode', 'false');
-        setMotionTier('full');
-      } else {
-        setMotionTier('off');
-      }
+      const isPaused = localStorage.getItem('swasthya_motion_paused') === 'true';
+      const newPaused = !isPaused;
+      localStorage.setItem('swasthya_motion_paused', newPaused ? 'true' : 'false');
+      document.documentElement.classList.toggle('motion-paused', newPaused);
+      const pauseIcon = document.getElementById('motion-pause-icon');
+      if (pauseIcon) pauseIcon.textContent = newPaused ? '▶️' : '⏸️';
+      if (window.showToast) window.showToast(newPaused ? 'Animations Paused (रोका गया)' : 'Animations Resumed (सक्रिय)', 'info');
     }
 
     // Battery Saving: pause on tab hidden
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        document.documentElement.setAttribute('data-motion', 'off');
-      } else {
+      document.documentElement.classList.toggle('tab-hidden-paused', document.hidden);
+      if (!document.hidden) {
         document.documentElement.setAttribute('data-motion', currentMotionTier);
       }
     });
@@ -1394,7 +1384,7 @@
 
       // Random ripple trigger every 3-5 seconds
       setInterval(() => {
-        if (currentMotionTier !== 'full' || document.hidden) return;
+        if (currentMotionTier === 'off' || document.hidden) return;
         const randIndex = Math.floor(Math.random() * clusters.length);
         const target = clusters[randIndex];
         triggerDotMapRipple(target);
