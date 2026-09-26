@@ -3,9 +3,10 @@
   'use strict';
   var tier = 'full', paused = false, calm = false;
   function getTier() {
-    if (localStorage.getItem('swasthya_calm_mode') === 'on' || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return 'off';
-    var conn = navigator.connection;
-    if ((conn && (conn.saveData || /2g|3g|slow-2g/i.test(conn.effectiveType || ''))) || (navigator.deviceMemory && navigator.deviceMemory < 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4)) return 'lite';
+    var savedCalm = localStorage.getItem('swasthya_calm_mode');
+    if (savedCalm === 'on' || savedCalm === 'true') return 'off';
+    var savedTier = localStorage.getItem('swasthya_motion_tier');
+    if (savedTier) return savedTier;
     return 'full';
   }
   function applyTier(t) {
@@ -16,11 +17,22 @@
     calm = (tier === 'off');
     document.querySelectorAll('.calm-toggle, #calm-mode-btn').forEach(function(b) { b.setAttribute('aria-pressed', calm); });
     document.querySelectorAll('.pause-toggle, #motion-pause-btn').forEach(function(b) { b.setAttribute('aria-pressed', paused); });
+    var label = document.getElementById('motion-tier-label');
+    var pauseIcon = document.getElementById('motion-pause-icon');
+    if (label) label.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+    if (pauseIcon) pauseIcon.textContent = paused ? '▶️' : '⏸️';
   }
   window.toggleCalmMode = function() {
     var nc = !calm;
-    localStorage.setItem('swasthya_calm_mode', nc ? 'on' : 'off');
-    applyTier(nc ? 'off' : getTier());
+    localStorage.setItem('swasthya_calm_mode', nc ? 'true' : 'false');
+    if (nc) {
+      applyTier('off');
+    } else {
+      localStorage.setItem('swasthya_motion_tier', 'full');
+      applyTier('full');
+    }
+    var calmText = document.getElementById('calm-text');
+    if (calmText) calmText.textContent = nc ? "Calm: On" : "Calm: Off";
     if (window.showToast) window.showToast(nc ? 'Calm Mode ON (शांत मोड)' : 'Motion Active (एनीमेशन सक्रिय)', 'info');
   };
   window.toggleMotionPause = function() {
@@ -31,25 +43,39 @@
     if (window.showToast) window.showToast(paused ? 'Animations Paused (रोका गया)' : 'Animations Resumed (सक्रिय)', 'info');
   };
   window.addEventListener('storage', function(e) {
-    if (e.key === 'swasthya_calm_mode' || e.key === 'swasthya_motion_paused') applyTier();
+    if (e.key === 'swasthya_calm_mode' || e.key === 'swasthya_motion_paused' || e.key === 'swasthya_motion_tier') applyTier();
     if (e.key === 'swasthya_lang' && window.setAppLanguage) window.setAppLanguage(e.newValue, false);
   });
   var frames = 0, lastT = performance.now(), lowCnt = 0;
+  var pageStartTime = performance.now();
   function fpsLoop(now) {
     frames++;
     var d = now - lastT;
     if (d >= 1000) {
       var r = (frames * 1000) / d;
       frames = 0; lastT = now;
-      if (tier === 'full' && r < 40 && !document.hidden) {
-        if (++lowCnt >= 2) { tier = 'lite'; document.documentElement.setAttribute('data-motion', 'lite'); }
-      } else lowCnt = 0;
+      // 8-second startup grace period so initial font loading & SVG setup don't downgrade tier
+      if (now - pageStartTime > 8000 && tier === 'full' && r < 20 && !document.hidden) {
+        if (++lowCnt >= 8) { 
+          tier = 'lite'; 
+          document.documentElement.setAttribute('data-motion', 'lite'); 
+        }
+      } else {
+        lowCnt = Math.max(0, lowCnt - 1);
+      }
     }
     if (!paused && tier !== 'off') requestAnimationFrame(fpsLoop);
   }
   document.addEventListener('visibilitychange', function() {
     document.documentElement.classList.toggle('tab-hidden-paused', document.hidden);
-    if (!document.hidden && !paused && tier !== 'off') { lastT = performance.now(); frames = 0; requestAnimationFrame(fpsLoop); }
+    if (!document.hidden) {
+      document.documentElement.setAttribute('data-motion', tier);
+      if (!paused && tier !== 'off') { 
+        lastT = performance.now(); 
+        frames = 0; 
+        requestAnimationFrame(fpsLoop); 
+      }
+    }
   });
   window.showToast = function(msg, type) {
     var c = document.getElementById('global-toast-container');

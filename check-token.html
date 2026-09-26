@@ -1,338 +1,1134 @@
 <!-- Check Token Status & Digital Pass Tracker -->
 <!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>Rashtriya Swasthya Queue | Live Token Status & Queue Tracker</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.goog-te-banner-frame.skiptranslate,.goog-te-banner-frame{display:none!important;}body{top:0px!important;position:static!important;}#google_translate_element{display:none!important;}.goog-tooltip,.goog-tooltip:hover{display:none!important;}.goog-text-highlight{background-color:transparent!important;box-shadow:none!important;}font{background-color:transparent!important;box-shadow:none!important;}.skiptranslate>iframe{display:none!important;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-tertiary-container":"#ff7f73","secondary":"#226b42","outline":"#737780","on-surface":"#131b2e","surface":"#faf8ff","on-tertiary":"#ffffff","surface-dim":"#d2d9f4","on-secondary":"#ffffff","inverse-on-surface":"#eef0ff","on-primary-fixed-variant":"#1c4974","primary-container":"#0a3d68","surface-variant":"#dae2fd","surface-container-highest":"#dae2fd","primary-fixed":"#d2e4ff","outline-variant":"#c2c7d0","secondary-container":"#a9f3bf","tertiary":"#540003","on-tertiary-fixed":"#410002","inverse-primary":"#a2c9fc","tertiary-container":"#7d0007","on-background":"#131b2e","primary-fixed-dim":"#a2c9fc","on-secondary-fixed-variant":"#00522d","on-tertiary-fixed-variant":"#93000b","tertiary-fixed-dim":"#ffb4ab","surface-container-high":"#e2e7ff","secondary-fixed":"#a9f3bf","secondary-fixed-dim":"#8ed6a5","tertiary-fixed":"#ffdad6","primary":"#002747","on-primary":"#ffffff","error":"#ba1a1a","on-error-container":"#93000a","error-container":"#ffdad6","on-secondary-container":"#297148","on-primary-fixed":"#001c37","surface-tint":"#38618e","on-secondary-fixed":"#00210f","on-error":"#ffffff","on-surface-variant":"#42474f","surface-container":"#eaedff","inverse-surface":"#283044","background":"#faf8ff","surface-container-low":"#f2f3ff","surface-bright":"#faf8ff","surface-container-lowest":"#ffffff","on-primary-container":"#81a8da"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},spacing:{"space-xs":"0.25rem",margin:"2rem",gutter:"1.5rem","space-lg":"1.5rem","space-sm":"0.5rem","space-xl":"2.5rem","space-md":"1rem","margin-mobile":"1rem","gutter-mobile":"1rem"},fontFamily:{"headline-md":["Public Sans"],"label-secondary":["Public Sans"],"token-display-mobile":["Public Sans"],"token-display-lg":["Public Sans"],"label-primary":["Public Sans"],"headline-lg":["Public Sans"],"body-lg":["Public Sans"],"body-sm":["Public Sans"],"body-md":["Public Sans"],"headline-xl-mobile":["Public Sans"],"headline-xl":["Public Sans"]},fontSize:{"headline-md":["20px",{lineHeight:"28px",fontWeight:"600"}],"label-secondary":["13px",{lineHeight:"18px",letterSpacing:"0.04em",fontWeight:"600"}],"token-display-mobile":["48px",{lineHeight:"56px",letterSpacing:"-0.01em",fontWeight:"800"}],"token-display-lg":["64px",{lineHeight:"72px",letterSpacing:"-0.02em",fontWeight:"800"}],"label-primary":["16px",{lineHeight:"22px",fontWeight:"600"}],"headline-lg":["24px",{lineHeight:"32px",fontWeight:"700"}],"body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],"body-sm":["14px",{lineHeight:"20px",fontWeight:"500"}],"body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],"headline-xl-mobile":["28px",{lineHeight:"36px",fontWeight:"700"}],"headline-xl":["36px",{lineHeight:"44px",letterSpacing:"-0.02em",fontWeight:"700"}]}}}}</script><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="extras.css"></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased"><div id="google_translate_element"></div><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest border-b-[1.5px] border-outline-variant"><div class="w-full h-1 flex"><div class="flex-1 bg-[#FF9933]"></div><div class="flex-1 bg-[#FFFFFF]"></div><div class="flex-1 bg-[#138808]"></div></div><div class="w-full bg-surface-container-low border-b border-outline-variant px-margin-mobile lg:px-margin py-space-xs"><div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm font-label-secondary text-label-secondary text-on-surface"><span class="font-bold">Government of India</span><span class="text-outline">|</span><span class="">भारत सरकार</span><span class="hidden md:inline text-outline">•</span><span class="hidden md:inline text-on-surface-variant font-medium">Ministry of Health &amp; Family Welfare (स्वास्थ्य एवं परिवार कल्याण मंत्रालय)</span></div><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs font-label-secondary text-label-secondary text-on-surface"><button class="px-1.5 py-0.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-bold" type="button">A-</button><button class="px-1.5 py-0.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-bold" type="button">A</button><button class="px-1.5 py-0.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-bold" type="button">A+</button></div><div class="flex items-center gap-1 border-l border-outline-variant pl-space-sm"><span class="material-symbols-outlined text-[18px] text-primary">language</span><select aria-label="Select Language" id="language-select" class="bg-transparent font-label-secondary text-label-secondary text-on-surface font-bold focus:outline-none cursor-pointer"><option selected value="en">English</option><option value="hi">हिन्दी (Hindi)</option><option value="mr">मराठी (Marathi)</option><option value="bn">বাংলা (Bengali)</option><option value="te">తెలుగు (Telugu)</option><option value="ta">தமிழ் (Tamil)</option><option value="gu">ગુજરાતી (Gujarati)</option></select></div></div></div></div><div class="w-full px-margin-mobile lg:px-margin"><div class="h-20 max-w-7xl mx-auto flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md"><img alt="Government Seal" class="h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XXa_K_33u7huzz-4D53ZRaheXk6AdcqygUqbwAeRo3ju-X0oLaEj0oSRn1Tp4jZ870ynuV1sQsaaBOKE1NuEjnyx3exQpRJBl-Sn2YZSvr6WFqKzoNVysbjGqEeTKa9SqFqqTtBen8SWFwN76O7aVp6WaBr65uWM49aLwrnnCxqpCS8aeY4KhqtlKPNwlGsM6TDU0spRaKK5RaY_FV6B87VgQnJkaD6bqY9IMJOfExSNAIH4fsKj3vAA"><div class="flex flex-col"><div class="flex items-center gap-space-xs"><a href="index.html" class="font-headline-md text-headline-md text-primary font-bold tracking-tight hover:underline">Rashtriya Swasthya Queue</a><span class="hidden sm:inline font-body-sm text-body-sm text-outline">|</span><span class="hidden sm:inline font-label-primary text-label-primary text-on-surface font-semibold">राष्ट्रीय स्वास्थ्य कतार</span></div><p class="font-label-secondary text-label-secondary text-on-surface font-semibold">* 100% Free Public Service • No SMS or data charges apply.</p></div></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-error-container text-on-error-container border border-error"><span class="material-symbols-outlined text-[18px] text-error">call</span><span class="font-label-secondary text-label-secondary font-bold">104 / 108 Toll-Free Helpline</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div><div class="w-full bg-surface-container-lowest border-t border-outline-variant px-margin-mobile lg:px-margin"><div class="max-w-7xl mx-auto flex items-center justify-between"><nav class="flex items-center overflow-x-auto scrollbar-none gap-space-xs" data-active-classes="border-b-2 border-primary text-primary font-bold bg-surface-container-low"><a class="px-space-md py-2.5 font-label-primary text-label-primary text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" data-path="home-portal" href="index.html">Home Portal (मुख्य पृष्ठ)</a><a aria-current="page" class="px-space-md py-2.5 whitespace-nowrap transition-colors border-b-2 border-primary text-primary font-bold bg-surface-container-low" data-path="check-token-status" href="check-token.html">Check Token Status (पर्ची खोजें)</a><a class="px-space-md py-2.5 font-label-primary text-label-primary text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" data-path="register-patient" href="register.html">Register Patient (नया मरीज पंजीकरण)</a><a class="px-space-md py-2.5 font-label-primary text-label-primary text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" data-path="staff-dashboard" href="dashboard.html">Staff Dashboard (पीएचसी डैशबोर्ड)</a></nav><div class="hidden xl:flex items-center gap-1 font-label-secondary text-label-secondary text-secondary font-semibold"><span class="material-symbols-outlined text-[16px]">verified</span><span class="">ABDM Authorized System</span></div></div></div></header><main class="w-full pt-36 bg-surface min-h-screen"><div class="flex flex-col w-full">
-<section class="w-full max-w-5xl mx-auto px-margin-mobile lg:px-margin py-space-md lg:py-space-lg space-y-space-lg">
-<!-- Emergency Bypass Alert Strip -->
-<div class="w-full bg-surface-container-lowest border-2 border-outline-variant p-space-md rounded-lg shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-space-md"><div class="w-12 h-12 rounded-full bg-error-container text-error flex items-center justify-center shrink-0 border border-error"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">warning</span></div><div class="flex-1"><div class="flex items-center gap-space-xs mb-0.5"><span class="font-headline-md text-headline-md text-error font-bold">Emergency Advisory (आपातकालीन सूचना)</span><span class="px-2 py-0.5 bg-error-container border border-error text-error font-label-secondary text-label-secondary font-bold uppercase tracking-wider rounded">QUEUE EXEMPTION</span></div><p class="font-body-md text-body-md text-on-surface font-semibold">If experiencing severe chest pain, extreme breathlessness, acute bleeding, or unconsciousness, do not wait in queue. Proceed immediately to Emergency Room 1 or call <strong class="text-error font-bold underline text-headline-md">108</strong>.</p></div></div>
-<!-- 1. Search Panel (High Contrast + Voice Assisted) -->
-<div class="w-full bg-surface-container-lowest p-space-lg rounded-xl shadow-md space-y-space-md">
-<div class="flex flex-col gap-1">
-<label class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-space-xs" for="token-search-input">
-<span class="material-symbols-outlined text-primary text-[30px]">badge</span>
-          Search by Token Slip No. or Mobile Number
-        </label>
-<span class="font-body-md text-body-md text-on-surface-variant">अपनी पर्ची या 10 अंकों का मोबाइल नंबर दर्ज करें</span>
-</div>
-<div class="flex flex-col lg:flex-row items-stretch gap-space-sm">
-<div class="relative flex-1">
-<div class="absolute inset-y-0 left-0 pl-space-md flex items-center pointer-events-none text-outline">
-<span class="material-symbols-outlined text-[28px]">search</span>
-</div>
-<input class="w-full h-14 pl-12 pr-12 text-headline-md font-headline-md bg-surface text-on-surface rounded-lg placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none transition-colors" id="token-search-input" placeholder="e.g. 48 or 9876543210" type="text" value="48">
-<button class="absolute inset-y-0 right-0 pr-space-md flex items-center text-primary hover:text-primary-container transition-colors" id="voice-boliye-btn" title="Speak token number (बोलें)" type="button">
-<span class="material-symbols-outlined text-[30px]" id="mic-icon">mic</span>
-</button>
-</div>
-<button class="h-14 px-space-xl bg-primary-container hover:bg-primary text-on-primary font-headline-md text-headline-md rounded-lg flex items-center justify-center gap-space-xs shadow-md active:scale-[0.99] transition-transform" id="search-btn" type="button"><span class="material-symbols-outlined text-[24px]">verified</span><span class="">Check Status / स्थिति देखें</span></button>
-</div>
-<!-- Quick Recent Lookups -->
-<div class="pt-space-xs flex flex-wrap items-center gap-space-sm"><span class="font-label-secondary text-label-secondary text-on-surface font-bold">Recent Lookups (हाल में खोजी पर्ची):</span><button class="token-pill px-space-md py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container border border-outline text-on-surface font-label-primary text-label-primary font-semibold flex items-center gap-1 transition-colors" type="button"><span class="material-symbols-outlined text-[16px] text-primary">history</span><span class="">Token #48 (Ramesh Kumar)</span></button><button class="token-pill px-space-md py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container border border-outline text-on-surface font-label-primary text-label-primary font-semibold flex items-center gap-1 transition-colors" type="button"><span class="material-symbols-outlined text-[16px] text-primary">history</span><span class="">Token #52 (Kamla Devi)</span></button></div>
-</div>
-<!-- 2. Main Active Token Card (Very Large, Ultra-Contrast) -->
-<div class="w-full bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden">
-<!-- Facility Header Ribbon -->
-<div class="w-full bg-primary-container text-on-primary px-space-md lg:px-space-lg py-space-sm flex flex-wrap items-center justify-between gap-space-xs">
-<div class="flex items-center gap-space-sm">
-<span class="material-symbols-outlined text-secondary-fixed text-[26px]">local_hospital</span>
-<div>
-<p class="font-headline-md text-headline-md text-on-primary leading-tight">Primary Health Centre Sarangpur (PHC Sarangpur)</p>
-<p class="font-label-secondary text-label-secondary text-primary-fixed opacity-90">Ayushman Arogya Mandir • Public Health Services</p>
-</div>
-</div>
-<div class="px-space-md py-1 rounded bg-secondary text-on-secondary font-headline-md text-headline-md flex items-center gap-1">
-<span class="material-symbols-outlined text-[20px]">door_front</span>
-<span class="">Room 02 (कक्ष सं. ०२)</span>
-</div>
-</div>
-<!-- Core Display Section -->
-<div class="p-space-lg lg:p-space-xl text-center space-y-space-lg">
-<!-- Large Primary Token Highlight -->
-<div class="bg-surface-container-low rounded-xl p-space-lg relative overflow-hidden">
-<span class="font-label-primary text-label-primary text-on-surface-variant font-bold block uppercase tracking-wider mb-1">
-            Your Allocated Token Number (आपका टोकन नंबर)
-          </span>
-<div class="font-token-display-lg text-token-display-lg text-primary font-extrabold tracking-tight my-1" id="display-token-num">
-            #48
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.goog-te-banner-frame.skiptranslate,.goog-te-banner-frame{display:none!important;}body{top:0px!important;position:static!important;}#google_translate_element{display:none!important;}.goog-tooltip,.goog-tooltip:hover{display:none!important;}.goog-text-highlight{background-color:transparent!important;box-shadow:none!important;}font{background-color:transparent!important;box-shadow:none!important;}.skiptranslate>iframe{display:none!important;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-tertiary-container":"#ff7f73","secondary":"#226b42","outline":"#737780","on-surface":"#131b2e","surface":"#faf8ff","on-tertiary":"#ffffff","surface-dim":"#d2d9f4","on-secondary":"#ffffff","inverse-on-surface":"#eef0ff","on-primary-fixed-variant":"#1c4974","primary-container":"#0a3d68","surface-variant":"#dae2fd","surface-container-highest":"#dae2fd","primary-fixed":"#d2e4ff","outline-variant":"#c2c7d0","secondary-container":"#a9f3bf","tertiary":"#540003","on-tertiary-fixed":"#410002","inverse-primary":"#a2c9fc","tertiary-container":"#7d0007","on-background":"#131b2e","primary-fixed-dim":"#a2c9fc","on-secondary-fixed-variant":"#00522d","on-tertiary-fixed-variant":"#93000b","tertiary-fixed-dim":"#ffb4ab","surface-container-high":"#e2e7ff","secondary-fixed":"#a9f3bf","secondary-fixed-dim":"#8ed6a5","tertiary-fixed":"#ffdad6","primary":"#002747","on-primary":"#ffffff","error":"#ba1a1a","on-error-container":"#93000a","error-container":"#ffdad6","on-secondary-container":"#297148","on-primary-fixed":"#001c37","surface-tint":"#38618e","on-secondary-fixed":"#00210f","on-error":"#ffffff","on-surface-variant":"#42474f","surface-container":"#eaedff","inverse-surface":"#283044","background":"#faf8ff","surface-container-low":"#f2f3ff","surface-bright":"#faf8ff","surface-container-lowest":"#ffffff","on-primary-container":"#81a8da"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},spacing:{"space-xs":"0.25rem",margin:"2rem",gutter:"1.5rem","space-lg":"1.5rem","space-sm":"0.5rem","space-xl":"2.5rem","space-md":"1rem","margin-mobile":"1rem","gutter-mobile":"1rem"},fontFamily:{"headline-md":["Public Sans"],"label-secondary":["Public Sans"],"token-display-mobile":["Public Sans"],"token-display-lg":["Public Sans"],"label-primary":["Public Sans"],"headline-lg":["Public Sans"],"body-lg":["Public Sans"],"body-sm":["Public Sans"],"body-md":["Public Sans"],"headline-xl-mobile":["Public Sans"],"headline-xl":["Public Sans"]},fontSize:{"headline-md":["20px",{lineHeight:"28px",fontWeight:"600"}],"label-secondary":["13px",{lineHeight:"18px",letterSpacing:"0.04em",fontWeight:"600"}],"token-display-mobile":["48px",{lineHeight:"56px",letterSpacing:"-0.01em",fontWeight:"800"}],"token-display-lg":["64px",{lineHeight:"72px",letterSpacing:"-0.02em",fontWeight:"800"}],"label-primary":["16px",{lineHeight:"22px",fontWeight:"600"}],"headline-lg":["24px",{lineHeight:"32px",fontWeight:"700"}],"body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],"body-sm":["14px",{lineHeight:"20px",fontWeight:"500"}],"body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],"headline-xl-mobile":["28px",{lineHeight:"36px",fontWeight:"700"}],"headline-xl":["36px",{lineHeight:"44px",letterSpacing:"-0.02em",fontWeight:"700"}]}}}}</script><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="extras.css"></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased"><div id="google_translate_element"></div><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest border-b-[1.5px] border-outline-variant"><div class="w-full h-1 flex"><div class="flex-1 bg-[#FF9933]"></div><div class="flex-1 bg-[#FFFFFF]"></div><div class="flex-1 bg-[#138808]"></div></div><div class="w-full bg-surface-container-low border-b border-outline-variant px-margin-mobile lg:px-margin py-space-xs"><div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm font-label-secondary text-label-secondary text-on-surface"><span class="font-bold">Government of India</span><span class="text-outline">|</span><span class="">भारत सरकार</span><span class="hidden md:inline text-outline">•</span><span class="hidden md:inline text-on-surface-variant font-medium">Ministry of Health &amp; Family Welfare (स्वास्थ्य एवं परिवार कल्याण मंत्रालय)</span></div><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs font-label-secondary text-label-secondary text-on-surface"><button class="px-1.5 py-0.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-bold" type="button">A-</button><button class="px-1.5 py-0.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-bold" type="button">A</button><button class="px-1.5 py-0.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-bold" type="button">A+</button></div><div class="flex items-center gap-1 border-l border-outline-variant pl-space-sm"><span class="material-symbols-outlined text-[18px] text-primary">language</span><select aria-label="Select Language" id="language-select" class="bg-transparent font-label-secondary text-label-secondary text-on-surface font-bold focus:outline-none cursor-pointer"><option selected value="en">English</option><option value="hi">हिन्दी (Hindi)</option><option value="mr">मराठी (Marathi)</option><option value="bn">বাংলা (Bengali)</option><option value="te">తెలుగు (Telugu)</option><option value="ta">தமிழ் (Tamil)</option><option value="gu">ગુજરાતી (Gujarati)</option></select></div></div></div></div><div class="w-full px-margin-mobile lg:px-margin"><div class="h-20 max-w-7xl mx-auto flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><a href="index.html" class="flex items-center gap-space-md group shrink-0"><div class="h-11 w-11 sm:h-12 sm:w-12 rounded-lg bg-surface-container-low flex items-center justify-center p-1 border border-outline-variant/60 shadow-xs shrink-0"><svg class="h-full w-full object-contain" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#FFF9F0" stroke="#0B3D91" stroke-width="2.5"/><path d="M 36 28 C 36 24 40 20 50 20 C 60 20 64 24 64 28 C 64 34 60 38 58 44 L 42 44 C 40 38 36 34 36 28 Z" fill="#D97706" stroke="#92400E" stroke-width="1.8"/><path d="M 28 32 C 28 28 32 24 38 24 C 41 27 41 33 39 37 L 31 43 C 29 40 28 36 28 32 Z" fill="#D97706" stroke="#92400E" stroke-width="1.5"/><path d="M 72 32 C 72 28 68 24 62 24 C 59 27 59 33 61 37 L 69 43 C 71 40 72 36 72 32 Z" fill="#D97706" stroke="#92400E" stroke-width="1.5"/><circle cx="45" cy="26" r="2.5" fill="#1E293B"/><circle cx="55" cy="26" r="2.5" fill="#1E293B"/><circle cx="33" cy="30" r="1.8" fill="#1E293B"/><circle cx="67" cy="30" r="1.8" fill="#1E293B"/><path d="M 46 32 C 48 34 52 34 54 32" stroke="#92400E" stroke-width="1.5" stroke-linecap="round"/><path d="M 40 36 C 44 40 56 40 60 36" stroke="#92400E" stroke-width="1.5" stroke-linecap="round"/><rect x="26" y="44" width="48" height="6" rx="2" fill="#D97706" stroke="#92400E" stroke-width="1.5"/><circle cx="50" cy="47" r="2.5" fill="#0B3D91"/><rect x="22" y="50" width="56" height="12" rx="2" fill="#B45309" stroke="#78350F" stroke-width="1.5"/><circle cx="50" cy="56" r="4.5" fill="#FFF9F0" stroke="#0B3D91" stroke-width="1.5"/><line x1="50" y1="52" x2="50" y2="60" stroke="#0B3D91" stroke-width="0.8"/><line x1="46" y1="56" x2="54" y2="56" stroke="#0B3D91" stroke-width="0.8"/><line x1="47.2" y1="53.2" x2="52.8" y2="58.8" stroke="#0B3D91" stroke-width="0.8"/><line x1="47.2" y1="58.8" x2="52.8" y2="53.2" stroke="#0B3D91" stroke-width="0.8"/><path d="M 30 57 C 32 54 36 54 38 57" stroke="#FFF9F0" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M 62 57 C 64 54 68 54 70 57" stroke="#FFF9F0" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M 28 62 L 34 72 L 66 72 L 72 62 Z" fill="#92400E" stroke="#78350F" stroke-width="1.5"/><rect x="24" y="72" width="52" height="4" rx="1.5" fill="#78350F"/><text x="50" y="85" font-family="'Public Sans', sans-serif" font-size="7" font-weight="900" fill="#0B3D91" text-anchor="middle" letter-spacing="1">सत्यमेव जयते</text></svg></div><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-md text-headline-md text-primary font-bold tracking-tight whitespace-nowrap group-hover:underline">Rashtriya Swasthya Queue</span><span class="hidden sm:inline font-body-sm text-body-sm text-outline">|</span><span class="hidden sm:inline font-label-primary text-label-primary text-on-surface font-semibold whitespace-nowrap">राष्ट्रीय स्वास्थ्य कतार</span></div><p class="hidden md:block font-label-secondary text-label-secondary text-on-surface-variant font-medium whitespace-nowrap">* 100% Free Public Service • No SMS or data charges apply.</p></div></a></div><div class="flex items-center gap-space-md shrink-0"><div class="hidden lg:flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-error-container text-on-error-container border border-error shrink-0"><span class="material-symbols-outlined text-[18px] text-error">call</span><span class="font-label-secondary text-label-secondary font-bold whitespace-nowrap">104 / 108 Toll-Free Helpline</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div><div class="w-full bg-surface-container-lowest border-t border-outline-variant px-margin-mobile lg:px-margin"><div class="max-w-7xl mx-auto flex items-center justify-between"><nav class="flex items-center overflow-x-auto scrollbar-none gap-space-xs" data-active-classes="border-b-2 border-primary text-primary font-bold bg-surface-container-low"><a class="px-space-md py-2.5 font-label-primary text-label-primary text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" data-path="home-portal" href="index.html">Home Portal (मुख्य पृष्ठ)</a><a aria-current="page" class="px-space-md py-2.5 whitespace-nowrap transition-colors border-b-2 border-primary text-primary font-bold bg-surface-container-low" data-path="check-token-status" href="check-token.html">Check Token Status (पर्ची खोजें)</a><a class="px-space-md py-2.5 font-label-primary text-label-primary text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" data-path="register-patient" href="register.html">Register Patient (नया मरीज पंजीकरण)</a><a class="px-space-md py-2.5 font-label-primary text-label-primary text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" data-path="staff-dashboard" href="dashboard.html">Staff Dashboard (पीएचसी डैशबोर्ड)</a></nav><div class="hidden xl:flex items-center gap-1 font-label-secondary text-label-secondary text-secondary font-semibold shrink-0"><span class="material-symbols-outlined text-[16px]">verified</span><span class="whitespace-nowrap">ABDM Authorized System</span></div></div></div></header><main class="w-full pt-36 bg-surface min-h-screen"><div class="flex flex-col w-full">
+  <div class="max-w-7xl mx-auto px-margin-mobile lg:px-margin py-space-md lg:py-space-lg space-y-space-lg">
+
+      <!-- Compact Single-Row Emergency Advisory Banner -->
+      <div id="emergency-advisory-banner" class="w-full bg-surface-container-lowest border border-outline-variant border-l-4 border-l-error p-space-md rounded-xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md transition-all">
+        <div class="flex items-center gap-space-md">
+          <div class="w-10 h-10 rounded-full bg-error-container text-error flex items-center justify-center shrink-0 border border-error">
+            <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">warning</span>
           </div>
-<p class="font-headline-md text-headline-md text-on-surface font-semibold" id="display-patient-info">
-            Patient: <span class="text-primary font-bold">Ramesh Kumar (Male, 54 Yrs)</span> • General OPD (सामान्य ओपीडी)
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-headline-md text-headline-md text-error font-bold">Emergency Advisory (आपातकालीन सूचना)</span>
+              <span class="px-2 py-0.5 bg-error-container border border-error text-error font-label-secondary text-label-secondary font-bold uppercase tracking-wider rounded">Queue Exemption</span>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface font-medium">
+              If experiencing severe chest pain, extreme breathlessness or acute trauma, proceed directly to ER-1 or call <a href="tel:108" class="text-error font-bold underline">108</a>.
+            </p>
+          </div>
+        </div>
+        <button id="dismiss-emergency-btn" type="button" class="text-outline hover:text-on-surface p-1 rounded hover:bg-surface-container self-start sm:self-center transition-colors" aria-label="Dismiss Emergency Advisory">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Page Header & Live Status Chip -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h1 class="font-headline-xl text-headline-xl text-primary font-extrabold tracking-tight">Check OPD Token Status</h1>
+          <p class="font-body-md text-body-md text-on-surface-variant">पर्ची स्थिति एवं लाइव कतार ट्रैकर • Real-Time OPD Queue Status</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface font-label-secondary text-label-secondary font-bold shadow-xs">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#138808] status-dot-blink"></span>
+            <span id="live-status-label">Live • Updated <span id="seconds-ago-counter">0</span>s ago</span>
+          </div>
+          <button id="manual-refresh-btn" type="button" class="p-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container border border-outline-variant text-primary shadow-xs transition-transform active:rotate-180" title="Refresh queue status (रिफ्रेश)">
+            <span class="material-symbols-outlined text-[20px]">refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. Search Panel (High Contrast + Voice Assisted) -->
+      <div class="w-full bg-surface-container-lowest p-space-lg rounded-xl shadow-md space-y-space-md border border-outline-variant">
+        <div class="flex flex-col gap-1">
+          <label class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-space-xs" for="token-search-input">
+            <span class="material-symbols-outlined text-primary text-[30px]">badge</span>
+            Search by Token Slip No. or Mobile Number
+          </label>
+          <span class="font-body-md text-body-md text-on-surface-variant">अपनी पर्ची संख्या (उदा. 048) या 10 अंकों का मोबाइल नंबर दर्ज करें</span>
+        </div>
+        <div class="flex flex-col lg:flex-row items-stretch gap-space-sm">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 pl-space-md flex items-center pointer-events-none text-outline">
+              <span class="material-symbols-outlined text-[28px]">search</span>
+            </div>
+            <input class="w-full h-14 pl-12 pr-12 text-headline-md font-headline-md bg-surface text-on-surface rounded-lg placeholder:text-outline border border-outline-variant focus:bg-surface-container-lowest focus:border-primary focus:outline-none transition-colors" id="token-search-input" placeholder="e.g. 48, 048, #048 or 9876543210" type="text" value="">
+            <button class="absolute inset-y-0 right-0 pr-space-md flex items-center text-primary hover:text-primary-container transition-colors" id="voice-boliye-btn" title="Speak token number (बोलें)" type="button">
+              <span class="material-symbols-outlined text-[30px]" id="mic-icon">mic</span>
+            </button>
+          </div>
+          <button class="h-14 px-space-xl bg-primary-container hover:bg-primary text-on-primary font-headline-md text-headline-md rounded-lg flex items-center justify-center gap-space-xs shadow-md active:scale-[0.99] transition-transform" id="search-btn" type="button">
+            <span class="material-symbols-outlined text-[24px]">verified</span>
+            <span>Check Status / स्थिति देखें</span>
+          </button>
+        </div>
+
+        <!-- Inline Not Found Alert -->
+        <div id="search-not-found" class="hidden p-space-md bg-error-container border border-error rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm text-on-error-container transition-all">
+          <div class="flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-error text-[24px]">error</span>
+            <span class="font-body-md text-body-md font-bold" id="not-found-text">Token not found. Check the number or ask your ASHA Didi. (पर्ची नहीं मिली)</span>
+          </div>
+          <a href="tel:9876543210" class="px-space-md py-1.5 rounded-lg bg-surface-container-lowest text-primary font-headline-md text-sm font-bold border border-primary flex items-center gap-1 shadow-xs hover:bg-surface-container transition-colors shrink-0">
+            <span class="material-symbols-outlined text-[18px]">support_agent</span>
+            <span>Call ASHA (आशा दीदी सहायता)</span>
+          </a>
+        </div>
+
+        <!-- Quick Recent Lookups (Tokens only, e.g. #048) -->
+        <div class="pt-space-xs flex flex-wrap items-center gap-space-sm" id="recent-lookups-wrapper">
+          <span class="font-label-secondary text-label-secondary text-on-surface font-bold">Recent Lookups (हाल में खोजी पर्ची):</span>
+          <div id="recent-lookups-chips" class="flex flex-wrap gap-space-sm">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- State: IDLE -->
+      <div id="state-idle" class="w-full bg-surface-container-lowest p-space-xl rounded-xl border border-outline-variant text-center space-y-4 shadow-sm">
+        <div class="w-16 h-16 rounded-full bg-surface-container text-primary flex items-center justify-center mx-auto border border-outline-variant">
+          <span class="material-symbols-outlined text-[36px]">receipt_long</span>
+        </div>
+        <div class="space-y-1">
+          <h2 class="font-headline-lg text-headline-lg text-primary font-bold">Track Your Digital OPD Token (टोकन स्थिति देखें)</h2>
+          <p class="font-body-md text-body-md text-on-surface-variant max-w-lg mx-auto">
+            Enter your token number (e.g. <strong>048</strong>) or 10-digit registered mobile number above to see real-time doctor queue position, estimated call time, and room details.
           </p>
-<div class="mt-space-md inline-flex items-center gap-2 px-space-md py-1 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface font-label-primary text-label-primary font-bold"><span class="material-symbols-outlined text-[20px] text-primary">verified</span><span class="">ABHA Verified Account: 91-4582-7712-9901</span></div>
-</div>
-<!-- Metrics Grid (High Impact Sunlight View) -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md text-left"><div class="bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between text-on-surface mb-space-sm"><span class="font-label-secondary text-label-secondary font-bold text-on-surface">Currently Serving<br>(अभी देखा जा रहा टोकन)</span><span class="material-symbols-outlined text-[28px] text-primary">clinical_notes</span></div><div><div class="font-token-display-mobile text-token-display-mobile text-primary font-extrabold" id="serving-token-num">#46</div><p class="font-body-sm text-body-sm text-on-surface font-semibold mt-1">Dr. S. K. Sharma (MD)</p></div></div><div class="bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between text-on-surface mb-space-sm"><span class="font-label-secondary text-label-secondary font-bold text-on-surface">Patients Ahead<br>(आपके आगे मरीज)</span><span class="material-symbols-outlined text-[28px] text-primary">group</span></div><div><div class="font-token-display-mobile text-token-display-mobile text-primary font-extrabold" id="ahead-count">02 Patients</div><p class="font-body-sm text-body-sm text-on-surface font-bold mt-1">You are 3rd in queue (तीसरा क्रम)</p></div></div><div class="bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between text-on-surface mb-space-sm"><span class="font-label-secondary text-label-secondary font-bold text-on-surface">Estimated Wait Time<br>(अनुमानित प्रतीक्षा काल)</span><span class="material-symbols-outlined text-[28px] text-primary">timer</span></div><div><div class="font-token-display-mobile text-token-display-mobile text-primary font-extrabold" id="wait-time">~10-12 Mins</div><p class="font-body-sm text-body-sm text-on-surface font-bold mt-1">Expected call around 10:05 AM</p></div></div></div>
-<!-- 2b. High Visibility Audio Loudspeaker Action -->
-<div class="bg-surface-container-highest rounded-xl p-space-md flex flex-col sm:flex-row items-center justify-between gap-space-md">
-<div class="text-left">
-<div class="flex items-center gap-space-xs mb-1">
-<span class="material-symbols-outlined text-primary text-[24px]">volume_up</span>
-<span class="font-headline-md text-headline-md text-on-surface font-bold">Voice Announcement (ध्वनि उद्घोषणा)</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface font-bold" id="audio-caption">"Token 48, please proceed to Waiting Area outside Room 2."</p>
-</div>
-<button class="w-full sm:w-auto h-14 px-space-lg bg-surface-container-lowest hover:bg-surface-container text-primary-container border-2 border-primary-container rounded-lg font-headline-md text-headline-md font-bold flex items-center justify-center gap-space-xs shadow-sm transition-all active:scale-95" id="listen-audio-btn" type="button"><span class="material-symbols-outlined text-[28px] text-primary" id="speaker-icon">campaign</span><span class="text-primary">Listen Audio (आवाज में सुनें)</span></button>
-</div>
-</div>
-</div>
-<!-- 3. Simple 5-Step Patient Journey Bar (Clear and High Contrast) -->
-<div class="w-full bg-surface-container-lowest p-space-lg rounded-xl shadow-md">
-<div class="mb-space-md">
-<h2 class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-primary text-[26px]">linear_scale</span>
-          Patient Journey Progress (मरीज प्रवाह स्थिति)
-        </h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Step-by-step progress tracking for your outpatient visit</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-5 gap-space-sm"><div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between mb-space-sm"><span class="px-2 py-0.5 rounded border border-outline text-on-surface font-label-secondary text-label-secondary font-bold">STEP 01</span><span class="material-symbols-outlined text-primary text-[24px]">check_circle</span></div><div><p class="font-headline-md text-headline-md text-on-surface font-bold">Registration Done</p><p class="font-body-sm text-body-sm text-on-surface font-medium">Slip Issued • 09:15 AM</p><span class="mt-2 inline-block font-label-secondary text-label-secondary text-on-surface font-bold">Verified ✓</span></div></div><div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between mb-space-sm"><span class="px-2 py-0.5 rounded border border-outline text-on-surface font-label-secondary text-label-secondary font-bold">STEP 02</span><span class="material-symbols-outlined text-primary text-[24px]">check_circle</span></div><div><p class="font-headline-md text-headline-md text-on-surface font-bold">Vitals &amp; BP Check</p><p class="font-body-sm text-body-sm text-on-surface font-medium">BP: 124/82 • 09:30 AM</p><span class="mt-2 inline-block font-label-secondary text-label-secondary text-on-surface font-bold">Recorded ✓</span></div></div><div class="bg-primary text-on-primary rounded-lg p-space-md flex flex-col justify-between shadow-md"><div class="flex items-center justify-between mb-space-sm"><span class="px-2 py-0.5 rounded bg-surface-container-lowest text-primary font-label-secondary text-label-secondary font-extrabold">ACTIVE STEP 03</span><span class="material-symbols-outlined text-surface-tint text-[26px]" style="font-variation-settings: 'FILL' 1;">airline_seat_recline_normal</span></div><div><p class="font-headline-md text-headline-md text-on-primary font-bold">Waiting Room 2</p><p class="font-body-sm text-body-sm text-primary-fixed opacity-95">प्रतीक्षा कक्ष सं. ०२</p><span class="mt-2 inline-flex items-center gap-1 font-label-secondary text-label-secondary bg-primary-container border border-outline-variant px-2 py-0.5 rounded text-on-primary font-bold"><span class="w-2 h-2 rounded-full bg-primary-fixed animate-ping"></span>You Are Here</span></div></div><div class="bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between mb-space-sm"><span class="px-2 py-0.5 rounded border border-outline text-on-surface font-label-secondary text-label-secondary font-bold">STEP 04</span><span class="material-symbols-outlined text-on-surface-variant text-[24px]">stethoscope</span></div><div><p class="font-headline-md text-headline-md text-on-surface font-semibold">Doctor Consult</p><p class="font-body-sm text-body-sm text-on-surface font-medium">Room 02 • Next in Line</p><span class="mt-2 inline-block font-label-secondary text-label-secondary text-on-surface font-medium">Queued</span></div></div><div class="bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between mb-space-sm"><span class="px-2 py-0.5 rounded border border-outline text-on-surface font-label-secondary text-label-secondary font-bold">STEP 05</span><span class="material-symbols-outlined text-on-surface-variant text-[24px]">medication</span></div><div><p class="font-headline-md text-headline-md text-on-surface font-semibold">Free Medicines</p><p class="font-body-sm text-body-sm text-on-surface font-medium">Pharmacy Counter 4</p><span class="mt-2 inline-block font-label-secondary text-label-secondary text-on-surface font-medium">Final Stage</span></div></div></div>
-</div>
-<!-- 4. Waiting Area Instructions & Physical Navigation -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-<!-- Facility Location Pin -->
-<div class="bg-surface-container-lowest p-space-md lg:p-space-lg rounded-xl shadow-sm space-y-space-sm">
-<div class="flex items-center gap-space-xs text-primary">
-<span class="material-symbols-outlined text-[28px]">explore</span>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Where to Wait? (कहाँ बैठें?)</h3>
-</div>
-<div class="p-space-sm bg-surface-container-low border-2 border-primary text-on-surface rounded-lg font-headline-md text-headline-md font-bold flex items-center gap-space-sm"><span class="material-symbols-outlined text-[30px] text-primary">chair</span><span class="">Green Waiting Zone — Main Veranda right outside Room 2</span></div>
-<ul class="space-y-space-xs font-body-md text-body-md text-on-surface pt-1">
-<li class="flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-primary text-[20px]">water_drop</span>
-<span class=""><strong>Clean Drinking Water:</strong> Located 10 steps left of the waiting zone.</span>
-</li>
-<li class="flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-primary text-[20px]">wc</span>
-<span class=""><strong>Restrooms (शौचालय):</strong> In main gallery 20 steps to the right.</span>
-</li>
-<li class="flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-secondary text-[20px]">screen_rotation</span>
-<span class=""><strong>Digital TV Display:</strong> Token #48 is also displayed on the corridor TV.</span>
-</li>
-</ul>
-</div>
-<!-- 5. Low-Tech SMS & Offline Voice Fallback -->
-<div class="bg-surface-container-lowest p-space-md lg:p-space-lg rounded-xl shadow-sm space-y-space-sm">
-<div class="flex items-center gap-space-xs text-primary">
-<span class="material-symbols-outlined text-[28px]">sms</span>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold">2G / Basic Phone Status Check (बिना इंटरनेट)</h3>
-</div>
-<div class="p-space-md bg-surface-container-low border border-outline-variant rounded-lg space-y-2"><div class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-primary text-[22px] mt-0.5">check_circle</span><div><p class="font-headline-md text-headline-md text-on-surface font-bold">Free SMS &amp; Auto-Call Enabled</p><p class="font-body-sm text-body-sm text-on-surface font-medium">Registered phone <strong>+91 98765-XXXXX</strong> will receive an automatic call &amp; SMS 2 minutes prior to your turn.</p></div></div></div>
-<div class="p-space-sm bg-surface-container rounded-lg flex items-center justify-between">
-<div class="flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-primary text-[22px]">dialpad</span>
-<span class="font-body-md text-body-md font-semibold text-on-surface">SMS Check:</span>
-</div>
-<code class="px-space-sm py-1 bg-surface-container-lowest text-primary rounded font-mono font-bold text-label-primary">
-            STATUS 48 to 56161
-          </code>
-</div>
-<p class="font-label-secondary text-label-secondary text-on-surface font-semibold">* Zero government service charge. Regular SMS rates do not apply (Toll-Free).</p>
-</div>
-</div>
-<!-- 7. Persistent ASHA & Hospital Assistance Bar -->
-<div class="w-full bg-surface-container-highest p-space-md rounded-xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md">
-<div class="flex items-center gap-space-md">
-<div class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-[28px]">support_agent</span>
-</div>
-<div>
-<p class="font-headline-md text-headline-md text-on-surface font-bold">Hospital Helpdesk &amp; ASHA Worker Support</p>
-<p class="font-body-md text-body-md text-on-surface-variant">
-            For questions, visit Counter 1 or contact on-duty ASHA worker <strong>Sunita Devi</strong> (Mobile: <span class="text-primary font-bold">9876543210</span>).
-          </p>
-</div>
-</div>
-<a class="h-12 px-space-md bg-surface-container-lowest hover:bg-surface-container text-primary border-2 border-primary-container rounded-lg font-headline-md text-headline-md font-bold flex items-center gap-space-xs shrink-0 shadow-sm transition-colors" href="tel:9876543210"><span class="material-symbols-outlined text-[22px] text-primary">call</span><span class="">Call ASHA (बात करें)</span></a>
-</div>
-</section>
-<!-- Interactive Client-side Script -->
+        </div>
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-space-sm">
+          <button type="button" onclick="quickFillToken('048')" class="token-pill px-4 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container border border-outline text-primary font-bold text-sm flex items-center gap-1.5 transition-all">
+            <span class="material-symbols-outlined text-[18px]">play_circle</span>
+            <span>Try Sample Token #048</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- State: LOADING SKELETON (~600ms) -->
+      <div id="state-loading" class="hidden w-full bg-surface-container-lowest rounded-xl shadow-xl p-space-lg space-y-space-lg border border-outline-variant">
+        <div class="h-10 skeleton-shimmer rounded-lg w-full"></div>
+        <div class="h-32 skeleton-shimmer rounded-xl w-full"></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+          <div class="h-28 skeleton-shimmer rounded-lg"></div>
+          <div class="h-28 skeleton-shimmer rounded-lg"></div>
+          <div class="h-28 skeleton-shimmer rounded-lg"></div>
+        </div>
+        <div class="h-20 skeleton-shimmer rounded-xl"></div>
+      </div>
+
+      <!-- State: FOUND -->
+      <div id="state-found" class="hidden space-y-space-lg">
+
+        <!-- Main Active Token Card -->
+        <div class="w-full bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden border border-outline-variant">
+          
+          <!-- "Your Turn" Green Banner (Revealed when ahead === 0) -->
+          <div id="your-turn-banner" class="hidden w-full bg-secondary text-on-secondary px-space-lg py-3 flex items-center justify-between gap-space-sm border-b-2 border-secondary-container" aria-live="assertive">
+            <div class="flex items-center gap-space-xs font-headline-md text-headline-md font-black">
+              <span class="material-symbols-outlined text-[28px] animate-bounce">campaign</span>
+              <span id="your-turn-text">It's your turn — proceed to Room 02 (आपकी बारी है)</span>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-secondary font-bold uppercase">Immediate Consultation</span>
+          </div>
+
+          <!-- Facility Header Ribbon -->
+          <div class="w-full bg-primary-container text-on-primary px-space-md lg:px-space-lg py-space-sm flex flex-wrap items-center justify-between gap-space-xs">
+            <div class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-secondary-fixed text-[26px]">local_hospital</span>
+              <div>
+                <p class="font-headline-md text-headline-md text-on-primary leading-tight" id="display-phc-name">Primary Health Centre Sarangpur (PHC Sarangpur)</p>
+                <p class="font-label-secondary text-label-secondary text-primary-fixed opacity-90">Ayushman Arogya Mandir • Public Health Services</p>
+              </div>
+            </div>
+            <div class="px-space-md py-1 rounded bg-secondary text-on-secondary font-headline-md text-headline-md flex items-center gap-1" id="display-room-badge">
+              <span class="material-symbols-outlined text-[20px]">door_front</span>
+              <span id="display-room-text">Room 02 (कक्ष सं. ०२)</span>
+            </div>
+          </div>
+
+          <!-- Core Display Section -->
+          <div class="p-space-lg lg:p-space-xl text-center space-y-space-lg">
+            
+            <!-- Large Primary Token Highlight -->
+            <div class="bg-surface-container-low rounded-xl p-space-lg relative overflow-hidden border border-outline-variant">
+              <span class="font-label-primary text-label-primary text-on-surface-variant font-bold block uppercase tracking-wider mb-1">
+                Your Allocated Token Number (आपका टोकन नंबर)
+              </span>
+              <div class="font-token-display-lg text-token-display-lg text-primary font-extrabold tracking-tight my-1 inline-block" id="display-token-num">
+                #048
+              </div>
+
+              <!-- Row below token: Patient, Department, Priority chip, PHC + Room chip -->
+              <div class="pt-2 flex flex-wrap items-center justify-center gap-2">
+                <span class="px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant font-body-sm font-bold text-on-surface" id="display-patient-name">
+                  Patient: Ramesh K.
+                </span>
+                <span class="px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant font-body-sm font-bold text-primary" id="display-department-pill">
+                  General OPD (Fever &amp; Cold)
+                </span>
+                <span class="px-3 py-1 rounded-full bg-surface-container-highest font-label-secondary font-bold text-on-surface uppercase" id="display-priority-chip">
+                  General Queue
+                </span>
+                <span class="px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant font-body-sm font-bold text-secondary" id="display-room-chip">
+                  PHC Sarangpur • Room 02
+                </span>
+              </div>
+
+              <!-- ABHA Account Badge & Privacy Note -->
+              <div class="mt-space-md flex flex-col items-center gap-1">
+                <div class="inline-flex items-center gap-2 px-space-md py-1 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface font-label-primary text-label-primary font-bold">
+                  <span class="material-symbols-outlined text-[20px] text-primary">verified</span>
+                  <span id="display-abha">ABHA Verified: 91-XXXX-XXXX-9901</span>
+                </div>
+                <p class="font-label-secondary text-label-secondary text-outline font-medium" id="privacy-notice">
+                  Details are partly hidden to protect your privacy. (आपकी गोपनीयता की सुरक्षा के लिए विवरण आंशिक रूप से छिपे हुए हैं।)
+                </p>
+              </div>
+            </div>
+
+            <!-- Metrics Grid: 3 Stat Cards (Equal height, 40px big number + 16px unit, soft green flash) -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md text-left">
+              
+              <!-- Card 1: Currently Serving -->
+              <div id="stat-card-serving" class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md flex flex-col justify-between h-full transition-all">
+                <div class="flex items-center justify-between text-on-surface mb-space-sm">
+                  <span class="font-label-secondary text-label-secondary font-bold text-on-surface">Currently Serving<br>(अभी देखा जा रहा टोकन)</span>
+                  <span class="material-symbols-outlined text-[28px] text-primary">clinical_notes</span>
+                </div>
+                <div>
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-[40px] font-extrabold text-primary tabular-nums leading-none" id="serving-token-num">#046</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface font-semibold mt-2 truncate" id="serving-doctor-name">Dr. S. K. Sharma (MD)</p>
+                </div>
+              </div>
+
+              <!-- Card 2: Patients Ahead -->
+              <div id="stat-card-ahead" class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md flex flex-col justify-between h-full transition-all">
+                <div class="flex items-center justify-between text-on-surface mb-space-sm">
+                  <span class="font-label-secondary text-label-secondary font-bold text-on-surface">Patients Ahead<br>(आपके आगे मरीज)</span>
+                  <span class="material-symbols-outlined text-[28px] text-primary">group</span>
+                </div>
+                <div>
+                  <div class="flex items-baseline gap-1.5">
+                    <span class="text-[40px] font-extrabold text-primary tabular-nums leading-none" id="ahead-count-num">2</span>
+                    <span class="text-[16px] font-bold text-on-surface-variant">patients</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface font-bold mt-2" id="queue-position-text">You are 3rd in queue (तीसरा क्रम)</p>
+                </div>
+              </div>
+
+              <!-- Card 3: Estimated Wait Time -->
+              <div id="stat-card-wait" class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md flex flex-col justify-between h-full transition-all">
+                <div class="flex items-center justify-between text-on-surface mb-space-sm">
+                  <span class="font-label-secondary text-label-secondary font-bold text-on-surface">Estimated Wait<br>(अनुमानित प्रतीक्षा काल)</span>
+                  <span class="material-symbols-outlined text-[28px] text-primary">timer</span>
+                </div>
+                <div>
+                  <div class="flex items-baseline gap-1.5">
+                    <span class="text-[40px] font-extrabold text-primary tabular-nums leading-none" id="wait-time-num">10-12</span>
+                    <span class="text-[16px] font-bold text-on-surface-variant">mins</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface font-bold mt-2" id="expected-call-time">Expected call around 10:05 AM</p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Queue Position Strip -->
+            <div class="bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+              <div class="flex items-center gap-space-xs font-label-secondary text-label-secondary font-bold text-on-surface">
+                <span class="material-symbols-outlined text-[20px] text-primary">format_list_numbered</span>
+                <span>Queue Visualizer (कतार स्थिति):</span>
+              </div>
+              <div id="queue-dots-row" class="flex items-center gap-2 overflow-x-auto py-1">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Voice Announcement with Equalizer -->
+            <div class="bg-surface-container-highest rounded-xl p-space-md flex flex-col sm:flex-row items-center justify-between gap-space-md">
+              <div class="text-left">
+                <div class="flex items-center gap-space-xs mb-1">
+                  <span class="material-symbols-outlined text-primary text-[24px]">volume_up</span>
+                  <span class="font-headline-md text-headline-md text-on-surface font-bold">Voice Announcement (ध्वनि उद्घोषणा)</span>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface font-bold" id="audio-caption">"Token #048, please proceed to Waiting Area outside Room 02."</p>
+              </div>
+              <button class="w-full sm:w-auto h-14 px-space-lg bg-surface-container-lowest hover:bg-surface-container text-primary-container border-2 border-primary-container rounded-lg font-headline-md text-headline-md font-bold flex items-center justify-center gap-space-xs shadow-sm transition-all active:scale-95" id="listen-audio-btn" type="button">
+                <div id="equalizer-bars" class="hidden items-end gap-1 h-5 w-6 mr-1">
+                  <span class="w-1 bg-primary rounded-full h-full equalizer-bar-1"></span>
+                  <span class="w-1 bg-primary rounded-full h-full equalizer-bar-2"></span>
+                  <span class="w-1 bg-primary rounded-full h-full equalizer-bar-3"></span>
+                  <span class="w-1 bg-primary rounded-full h-full equalizer-bar-4"></span>
+                </div>
+                <span class="material-symbols-outlined text-[28px] text-primary" id="speaker-icon">campaign</span>
+                <span class="text-primary" id="listen-btn-label">Listen Audio (आवाज में सुनें)</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 3. Simple 5-Step Patient Journey Bar -->
+        <div class="w-full bg-surface-container-lowest p-space-lg rounded-xl shadow-md border border-outline-variant">
+          <div class="mb-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-primary text-[26px]">linear_scale</span>
+                Patient Journey Progress (मरीज प्रवाह स्थिति)
+              </h2>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Step-by-step progress tracking for your outpatient visit</p>
+            </div>
+            <div class="w-48 h-2 bg-surface-container rounded-full overflow-hidden hidden sm:block">
+              <div id="journey-connector-fill" class="h-full bg-secondary origin-left transition-transform duration-500" style="transform: scaleX(0.6);"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-space-sm" id="journey-cards-grid">
+            
+            <!-- Step 1 -->
+            <div id="journey-step-1" class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-md flex flex-col justify-between h-40">
+              <div class="flex items-center justify-between mb-space-sm">
+                <span class="px-2 py-0.5 rounded border border-outline text-on-surface font-label-secondary text-label-secondary font-bold">STEP 01</span>
+                <svg class="w-6 h-6 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12" class="svg-check-draw"/></svg>
+              </div>
+              <div>
+                <p class="font-headline-md text-headline-md text-on-surface font-bold leading-tight">Registration Done</p>
+                <p class="font-body-sm text-body-sm text-on-surface-variant font-medium mt-1">Slip Issued</p>
+              </div>
+              <span class="font-label-secondary text-label-secondary text-secondary font-bold">Verified ✓</span>
+            </div>
+
+            <!-- Step 2 (Privacy: BP value removed from public view) -->
+            <div id="journey-step-2" class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-md flex flex-col justify-between h-40">
+              <div class="flex items-center justify-between mb-space-sm">
+                <span class="px-2 py-0.5 rounded border border-outline text-on-surface font-label-secondary text-label-secondary font-bold">STEP 02</span>
+                <svg class="w-6 h-6 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12" class="svg-check-draw"/></svg>
+              </div>
+              <div>
+                <p class="font-headline-md text-headline-md text-on-surface font-bold leading-tight">Vitals Check</p>
+                <p class="font-body-sm text-body-sm text-on-surface-variant font-medium mt-1">Triage Recorded</p>
+              </div>
+              <span class="font-label-secondary text-label-secondary text-secondary font-bold">Recorded ✓</span>
+            </div>
+
+            <!-- Step 3: Waiting Room -->
+            <div id="journey-step-3" class="bg-primary text-on-primary rounded-lg p-space-md flex flex-col justify-between h-40 shadow-md active-step-pulse">
+              <div class="flex items-center justify-between mb-space-sm">
+                <span class="px-2 py-0.5 rounded bg-surface-container-lowest text-primary font-label-secondary text-label-secondary font-extrabold" id="step-3-tag">ACTIVE STEP 03</span>
+                <span class="material-symbols-outlined text-surface-tint text-[26px]">airline_seat_recline_normal</span>
+              </div>
+              <div>
+                <p class="font-headline-md text-headline-md text-on-primary font-bold leading-tight" id="step-3-title">Waiting Room 2</p>
+                <p class="font-body-sm text-body-sm text-primary-fixed opacity-95 mt-1">प्रतीक्षा कक्ष सं. ०२</p>
+              </div>
+              <span class="inline-flex items-center gap-1 font-label-secondary text-label-secondary bg-primary-container border border-outline-variant px-2 py-0.5 rounded text-on-primary font-bold" id="step-3-status">
+                <span class="w-2 h-2 rounded-full bg-primary-fixed animate-ping"></span>You Are Here
+              </span>
+            </div>
+
+            <!-- Step 4: Doctor Consult -->
+            <div id="journey-step-4" class="bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between h-40">
+              <div class="flex items-center justify-between mb-space-sm">
+                <span class="px-2 py-0.5 rounded border border-outline text-on-surface font-label-secondary text-label-secondary font-bold">STEP 04</span>
+                <span class="material-symbols-outlined text-on-surface-variant text-[24px]">stethoscope</span>
+              </div>
+              <div>
+                <p class="font-headline-md text-headline-md text-on-surface font-semibold leading-tight">Doctor Consult</p>
+                <p class="font-body-sm text-body-sm text-on-surface font-medium mt-1">Room 02</p>
+              </div>
+              <span class="font-label-secondary text-label-secondary text-on-surface font-medium" id="step-4-status">Queued</span>
+            </div>
+
+            <!-- Step 5: Free Medicines -->
+            <div id="journey-step-5" class="bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between h-40">
+              <div class="flex items-center justify-between mb-space-sm">
+                <span class="px-2 py-0.5 rounded border border-outline text-on-surface font-label-secondary text-label-secondary font-bold">STEP 05</span>
+                <span class="material-symbols-outlined text-on-surface-variant text-[24px]">medication</span>
+              </div>
+              <div>
+                <p class="font-headline-md text-headline-md text-on-surface font-semibold leading-tight">Free Medicines</p>
+                <p class="font-body-sm text-body-sm text-on-surface font-medium mt-1">Pharmacy Counter 4</p>
+              </div>
+              <span class="font-label-secondary text-label-secondary text-on-surface font-medium">Final Stage</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 4. Waiting Area Instructions & 2G Status Check -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+          
+          <!-- Facility Location Pin -->
+          <div class="bg-surface-container-lowest p-space-md lg:p-space-lg rounded-xl shadow-sm border border-outline-variant space-y-space-sm flex flex-col justify-between">
+            <div class="space-y-space-sm">
+              <div class="flex items-center gap-space-xs text-primary">
+                <span class="material-symbols-outlined text-[20px]">explore</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface font-bold">Where to Wait? (कहाँ बैठें?)</h3>
+              </div>
+              <div class="p-space-sm bg-surface-container-low border border-primary text-on-surface rounded-lg font-headline-md text-headline-md font-bold flex items-center gap-space-sm">
+                <span class="material-symbols-outlined text-[20px] text-primary">chair</span>
+                <span class="text-base" id="waiting-zone-text">Green Waiting Zone — Main Veranda outside Room 02</span>
+              </div>
+              <ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface pt-1">
+                <li class="flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-primary text-[20px]">water_drop</span>
+                  <span><strong>Clean Drinking Water:</strong> Located 10 steps left of the waiting zone.</span>
+                </li>
+                <li class="flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-primary text-[20px]">wc</span>
+                  <span><strong>Restrooms (शौचालय):</strong> In main gallery 20 steps to the right.</span>
+                </li>
+                <li class="flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-secondary text-[20px]">screen_rotation</span>
+                  <span><strong>Digital TV Display:</strong> Your token is also displayed on the corridor TV.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2G Basic Phone Check (Tap-to-Copy SMS chip) -->
+          <div class="bg-surface-container-lowest p-space-md lg:p-space-lg rounded-xl shadow-sm border border-outline-variant space-y-space-sm flex flex-col justify-between">
+            <div class="space-y-space-sm">
+              <div class="flex items-center gap-space-xs text-primary">
+                <span class="material-symbols-outlined text-[20px]">sms</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface font-bold">2G / Basic Phone Check (बिना इंटरनेट)</h3>
+              </div>
+              <div class="p-space-sm bg-surface-container-low border border-outline-variant rounded-lg space-y-1">
+                <div class="flex items-start gap-space-xs">
+                  <span class="material-symbols-outlined text-primary text-[20px] mt-0.5">check_circle</span>
+                  <div>
+                    <p class="font-body-md text-body-md text-on-surface font-bold">Free SMS &amp; Auto-Call Enabled</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant font-medium" id="registered-phone-msg">
+                      Registered phone <strong id="masked-phone-display">+91 98765 XXXXX</strong> will receive an SMS alert 2 minutes prior to call.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="p-space-sm bg-surface-container rounded-lg flex items-center justify-between">
+                <div class="flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-primary text-[20px]">dialpad</span>
+                  <span class="font-body-sm text-body-sm font-bold text-on-surface">SMS Check:</span>
+                </div>
+                <button type="button" id="copy-sms-code-btn" class="px-space-md py-1 bg-surface-container-lowest hover:bg-surface-container-high text-primary rounded font-mono font-bold text-sm border border-outline-variant flex items-center gap-1.5 transition-all shadow-xs" title="Click to copy SMS text">
+                  <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                  <code id="sms-code-text">STATUS 048 to 56161</code>
+                </button>
+              </div>
+              <p class="font-label-secondary text-label-secondary text-outline font-semibold">
+                * Zero government service charge. Toll-Free NHM Gateway.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Persistent ASHA & Hospital Assistance Bar -->
+      <div class="w-full bg-surface-container-highest p-space-md rounded-xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md border border-outline-variant">
+        <div class="flex items-center gap-space-md">
+          <div class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[28px]">support_agent</span>
+          </div>
+          <div>
+            <p class="font-headline-md text-headline-md text-on-surface font-bold">Hospital Helpdesk &amp; ASHA Worker Support</p>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              For questions, visit Counter 1 or contact on-duty ASHA worker <strong>Sunita Devi</strong> (Mobile: <span class="text-primary font-bold">9876543210</span>).
+            </p>
+          </div>
+        </div>
+        <a class="h-12 px-space-md bg-surface-container-lowest hover:bg-surface-container text-primary border-2 border-primary-container rounded-lg font-headline-md text-headline-md font-bold flex items-center gap-space-xs shrink-0 shadow-sm transition-colors" href="tel:9876543210">
+          <span class="material-symbols-outlined text-[22px] text-primary">call</span>
+          <span>Call ASHA (बात करें)</span>
+        </a>
+      </div>
+
+      <!-- 8. Rating Card (5 Faces at 64px, with bounce and local storage) -->
+      <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant text-center space-y-4 shadow-sm">
+        <h3 class="font-headline-md text-headline-md text-on-surface font-bold">Rate Your OPD Experience Today (अनुभव साझा करें)</h3>
+        <div class="flex items-center justify-center gap-3 sm:gap-6 flex-wrap" id="rating-faces-container">
+          <button type="button" class="face-btn flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant shadow-xs transition-all" data-rating="1" aria-label="Very Dissatisfied (बहुत असंतुष्ट)" title="Very Dissatisfied">
+            <span class="text-3xl select-none">😡</span>
+            <span class="text-[12px] font-bold text-gray-700 mt-0.5">Bad</span>
+          </button>
+          <button type="button" class="face-btn flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant shadow-xs transition-all" data-rating="2" aria-label="Dissatisfied (असंतुष्ट)" title="Dissatisfied">
+            <span class="text-3xl select-none">🙁</span>
+            <span class="text-[12px] font-bold text-gray-700 mt-0.5">Poor</span>
+          </button>
+          <button type="button" class="face-btn flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant shadow-xs transition-all" data-rating="3" aria-label="Neutral (ठीक)" title="Neutral">
+            <span class="text-3xl select-none">😐</span>
+            <span class="text-[12px] font-bold text-gray-700 mt-0.5">Okay</span>
+          </button>
+          <button type="button" class="face-btn flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant shadow-xs transition-all" data-rating="4" aria-label="Satisfied (संतुष्ट)" title="Satisfied">
+            <span class="text-3xl select-none">🙂</span>
+            <span class="text-[12px] font-bold text-gray-700 mt-0.5">Good</span>
+          </button>
+          <button type="button" class="face-btn flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant shadow-xs transition-all" data-rating="5" aria-label="Very Satisfied (बहुत संतुष्ट)" title="Very Satisfied">
+            <span class="text-3xl select-none">😄</span>
+            <span class="text-[12px] font-bold text-gray-700 mt-0.5">Great</span>
+          </button>
+        </div>
+        <p id="rating-feedback-msg" class="hidden font-headline-md text-sm font-bold text-secondary transition-all">
+          ✓ Thank you for your feedback! (आपकी प्रतिक्रिया के लिए धन्यवाद)
+        </p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script src="motion.js"></script>
+<script src="extras.js"></script>
+
 <script>
-    (function() {
-      // Voice Pronunciation Synthesis for Token
-      const listenBtn = document.getElementById('listen-audio-btn');
-      const speakerIcon = document.getElementById('speaker-icon');
-      const audioCaption = document.getElementById('audio-caption');
+  (function() {
+    'use strict';
 
-      if (listenBtn) {
-        listenBtn.addEventListener('click', function() {
-          if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const curToken = document.getElementById('display-token-num').textContent.trim();
-            const lang = localStorage.getItem('swasthya_lang') || 'en';
-            let textToSpeak = `Token number ${curToken.replace('#','')}. Please wait outside Room 2. There are two patients ahead of you.`;
-            let speakLang = 'en-IN';
-            if (lang === 'hi') {
-              textToSpeak = `टोकन संख्या ${curToken.replace('#','')}, कृपया कमरा नंबर दो के प्रतीक्षा क्षेत्र में उपस्थित रहें। आपके आगे दो मरीज हैं।`;
-              speakLang = 'hi-IN';
-            }
-            const utterance = new SpeechSynthesisUtterance(textToSpeak);
-            utterance.lang = speakLang;
-            utterance.rate = 0.85;
+    // State variables
+    let currentTokenData = null;
+    let currentServingNum = 46;
+    let lastUpdatedSeconds = 0;
+    let secondsInterval = null;
+    let autoAdvanceInterval = null;
+    let isSpeaking = false;
+    let hasInteracted = false;
 
-            utterance.onstart = function() {
-              listenBtn.classList.add('bg-primary');
-              speakerIcon.textContent = 'volume_up';
-              audioCaption.classList.add('text-primary', 'font-bold');
-            };
+    // Audio Chime Context
+    function playTurnChime() {
+      if (!hasInteracted) return;
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3); // A5
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.6);
+      } catch(e) {}
+    }
 
-            utterance.onend = function() {
-              listenBtn.classList.remove('bg-primary');
-              speakerIcon.textContent = 'campaign';
-              audioCaption.classList.remove('text-primary', 'font-bold');
-            };
+    window.addEventListener('click', () => { hasInteracted = true; }, { once: true });
+    window.addEventListener('keydown', () => { hasInteracted = true; }, { once: true });
 
-            window.speechSynthesis.speak(utterance);
-          } else {
-            alert("Announcement: Token 48, please proceed to Room 2 waiting zone.");
-          }
-        });
+    // Dismiss Emergency Advisory (stored for current session)
+    const emergencyBanner = document.getElementById('emergency-advisory-banner');
+    const dismissEmerBtn = document.getElementById('dismiss-emergency-btn');
+    if (dismissEmerBtn && emergencyBanner) {
+      if (sessionStorage.getItem('rsq_dismissed_emergency') === 'true') {
+        emergencyBanner.classList.add('hidden');
       }
-
-      // Voice Mic Search Simulation
-      const micBtn = document.getElementById('mic-btn');
-      const micIcon = document.getElementById('mic-icon');
-      const searchInput = document.getElementById('token-search-input');
-      const searchBtn = document.getElementById('search-btn');
-
-      function performSearch(val) {
-        if (!val) return;
-        const num = val.replace(/\D/g, '') || val;
-        document.getElementById('display-token-num').textContent = '#' + num;
-        if (num === '52') {
-          document.getElementById('display-patient-info').innerHTML = 'Patient: <span class="text-primary font-bold">Kamla Devi (Female, 61 Yrs)</span> • General OPD';
-          document.getElementById('ahead-count').textContent = '06 Patients';
-          document.getElementById('wait-time').textContent = '~20-25 Mins';
-        } else {
-          document.getElementById('display-patient-info').innerHTML = 'Patient: <span class="text-primary font-bold">Ramesh Kumar (Male, 54 Yrs)</span> • General OPD';
-          document.getElementById('ahead-count').textContent = '02 Patients';
-          document.getElementById('wait-time').textContent = '~10-12 Mins';
+      dismissEmerBtn.addEventListener('click', () => {
+        if (currentTokenData && currentTokenData.priority && currentTokenData.priority.toLowerCase().includes('emergency')) {
+          alert("Emergency advisory cannot be dismissed while viewing an emergency triage token.");
+          return;
         }
-        audioCaption.textContent = `"Token ${num}, please proceed to Waiting Area outside Room 2."`;
-      }
-
-      if (searchBtn && searchInput) {
-        searchBtn.addEventListener('click', () => performSearch(searchInput.value));
-        searchInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') performSearch(searchInput.value);
-        });
-      }
-
-      if (micBtn && searchInput) {
-        micBtn.addEventListener('click', function() {
-          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-          if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'en-IN';
-            micIcon.classList.add('text-error', 'animate-pulse');
-            recognition.start();
-
-            recognition.onresult = function(event) {
-              const transcript = event.results[0][0].transcript;
-              const numericOnly = transcript.replace(/\D/g, '');
-              searchInput.value = numericOnly || transcript;
-              micIcon.classList.remove('text-error', 'animate-pulse');
-              performSearch(searchInput.value);
-            };
-
-            recognition.onerror = function() {
-              micIcon.classList.remove('text-error', 'animate-pulse');
-            };
-
-            recognition.onend = function() {
-              micIcon.classList.remove('text-error', 'animate-pulse');
-            };
-          } else {
-            searchInput.focus();
-            alert("Please type your token number or phone number.");
-          }
-        });
-      }
-
-      // Recent Lookups click interaction
-      const tokenPills = document.querySelectorAll('.token-pill');
-      tokenPills.forEach(pill => {
-        pill.addEventListener('click', function() {
-          const text = this.innerText;
-          const match = text.match(/#(\d+)/);
-          if (match && searchInput) {
-            searchInput.value = match[1];
-            performSearch(match[1]);
-          }
-        });
+        emergencyBanner.classList.add('hidden');
+        sessionStorage.setItem('rsq_dismissed_emergency', 'true');
       });
-    })();
-
-    // Google Translate & Language Selector
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,mr,bn,te,ta,gu,kn,pa,ur',
-        autoDisplay: false
-      }, 'google_translate_element');
     }
 
-    function applyLanguage(lang) {
-      if (!lang) return;
-      localStorage.setItem('swasthya_lang', lang);
-      document.cookie = "googtrans=/en/" + lang + "; path=/";
-      document.cookie = "googtrans=/en/" + lang + "; domain=" + window.location.hostname + "; path=/";
-      
-      const teCombo = document.querySelector('.goog-te-combo');
-      if (teCombo) {
-        teCombo.value = lang;
-        teCombo.dispatchEvent(new Event('change'));
-      } else {
-        window.location.reload();
+    // Recent lookups management
+    function getRecentLookups() {
+      try {
+        return JSON.parse(localStorage.getItem('rsq_recent_tokens') || '[]');
+      } catch(e) {
+        return [];
       }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlToken = urlParams.get('token');
-      if (urlToken && typeof performSearch === 'function') {
-        const sInput = document.getElementById('token-search-input');
-        if (sInput) sInput.value = urlToken;
+    function saveRecentLookup(formattedToken) {
+      let list = getRecentLookups();
+      list = list.filter(t => t !== formattedToken);
+      list.unshift(formattedToken);
+      if (list.length > 3) list = list.slice(0, 3);
+      localStorage.setItem('rsq_recent_tokens', JSON.stringify(list));
+      renderRecentLookups();
+    }
+
+    function renderRecentLookups() {
+      const container = document.getElementById('recent-lookups-chips');
+      if (!container) return;
+      container.innerHTML = '';
+      const list = getRecentLookups();
+      if (list.length === 0) {
+        const defaultSample = document.createElement('button');
+        defaultSample.type = 'button';
+        defaultSample.className = 'token-pill px-space-md py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container border border-outline text-on-surface font-label-primary text-label-primary font-semibold flex items-center gap-1 transition-colors';
+        defaultSample.innerHTML = '<span class="material-symbols-outlined text-[16px] text-primary">history</span><span>#048</span>';
+        defaultSample.addEventListener('click', () => quickFillToken('048'));
+        container.appendChild(defaultSample);
+        return;
+      }
+      list.forEach(tok => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'token-pill px-space-md py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container border border-outline text-on-surface font-label-primary text-label-primary font-semibold flex items-center gap-1 transition-colors';
+        btn.innerHTML = `<span class="material-symbols-outlined text-[16px] text-primary">history</span><span>${tok}</span>`;
+        btn.addEventListener('click', () => quickFillToken(tok));
+        container.appendChild(btn);
+      });
+    }
+
+    window.quickFillToken = function(num) {
+      const inp = document.getElementById('token-search-input');
+      if (inp) {
+        inp.value = num;
+        performSearch(num);
+      }
+    };
+
+    // Number roll animation helper (transform and opacity only)
+    function animateNumberChange(element, newValue) {
+      if (!element || element.textContent === newValue) return;
+      element.classList.remove('roll-in');
+      element.classList.add('roll-out');
+      setTimeout(() => {
+        element.textContent = newValue;
+        element.classList.remove('roll-out');
+        element.classList.add('roll-in');
+      }, 125);
+    }
+
+    // Flash card border on value change
+    function flashCard(cardId) {
+      const card = document.getElementById(cardId);
+      if (!card) return;
+      card.classList.remove('card-flash');
+      void card.offsetWidth; // retrigger
+      card.classList.add('card-flash');
+    }
+
+    // Render Queue Position Dots
+    function renderQueueDots(aheadCount) {
+      const container = document.getElementById('queue-dots-row');
+      if (!container) return;
+      container.innerHTML = '';
+      if (aheadCount === 0) {
+        container.innerHTML = `
+          <div class="flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-bold text-sm">
+            <span class="material-symbols-outlined text-[18px]">verified</span>
+            <span>It's Your Turn! (कमरे में जाएं)</span>
+          </div>
+        `;
+        return;
+      }
+      const maxDots = Math.min(aheadCount, 8);
+      for (let i = 0; i < maxDots; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'w-7 h-7 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-bold text-xs shadow-xs';
+        dot.innerHTML = '<span class="material-symbols-outlined text-[16px]">person</span>';
+        dot.title = `Patient ${i + 1} ahead`;
+        container.appendChild(dot);
+      }
+      if (aheadCount > 8) {
+        const more = document.createElement('div');
+        more.className = 'px-2 py-0.5 rounded-full bg-surface-container text-outline font-bold text-xs';
+        more.textContent = `+${aheadCount - 8}`;
+        container.appendChild(more);
+      }
+      // "You" indicator with subtle pulse
+      const youDot = document.createElement('div');
+      youDot.className = 'px-3 py-1 rounded-full bg-primary text-on-primary font-bold text-xs flex items-center gap-1 shadow-sm active-step-pulse';
+      youDot.innerHTML = '<span class="material-symbols-outlined text-[16px]">person_pin</span><span>You (आप)</span>';
+      container.appendChild(youDot);
+    }
+
+    // Update calculations and display
+    function updateQueueState(skipAnimation) {
+      if (!currentTokenData) return;
+
+      const tokenNum = parseInt(String(currentTokenData.token).replace(/\D/g, ''), 10) || 48;
+      const ahead = Math.max(0, tokenNum - currentServingNum);
+      const position = ahead + 1;
+      const waitMinsLow = Math.max(1, ahead * 5);
+      const waitMinsHigh = ahead * 5 + 4;
+      const waitMinsText = ahead === 0 ? "0" : (ahead === 1 ? "~5" : `${waitMinsLow}-${waitMinsHigh}`);
+
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + (ahead * 5));
+      const callTimeText = ahead === 0 ? "Now calling (बुलाया जा रहा है)" : `Expected call around ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+      const servingEl = document.getElementById('serving-token-num');
+      const aheadEl = document.getElementById('ahead-count-num');
+      const waitEl = document.getElementById('wait-time-num');
+      const posTextEl = document.getElementById('queue-position-text');
+      const callTimeEl = document.getElementById('expected-call-time');
+
+      const formattedServing = '#' + String(currentServingNum).padStart(3, '0');
+
+      if (skipAnimation) {
+        if (servingEl) servingEl.textContent = formattedServing;
+        if (aheadEl) aheadEl.textContent = ahead.toString();
+        if (waitEl) waitEl.textContent = waitMinsText;
+      } else {
+        if (servingEl && servingEl.textContent !== formattedServing) {
+          animateNumberChange(servingEl, formattedServing);
+          flashCard('stat-card-serving');
+        }
+        if (aheadEl && aheadEl.textContent !== ahead.toString()) {
+          animateNumberChange(aheadEl, ahead.toString());
+          flashCard('stat-card-ahead');
+        }
+        if (waitEl && waitEl.textContent !== waitMinsText) {
+          animateNumberChange(waitEl, waitMinsText);
+          flashCard('stat-card-wait');
+        }
+      }
+
+      if (posTextEl) {
+        posTextEl.textContent = ahead === 0 
+          ? "Your turn now (आपकी बारी)" 
+          : (ahead === 1 ? "Next in line (अगला क्रम)" : `You are ${position}th in queue (${position}वां क्रम)`);
+      }
+      if (callTimeEl) callTimeEl.textContent = callTimeText;
+
+      // Render queue dots
+      renderQueueDots(ahead);
+
+      // Journey Stepper update
+      const step3Card = document.getElementById('journey-step-3');
+      const step3Tag = document.getElementById('step-3-tag');
+      const step3Status = document.getElementById('step-3-status');
+      const step4Card = document.getElementById('journey-step-4');
+      const step4Status = document.getElementById('step-4-status');
+      const connectorFill = document.getElementById('journey-connector-fill');
+      const yourTurnBanner = document.getElementById('your-turn-banner');
+      const tokenDisplay = document.getElementById('display-token-num');
+
+      if (ahead >= 2) {
+        if (connectorFill) connectorFill.style.transform = 'scaleX(0.5)';
+        if (step3Card) {
+          step3Card.className = 'bg-primary text-on-primary rounded-lg p-space-md flex flex-col justify-between h-40 shadow-md active-step-pulse';
+        }
+        if (step3Tag) step3Tag.textContent = 'ACTIVE STEP 03';
+        if (step3Status) {
+          step3Status.className = 'inline-flex items-center gap-1 font-label-secondary text-label-secondary bg-primary-container border border-outline-variant px-2 py-0.5 rounded text-on-primary font-bold';
+          step3Status.innerHTML = '<span class="w-2 h-2 rounded-full bg-primary-fixed animate-ping"></span>You Are Here';
+        }
+        if (step4Card) {
+          step4Card.className = 'bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between h-40';
+        }
+        if (step4Status) step4Status.textContent = 'Queued';
+        if (yourTurnBanner) yourTurnBanner.classList.add('hidden');
+      } else if (ahead === 1) {
+        if (connectorFill) connectorFill.style.transform = 'scaleX(0.65)';
+        if (step3Card) {
+          step3Card.className = 'bg-primary text-on-primary rounded-lg p-space-md flex flex-col justify-between h-40 shadow-md active-step-pulse';
+        }
+        if (step3Tag) step3Tag.textContent = 'ACTIVE STEP 03';
+        if (step3Status) {
+          step3Status.className = 'inline-flex items-center gap-1 font-label-secondary text-label-secondary bg-amber-500 text-slate-900 px-2 py-0.5 rounded font-extrabold shadow-sm';
+          step3Status.innerHTML = '<span class="material-symbols-outlined text-[16px]">priority_high</span>Next in Line (अगला क्रम)';
+        }
+        if (step4Card) {
+          step4Card.className = 'bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col justify-between h-40';
+        }
+        if (step4Status) step4Status.textContent = 'Get Ready';
+        if (yourTurnBanner) yourTurnBanner.classList.add('hidden');
+      } else {
+        // ahead === 0: YOUR TURN MOMENT!
+        if (connectorFill) connectorFill.style.transform = 'scaleX(0.85)';
+        if (step3Card) {
+          step3Card.className = 'bg-surface-container-lowest border border-outline-variant rounded-lg p-space-md flex flex-col justify-between h-40';
+        }
+        if (step3Tag) step3Tag.textContent = 'STEP 03';
+        if (step3Status) {
+          step3Status.className = 'font-label-secondary text-label-secondary text-secondary font-bold';
+          step3Status.textContent = 'Completed ✓';
+        }
+        if (step4Card) {
+          step4Card.className = 'bg-secondary text-on-secondary rounded-lg p-space-md flex flex-col justify-between h-40 shadow-lg active-step-pulse';
+        }
+        if (step4Status) {
+          step4Status.className = 'inline-flex items-center gap-1 font-label-secondary text-label-secondary bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded font-black';
+          step4Status.textContent = 'CALLING NOW • कमरे में जाएं';
+        }
+        if (yourTurnBanner) {
+          const roomName = currentTokenData.room || 'Room 02';
+          document.getElementById('your-turn-text').textContent = `It's your turn — proceed to ${roomName} (आपकी बारी है)`;
+          yourTurnBanner.classList.remove('hidden');
+        }
+        if (tokenDisplay) {
+          tokenDisplay.classList.remove('pass-token');
+          void tokenDisplay.offsetWidth;
+          tokenDisplay.classList.add('pass-token');
+        }
+        // Trigger haptic vibration & sound chime
+        if ('vibrate' in navigator) {
+          try { navigator.vibrate([200, 100, 200]); } catch(e) {}
+        }
+        playTurnChime();
+      }
+
+      // Audio Announcement Caption
+      const audioCap = document.getElementById('audio-caption');
+      if (audioCap) {
+        const room = currentTokenData.room || 'Room 02';
+        audioCap.textContent = ahead === 0
+          ? `"Token #${String(tokenNum).padStart(3, '0')}, please proceed inside ${room} immediately."`
+          : `"Token #${String(tokenNum).padStart(3, '0')}, please proceed to Waiting Area outside ${room}. There are ${ahead} patients ahead."`;
+      }
+    }
+
+    // Core Search Logic
+    function performSearch(query) {
+      const notFoundEl = document.getElementById('search-not-found');
+      const inputEl = document.getElementById('token-search-input');
+      if (notFoundEl) notFoundEl.classList.add('hidden');
+
+      if (!query || !query.trim()) {
+        if (inputEl) {
+          inputEl.classList.remove('input-shake');
+          void inputEl.offsetWidth;
+          inputEl.classList.add('input-shake');
+        }
+        return;
+      }
+
+      const raw = query.trim();
+      const store = window.RSQStore;
+      const token = store ? store.findToken(raw) : null;
+
+      if (!token) {
+        if (inputEl) {
+          inputEl.classList.remove('input-shake');
+          void inputEl.offsetWidth;
+          inputEl.classList.add('input-shake');
+        }
+        if (notFoundEl) {
+          notFoundEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // State transition: Idle -> Loading Skeleton (~600ms) -> Found Card
+      document.getElementById('state-idle').classList.add('hidden');
+      document.getElementById('state-found').classList.add('hidden');
+      const loadingEl = document.getElementById('state-loading');
+      loadingEl.classList.remove('hidden');
+
+      setTimeout(() => {
+        loadingEl.classList.add('hidden');
+        displayFoundToken(token, raw);
+      }, 600);
+    }
+
+    function displayFoundToken(token, rawQuery) {
+      currentTokenData = token;
+      const foundEl = document.getElementById('state-found');
+      foundEl.classList.remove('hidden');
+      foundEl.classList.add('page-enter');
+      setTimeout(() => foundEl.classList.remove('page-enter'), 50);
+
+      const tokenNum = parseInt(String(token.token).replace(/\D/g, ''), 10) || 48;
+      const formattedToken = '#' + String(tokenNum).padStart(3, '0');
+
+      // Set Serving initial simulation value (always slightly behind token for demo)
+      currentServingNum = Math.max(1, tokenNum - 2);
+
+      // Save to Recent Lookups
+      saveRecentLookup(formattedToken);
+
+      // Masking rules for Privacy
+      const cleanQuery = rawQuery.replace(/\D/g, '');
+      const searchedByMobile = cleanQuery.length === 10 && token.mobile && token.mobile.replace(/\D/g, '').endsWith(cleanQuery);
+
+      let displayName = token.name || 'Patient';
+      if (!searchedByMobile) {
+        const parts = displayName.trim().split(' ');
+        if (parts.length > 1) {
+          displayName = parts[0] + ' ' + parts[parts.length - 1][0] + '.';
+        } else {
+          displayName = parts[0];
+        }
+      }
+
+      const tokenDisplay = document.getElementById('display-token-num');
+      if (tokenDisplay) {
+        tokenDisplay.textContent = formattedToken;
+        tokenDisplay.classList.remove('pass-token-single');
+        void tokenDisplay.offsetWidth;
+        tokenDisplay.classList.add('pass-token-single');
+      }
+
+      document.getElementById('display-patient-name').textContent = `Patient: ${displayName}`;
+      document.getElementById('display-department-pill').textContent = token.department || token.dept || 'General OPD';
+      document.getElementById('display-priority-chip').textContent = token.priority || 'General Queue';
+
+      const roomText = token.room || 'Room 02';
+      const phcText = token.phc || 'PHC Sarangpur';
+      document.getElementById('display-room-chip').textContent = `${phcText} • ${roomText}`;
+      document.getElementById('display-room-text').textContent = `${roomText} (कक्ष सं. ${roomText.replace(/\D/g, '') || '०२'})`;
+      document.getElementById('display-phc-name').textContent = `${phcText} (Primary Health Centre)`;
+      document.getElementById('waiting-zone-text').textContent = `Green Waiting Zone — Main Veranda outside ${roomText}`;
+      document.getElementById('serving-doctor-name').textContent = token.doctor || 'Dr. S. K. Sharma (MD)';
+
+      // Masked phone display (+91 98765 XXXXX)
+      const maskedMobile = token.mobile ? `+91 ${token.mobile.slice(0, 5)} XXXXX` : '+91 98765 XXXXX';
+      document.getElementById('masked-phone-display').textContent = maskedMobile;
+
+      // SMS Code Chip update
+      const smsCode = `STATUS ${String(tokenNum).padStart(3, '0')} to 56161`;
+      document.getElementById('sms-code-text').textContent = smsCode;
+
+      // Masked ABHA
+      const abhaEl = document.getElementById('display-abha');
+      if (abhaEl) {
+        abhaEl.textContent = token.abha ? `ABHA Verified: ${token.abha}` : 'ABHA Verified: 91-XXXX-XXXX-9901';
+      }
+
+      // Run full queue calculations
+      updateQueueState(true);
+
+      // Reset live updated counter
+      lastUpdatedSeconds = 0;
+      const countEl = document.getElementById('seconds-ago-counter');
+      if (countEl) countEl.textContent = '0';
+    }
+
+    // Search button and Enter key listeners
+    const searchBtn = document.getElementById('search-btn');
+    const searchInput = document.getElementById('token-search-input');
+    if (searchBtn && searchInput) {
+      searchBtn.addEventListener('click', () => performSearch(searchInput.value));
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') performSearch(searchInput.value);
+      });
+    }
+
+    // Tap-to-Copy SMS code
+    const copySmsBtn = document.getElementById('copy-sms-code-btn');
+    if (copySmsBtn) {
+      copySmsBtn.addEventListener('click', () => {
+        const text = document.getElementById('sms-code-text').textContent;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => {
+            if (window.showToast) window.showToast('SMS code copied: ' + text, 'success');
+            else alert('Copied: ' + text);
+          });
+        }
+      });
+    }
+
+    // Voice Pronunciation Synthesis (Listen Audio) with Equalizer
+    const listenBtn = document.getElementById('listen-audio-btn');
+    const speakerIcon = document.getElementById('speaker-icon');
+    const eqBars = document.getElementById('equalizer-bars');
+    const listenLabel = document.getElementById('listen-btn-label');
+
+    if (listenBtn) {
+      listenBtn.addEventListener('click', function() {
+        if (!('speechSynthesis' in window)) {
+          alert('Voice audio announcement is not supported on this browser.');
+          return;
+        }
+
+        if (isSpeaking) {
+          window.speechSynthesis.cancel();
+          resetAudioButton();
+          return;
+        }
+
+        if (!currentTokenData) return;
+
+        window.speechSynthesis.cancel();
+        const tokenNum = String(currentTokenData.token).replace(/\D/g, '') || '048';
+        const room = currentTokenData.room || 'Room 2';
+        const ahead = Math.max(0, parseInt(tokenNum, 10) - currentServingNum);
+        const lang = localStorage.getItem('swasthya_lang') || 'en';
+
+        let textToSpeak = ahead === 0
+          ? `Token number ${tokenNum}. Please proceed inside ${room} immediately for doctor consultation.`
+          : `Token number ${tokenNum}. Please proceed to Waiting Area outside ${room}. There are ${ahead} patients ahead of you.`;
+        let speakLang = 'en-IN';
+
+        if (lang === 'hi') {
+          textToSpeak = ahead === 0
+            ? `टोकन संख्या ${tokenNum}, कृपया तुरंत ${room} के अंदर परामर्श के लिए जाएं। आपकी बारी आ गई है।`
+            : `टोकन संख्या ${tokenNum}, कृपया ${room} के बाहर प्रतीक्षा क्षेत्र में उपस्थित रहें। आपके आगे ${ahead} मरीज हैं।`;
+          speakLang = 'hi-IN';
+        }
+
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = speakLang;
+        utterance.rate = 0.88;
+
+        utterance.onstart = function() {
+          isSpeaking = true;
+          if (eqBars) { eqBars.classList.remove('hidden'); eqBars.classList.add('flex'); }
+          if (speakerIcon) speakerIcon.classList.add('hidden');
+          if (listenLabel) listenLabel.textContent = 'Stop Announcement (रोकें)';
+          listenBtn.classList.add('bg-primary', 'text-on-primary');
+        };
+
+        utterance.onend = resetAudioButton;
+        utterance.onerror = resetAudioButton;
+
+        window.speechSynthesis.speak(utterance);
+      });
+    }
+
+    function resetAudioButton() {
+      isSpeaking = false;
+      if (eqBars) { eqBars.classList.add('hidden'); eqBars.classList.remove('flex'); }
+      if (speakerIcon) speakerIcon.classList.remove('hidden');
+      if (listenLabel) listenLabel.textContent = 'Listen Audio (आवाज में सुनें)';
+      if (listenBtn) listenBtn.classList.remove('bg-primary', 'text-on-primary');
+    }
+
+    // Voice Mic Input (SpeechRecognition)
+    const micBtn = document.getElementById('voice-boliye-btn');
+    const micIcon = document.getElementById('mic-icon');
+    if (micBtn && searchInput) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const rec = new SpeechRecognition();
+        rec.lang = 'hi-IN';
+        micBtn.addEventListener('click', () => {
+          try {
+            rec.start();
+            if (micIcon) micIcon.classList.add('text-error', 'animate-pulse');
+          } catch(e) {
+            rec.stop();
+          }
+        });
+        rec.onresult = (e) => {
+          const transcript = e.results[0][0].transcript;
+          const numericOnly = transcript.replace(/\D/g, '');
+          searchInput.value = numericOnly || transcript;
+          if (micIcon) micIcon.classList.remove('text-error', 'animate-pulse');
+          performSearch(searchInput.value);
+        };
+        rec.onend = () => { if (micIcon) micIcon.classList.remove('text-error', 'animate-pulse'); };
+        rec.onerror = () => { if (micIcon) micIcon.classList.remove('text-error', 'animate-pulse'); };
+      } else {
+        micBtn.addEventListener('click', () => {
+          searchInput.focus();
+          if (window.showToast) window.showToast('Please type your token number.', 'info');
+        });
+      }
+    }
+
+    // Rating Faces: Hover lift, Press scale, Selected bounce + 60% dimming + local storage
+    const faceButtons = document.querySelectorAll('.face-btn');
+    const ratingMsg = document.getElementById('rating-feedback-msg');
+    const savedRating = localStorage.getItem('rsq_opd_rating');
+
+    faceButtons.forEach(btn => {
+      if (savedRating && btn.getAttribute('data-rating') === savedRating) {
+        btn.classList.add('ring-2', 'ring-primary', 'bg-surface-container-high');
+      }
+      btn.addEventListener('click', function() {
+        const ratingVal = this.getAttribute('data-rating');
+        localStorage.setItem('rsq_opd_rating', ratingVal);
+        
+        faceButtons.forEach(b => {
+          b.classList.remove('face-bounced', 'ring-2', 'ring-primary', 'bg-surface-container-high');
+          b.style.opacity = '0.6';
+        });
+        this.style.opacity = '1';
+        this.classList.add('face-bounced', 'ring-2', 'ring-primary', 'bg-surface-container-high');
+
+        if (ratingMsg) {
+          ratingMsg.classList.remove('hidden');
+          ratingMsg.classList.add('roll-in');
+        }
+      });
+    });
+
+    // Live Status Chip Timers & Simulation (Pause on tab hidden)
+    function startLiveTimers() {
+      // 1-second counter
+      secondsInterval = setInterval(() => {
+        if (document.hidden) return;
+        lastUpdatedSeconds++;
+        const counter = document.getElementById('seconds-ago-counter');
+        if (counter) counter.textContent = lastUpdatedSeconds.toString();
+      }, 1000);
+
+      // 6-second simulated queue progression (~60% chance serving advances)
+      autoAdvanceInterval = setInterval(() => {
+        if (document.hidden || !currentTokenData) return;
+        lastUpdatedSeconds = 0;
+        const counter = document.getElementById('seconds-ago-counter');
+        if (counter) counter.textContent = '0';
+
+        if (Math.random() < 0.60) {
+          const tokenNum = parseInt(String(currentTokenData.token).replace(/\D/g, ''), 10) || 48;
+          if (currentServingNum < tokenNum) {
+            currentServingNum++;
+            updateQueueState(false);
+          }
+        }
+      }, 6000);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        lastUpdatedSeconds = 0;
+        const counter = document.getElementById('seconds-ago-counter');
+        if (counter) counter.textContent = '0';
+      }
+    });
+
+    // Manual Refresh button
+    const refreshBtn = document.getElementById('manual-refresh-btn');
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', () => {
+        lastUpdatedSeconds = 0;
+        const counter = document.getElementById('seconds-ago-counter');
+        if (counter) counter.textContent = '0';
+        if (currentTokenData) {
+          const tokenNum = parseInt(String(currentTokenData.token).replace(/\D/g, ''), 10) || 48;
+          if (currentServingNum < tokenNum) {
+            currentServingNum++;
+          }
+          updateQueueState(false);
+        }
+      });
+    }
+
+    // Initialize on DOM load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderRecentLookups();
+      startLiveTimers();
+
+      // Check URL for ?t=048 or ?token=048
+      const params = new URLSearchParams(window.location.search);
+      const urlToken = params.get('t') || params.get('token');
+      if (urlToken) {
+        if (searchInput) searchInput.value = urlToken;
         performSearch(urlToken);
       }
+
+      // Language Selector Integration
       const langSelect = document.getElementById('language-select');
       if (langSelect) {
         const savedLang = localStorage.getItem('swasthya_lang') || 'en';
         langSelect.value = savedLang;
         langSelect.addEventListener('change', function() {
-          applyLanguage(this.value);
+          localStorage.setItem('swasthya_lang', this.value);
+          if (window.applyLanguage) window.applyLanguage(this.value);
+          else window.location.reload();
         });
-
-        if (savedLang && savedLang !== 'en') {
-          const timer = setInterval(() => {
-            const teCombo = document.querySelector('.goog-te-combo');
-            if (teCombo) {
-              teCombo.value = savedLang;
-              teCombo.dispatchEvent(new Event('change'));
-              clearInterval(timer);
-            }
-          }, 250);
-          setTimeout(() => clearInterval(timer), 4000);
-        }
       }
     });
-  </script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-</div></main>
-<!-- 8. EMOJI FEEDBACK SECTION -->
-<div class="max-w-5xl mx-auto px-margin-mobile lg:px-margin py-8">
-  <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant text-center space-y-3 shadow-sm">
-    <h3 class="font-headline-md text-headline-md text-on-surface">Rate Your Experience Today (अनुभव साझा करें)</h3>
-    <p class="font-body-sm text-body-sm text-on-surface-variant">64px accessible tap targets • Instant feedback</p>
-    <div class="emoji-rating-wrap">
-      <button type="button" class="emoji-btn" data-rating="Very Dissatisfied" aria-label="Very Dissatisfied (बहुत असंतुष्ट)" title="Very Dissatisfied"><span class="text-2xl">😡</span><span class="text-[10px] font-bold text-gray-600 mt-0.5">Bad</span></button>
-      <button type="button" class="emoji-btn" data-rating="Dissatisfied" aria-label="Dissatisfied (असंतुष्ट)" title="Dissatisfied"><span class="text-2xl">🙁</span><span class="text-[10px] font-bold text-gray-600 mt-0.5">Poor</span></button>
-      <button type="button" class="emoji-btn" data-rating="Neutral" aria-label="Neutral (ठीक)" title="Neutral"><span class="text-2xl">😐</span><span class="text-[10px] font-bold text-gray-600 mt-0.5">Okay</span></button>
-      <button type="button" class="emoji-btn" data-rating="Satisfied" aria-label="Satisfied (संतुष्ट)" title="Satisfied"><span class="text-2xl">🙂</span><span class="text-[10px] font-bold text-gray-600 mt-0.5">Good</span></button>
-      <button type="button" class="emoji-btn" data-rating="Very Satisfied" aria-label="Very Satisfied (बहुत संतुष्ट)" title="Very Satisfied"><span class="text-2xl">😄</span><span class="text-[10px] font-bold text-gray-600 mt-0.5">Great</span></button>
-    </div>
-  </div>
-</div>
-<script src="motion.js"></script>
-<script src="extras.js"></script>
+
+  })();
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+
 <footer class="w-full bg-primary text-on-primary border-t-2 border-primary-container"><div class="w-full h-1 flex"><div class="flex-1 bg-[#FF9933]"></div><div class="flex-1 bg-[#FFFFFF]"></div><div class="flex-1 bg-[#138808]"></div></div><div class="max-w-7xl mx-auto px-margin-mobile lg:px-margin py-space-xl"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-space-xl"><div class="space-y-space-sm"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary-fixed text-[24px]">local_hospital</span><h2 class="font-headline-md text-headline-md text-on-primary">National Health Mission</h2></div><p class="font-label-secondary text-label-secondary text-primary-fixed">National Rural Health Mission (NHM)</p><p class="font-body-sm text-body-sm text-surface-dim leading-relaxed">Delivering transparent, queue-free outpatient care across primary health centers, sub-centers, and rural medical camps.</p><div class="pt-space-xs"><span class="inline-block px-space-sm py-0.5 rounded bg-secondary text-on-secondary font-label-secondary text-label-secondary">ABHA &amp; ABDM Enabled</span></div></div><div class="space-y-space-sm"><h2 class="font-headline-md text-headline-md text-on-primary flex items-center gap-space-xs"><span class="material-symbols-outlined text-error-container text-[22px]">emergency</span>Emergency Services</h2><p class="font-label-secondary text-label-secondary text-primary-fixed">24x7 Emergency &amp; Triage Call Centers</p><ul class="space-y-space-xs font-body-sm text-body-sm text-surface-dim"><li class="flex items-center justify-between border-b border-on-primary-fixed-variant pb-1"><span class="">Ambulance (एम्बुलेंस):</span><strong class="text-on-primary font-headline-md text-headline-md">108</strong></li><li class="flex items-center justify-between border-b border-on-primary-fixed-variant pb-1"><span class="">Health Helpline (स्वास्थ्य परामर्श):</span><strong class="text-on-primary font-headline-md text-headline-md">104</strong></li><li class="flex items-center justify-between pb-1"><span class="">Ayushman Bharat Helpline:</span><strong class="text-on-primary font-headline-md text-headline-md">14555</strong></li></ul></div><div class="space-y-space-sm"><h2 class="font-headline-md text-headline-md text-on-primary flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary-fixed text-[22px]">lock</span>Data Protection &amp; Security</h2><p class="font-label-secondary text-label-secondary text-primary-fixed">Patient Trust &amp; Privacy First</p><p class="font-body-sm text-body-sm text-surface-dim leading-relaxed">All digital outpatient health records are encrypted and protected under the Digital Personal Data Protection Act (DPDP Act 2023) and ABDM standards.</p><ul class="space-y-1 font-label-secondary text-label-secondary text-surface-dim"><li class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-secondary-fixed">check_circle</span>Consent-Driven Healthcare Access</li><li class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-secondary-fixed">check_circle</span>End-to-End Encrypted Digital Tokens</li></ul></div><div class="space-y-space-sm"><h2 class="font-headline-md text-headline-md text-on-primary flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary-fixed text-[22px]">policy</span>Standards &amp; Compliance</h2><p class="font-label-secondary text-label-secondary text-primary-fixed">National Digital Governance Standards</p><div class="flex flex-wrap gap-space-xs"><span class="px-2 py-1 rounded bg-on-primary-fixed-variant text-on-primary font-label-secondary text-label-secondary">GIGW 3.0 Compliant</span><span class="px-2 py-1 rounded bg-on-primary-fixed-variant text-on-primary font-label-secondary text-label-secondary">CERT-In Audited</span><span class="px-2 py-1 rounded bg-on-primary-fixed-variant text-on-primary font-label-secondary text-label-secondary">ISO/TS 22220</span><span class="px-2 py-1 rounded bg-on-primary-fixed-variant text-on-primary font-label-secondary text-label-secondary">NIC Cloud Hosted</span></div><p class="font-body-sm text-body-sm text-surface-dim pt-space-xs">Designed and maintained under National Informatics Centre (NIC) guidelines.</p></div></div><div class="pt-space-lg border-t border-on-primary-fixed-variant flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-surface-dim"><div class="text-center md:text-left"><p class="">© 2025 Ministry of Health &amp; Family Welfare, Government of India. All rights reserved.</p><p class="font-label-secondary text-label-secondary text-outline-variant">Designed for High-Sunlight Rural Clinics and Public Health Dispensaries.</p></div><div class="flex flex-wrap items-center justify-center gap-space-md font-label-secondary text-label-secondary"><a class="text-surface-dim hover:text-on-primary transition-colors" href="#">Terms of Use</a><span class="text-outline">|</span><a class="text-surface-dim hover:text-on-primary transition-colors" href="#">Privacy Policy</a><span class="text-outline">|</span><a class="text-surface-dim hover:text-on-primary transition-colors" href="#">Accessibility Statement</a><span class="text-outline">|</span><a class="text-surface-dim hover:text-on-primary transition-colors" href="#">Sitemap</a></div></div></div></footer>
 
 </body></html>

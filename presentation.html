@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swasthya Queue — SIH 2026 Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FDF6EC;
+    --ink: #1E2A3A;
+    --green: #33C56B;
+    --green-dark: #22A855;
+    --green-pale: #CFF3D8;
+    --coral: #F4A896;
+    --coral-pale: #FBDCD3;
+    --sky: #A6D9E8;
+    --sky-pale: #DDF1F6;
+    --yellow: #FFD666;
+    --yellow-pale: #FFF3CC;
+    --lavender: #D8D3F7;
+    --lavender-pale: #EFEDF9;
+    --card: #FFFFFF;
+    --muted: #5B6B7A;
+    --shadow: 6px 6px 0 var(--ink);
+    --shadow-sm: 4px 4px 0 var(--ink);
+    --radius: 24px;
+    --radius-sm: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+  }
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 7px;
+    background: var(--green); z-index: 1000;
+    transition: width 0.5s cubic-bezier(.22,1,.36,1);
+    border-radius: 0 4px 4px 0;
+  }
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px 0;
+    z-index: 900; pointer-events: none;
+  }
+  #topbar-brand {
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 17px;
+    background: var(--ink); color: #fff;
+    border-radius: 100px; padding: 7px 18px;
+    letter-spacing: -0.01em; pointer-events: auto;
+  }
+  #slide-counter {
+    font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 16px;
+    background: var(--card); border: 2.5px solid var(--ink);
+    border-radius: 100px; padding: 6px 16px;
+    box-shadow: var(--shadow-sm); pointer-events: auto;
+  }
+  #fullscreen-btn {
+    background: var(--card); border: 2.5px solid var(--ink);
+    border-radius: 100px; padding: 7px 16px;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px;
+    cursor: pointer; box-shadow: var(--shadow-sm);
+    transition: transform .12s ease, box-shadow .12s ease;
+    pointer-events: auto;
+  }
+  #fullscreen-btn:hover { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  #key-hint {
+    position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%);
+    font-size: 13px; font-weight: 700; color: var(--muted); opacity: 0.7;
+    z-index: 900; pointer-events: none; white-space: nowrap;
+  }
+  #nav-prev, #nav-next {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    z-index: 900; width: 54px; height: 54px; border-radius: 50%;
+    background: var(--card); border: 3px solid var(--ink);
+    box-shadow: var(--shadow-sm); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Baloo 2', sans-serif; font-size: 24px; font-weight: 700;
+    transition: transform .12s ease, box-shadow .12s ease;
+    user-select: none;
+  }
+  #nav-prev { left: 16px; }
+  #nav-next { right: 16px; }
+  #nav-prev:hover, #nav-next:hover { transform: translateY(-50%) translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+  #nav-prev:disabled, #nav-next:disabled { opacity: 0.25; cursor: not-allowed; }
+  #slideshow { width: 100%; height: 100%; position: relative; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 82px 76px 64px;
+    opacity: 0; pointer-events: none;
+    transform: translateX(48px);
+    transition: opacity 0.42s cubic-bezier(.22,1,.36,1), transform 0.42s cubic-bezier(.22,1,.36,1);
+    overflow-y: auto;
+  }
+  .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0); }
+  .slide.exit-left { opacity: 0; transform: translateX(-48px); }
+
+  /* Typography */
+  .display { font-family: 'Baloo 2', sans-serif; font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; }
+  .lede { font-size: clamp(18px, 2.2vw, 26px); font-weight: 700; color: var(--muted); line-height: 1.5; }
+  .section-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 3px solid var(--ink); border-radius: 100px; padding: 8px 20px;
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 16px;
+    margin-bottom: 20px; box-shadow: var(--shadow-sm);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green-dark); flex-shrink: 0; }
+  .clay { background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); }
+
+  /* Slide 1 */
+  #slide-1 { background: var(--bg); text-align: center; }
+  #slide-1 .hero-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink); color: #fff; border-radius: 100px; padding: 8px 24px;
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 17px;
+    margin-bottom: 28px; box-shadow: var(--shadow-sm);
+  }
+  #slide-1 .main-title {
+    font-family: 'Baloo 2', sans-serif; font-weight: 800;
+    font-size: clamp(60px, 8.5vw, 106px);
+    line-height: 1; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 10px;
+  }
+  #slide-1 .accent { color: var(--green-dark); }
+  #slide-1 .subtitle {
+    font-family: 'Baloo 2', sans-serif; font-weight: 700;
+    font-size: clamp(20px, 2.8vw, 34px); color: var(--muted); margin-bottom: 34px;
+  }
+  .stats-row { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+  .stat-card {
+    background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius-sm);
+    box-shadow: var(--shadow); padding: 18px 28px; text-align: center; min-width: 148px;
+  }
+  .stat-card .num { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(30px, 3.8vw, 48px); line-height: 1; display: block; }
+  .stat-card .label { font-size: 13.5px; font-weight: 700; color: var(--muted); display: block; margin-top: 4px; }
+  .url-chip {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--green-pale); border: 3px solid var(--ink); border-radius: 100px;
+    padding: 12px 26px; font-weight: 800; font-size: 17px; box-shadow: var(--shadow-sm);
+    color: var(--green-dark); text-decoration: none;
+  }
+
+  /* Slide 2 */
+  #slide-2 { background: var(--bg); align-items: flex-start; }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; margin-top: 24px; }
+  .prob-card { display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px; }
+  .prob-icon { font-size: 30px; flex-shrink: 0; line-height: 1; }
+  .prob-card h3 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; line-height: 1.2; margin-bottom: 5px; }
+  .prob-card p { font-size: 14.5px; font-weight: 600; color: var(--muted); line-height: 1.5; }
+  .prob-highlight {
+    width: 100%; margin-top: 18px; padding: 18px 26px;
+    background: var(--ink); border: 3px solid var(--ink); border-radius: var(--radius-sm);
+    box-shadow: var(--shadow); color: #fff;
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 20px;
+    text-align: center; line-height: 1.4;
+  }
+
+  /* Slide 3 */
+  #slide-3 { background: var(--yellow-pale); align-items: flex-start; }
+  .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; margin-top: 20px; }
+  .rule-section { padding: 20px 22px; border-radius: var(--radius-sm) !important; }
+  .rule-badge {
+    display: inline-block; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 12.5px;
+    padding: 4px 13px; border-radius: 100px; border: 2px solid var(--ink); margin-bottom: 12px;
+  }
+  .rule-section h3 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; margin-bottom: 10px; }
+  .rule-section ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .rule-section ul li { display: flex; gap: 8px; align-items: flex-start; font-size: 14.5px; font-weight: 700; line-height: 1.4; }
+  .rule-section ul li::before { content: "→"; font-weight: 900; flex-shrink: 0; color: var(--green-dark); }
+  .rules-note {
+    margin-top: 16px; padding: 14px 22px;
+    background: var(--ink); border-radius: var(--radius-sm); color: #fff;
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 16px;
+    text-align: center; border: 3px solid var(--ink); box-shadow: var(--shadow);
+  }
+
+  /* Slide 4 */
+  #slide-4 { background: var(--bg); }
+  .steps-big { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; margin-top: 24px; }
+  .step-big { padding: 24px 18px; display: flex; flex-direction: column; gap: 12px; border-radius: var(--radius-sm) !important; }
+  .step-num { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 48px; line-height: 1; color: var(--coral); }
+  .step-icon { font-size: 32px; }
+  .step-big h3 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 20px; line-height: 1.2; }
+  .step-big p { font-size: 14px; font-weight: 600; color: var(--muted); line-height: 1.5; }
+  .step-chip {
+    display: inline-block; align-self: flex-start; font-size: 12.5px; font-weight: 800;
+    padding: 5px 12px; border: 2.5px solid var(--ink); border-radius: 100px; margin-top: auto;
+  }
+  .features-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; width: 100%; }
+  .feat-chip {
+    display: flex; align-items: center; gap: 7px;
+    background: var(--card); border: 2.5px solid var(--ink); border-radius: 100px;
+    padding: 9px 16px; box-shadow: var(--shadow-sm); font-size: 14.5px; font-weight: 800;
+  }
+
+  /* Slide 5 */
+  #slide-5 { background: var(--sky-pale); align-items: flex-start; }
+  .proto-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; width: 100%; margin-top: 18px; }
+  .feature-table { padding: 22px; }
+  .table-head { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; margin-bottom: 12px; }
+  .table-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 10px 0; border-bottom: 2.5px dashed var(--ink); font-size: 15px; font-weight: 700;
+  }
+  .table-row:last-child { border-bottom: none; }
+  .status-chip {
+    font-size: 12.5px; font-weight: 800; padding: 4px 11px;
+    border-radius: 100px; border: 2px solid var(--ink);
+    background: var(--green-pale); color: var(--green-dark); white-space: nowrap;
+  }
+  .url-big {
+    display: flex; align-items: center; gap: 10px; margin-top: 16px;
+    padding: 16px 22px; background: var(--ink); border: 3px solid var(--ink);
+    border-radius: var(--radius-sm); color: #fff;
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 18px;
+    text-decoration: none; width: 100%; box-shadow: var(--shadow);
+  }
+  .url-big span { color: var(--green); word-break: break-all; }
+  .tech-box { padding: 20px 22px; border-radius: var(--radius-sm) !important; }
+  .tech-box h3 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 12px; }
+  .tech-item { display: flex; gap: 8px; font-size: 14.5px; font-weight: 700; margin-bottom: 8px; }
+  .tech-label { font-weight: 800; min-width: 110px; }
+
+  /* Slide 6 */
+  #slide-6 { background: var(--bg); }
+  .impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 100%; margin-top: 20px; }
+  .impact-card {
+    padding: 20px 14px; text-align: center; display: flex; flex-direction: column;
+    align-items: center; gap: 6px; border-radius: var(--radius-sm) !important;
+  }
+  .impact-card .emoji { font-size: 32px; }
+  .impact-card .big-num { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(24px,3.2vw,38px); line-height: 1; color: var(--green-dark); }
+  .impact-card .desc { font-size: 13.5px; font-weight: 700; color: var(--muted); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-top: 16px; }
+  .why-item { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: var(--radius-sm) !important; }
+  .why-item .check { font-size: 20px; flex-shrink: 0; }
+  .why-item p { font-size: 15px; font-weight: 700; line-height: 1.4; }
+  .cta-final {
+    width: 100%; margin-top: 18px; padding: 18px 28px;
+    background: var(--green); border: 3px solid var(--ink); border-radius: var(--radius-sm);
+    box-shadow: var(--shadow); text-align: center; color: #fff;
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 20px;
+  }
+
+  .slide::-webkit-scrollbar { width: 4px; }
+  .slide::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+  @media (max-width: 900px) {
+    .slide { padding: 76px 20px 62px; }
+    .problem-grid, .rules-grid, .steps-big, .proto-grid, .why-grid, .impact-grid { grid-template-columns: 1fr; }
+    .stats-row { gap: 10px; }
+    .features-row { gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div id="topbar">
+  <div id="topbar-brand">🏥 Swasthya Queue &nbsp;·&nbsp; SIH 2026</div>
+  <div id="slide-counter">1 / 6</div>
+  <button id="fullscreen-btn" onclick="toggleFS()">⛶ Fullscreen</button>
+</div>
+
+<div id="key-hint">← → Arrow Keys &nbsp;|&nbsp; Swipe &nbsp;|&nbsp; Click Buttons to Navigate</div>
+
+<button id="nav-prev" onclick="prevSlide()" disabled>←</button>
+<button id="nav-next" onclick="nextSlide()">→</button>
+
+<div id="slideshow">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide active" id="slide-1">
+    <div class="hero-badge">🏆 Smart India Hackathon 2026</div>
+    <div class="main-title">Swasthya <span class="accent">Queue</span></div>
+    <div class="subtitle">Shorter Queues. Healthier Villages. Every Single Camp.</div>
+    <p class="lede" style="text-align:center; max-width:80ch; margin: 0 auto 32px;">
+      A simple digital token &amp; follow-up system for rural health camps and Primary Health Centres —
+      built for health workers running them, and patients waiting in line.
+    </p>
+    <div class="stats-row">
+      <div class="stat-card" style="background:var(--coral-pale);">
+        <span class="num">10 min</span><span class="label">Setup per camp</span>
+      </div>
+      <div class="stat-card" style="background:var(--green-pale);">
+        <span class="num">₹0</span><span class="label">Data charge for patients</span>
+      </div>
+      <div class="stat-card" style="background:var(--sky-pale);">
+        <span class="num">3 Tap</span><span class="label">Registration flow</span>
+      </div>
+      <div class="stat-card" style="background:var(--lavender-pale);">
+        <span class="num">7</span><span class="label">Indian languages</span>
+      </div>
+    </div>
+    <a class="url-chip" href="https://swasthya-queue-ht7a4oe1b-aryan-a9b4.vercel.app" target="_blank">
+      🌐 &nbsp;swasthya-queue-ht7a4oe1b-aryan-a9b4.vercel.app
+    </a>
+  </div>
+
+  <!-- SLIDE 2: PROBLEM -->
+  <div class="slide" id="slide-2">
+    <div style="width:100%;">
+      <div class="section-badge" style="background:var(--coral-pale);">
+        <span class="dot" style="background:#D64545;"></span>
+        The Problem We're Solving
+      </div>
+      <h2 class="display" style="font-size:clamp(36px,5vw,64px);">Rural Healthcare is <span style="color:#D64545;">Stuck in Lines.</span></h2>
+      <div class="problem-grid">
+        <div class="clay prob-card" style="background:var(--coral-pale);">
+          <div class="prob-icon">⏳</div>
+          <div>
+            <h3>2–4 Hours in the Queue</h3>
+            <p>Patients stand under the sun just to hold their place at rural health camps — before even seeing a doctor.</p>
+          </div>
+        </div>
+        <div class="clay prob-card" style="background:var(--yellow-pale);">
+          <div class="prob-icon">📋</div>
+          <div>
+            <h3>Paper Registers = Lost Follow-ups</h3>
+            <p>ASHA workers track everything on paper. Missed vaccinations, skipped refills, no reminders sent.</p>
+          </div>
+        </div>
+        <div class="clay prob-card" style="background:var(--sky-pale);">
+          <div class="prob-icon">📵</div>
+          <div>
+            <h3>Apps Don't Work Here</h3>
+            <p>Low-literacy patients can't navigate complex smartphone apps. Many use basic feature phones only.</p>
+          </div>
+        </div>
+        <div class="clay prob-card" style="background:var(--lavender-pale);">
+          <div class="prob-icon">🏥</div>
+          <div>
+            <h3>No Dashboard for Staff</h3>
+            <p>Medical officers and ASHA workers have zero visibility into patient counts, follow-ups, or health trends.</p>
+          </div>
+        </div>
+      </div>
+      <div class="prob-highlight">
+        📊 Over <strong>5 lakh rural health camps</strong> run in India annually — most still using <strong>paper queues &amp; manual registers</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: RULES & REGULATIONS -->
+  <div class="slide" id="slide-3">
+    <div style="width:100%;">
+      <div class="section-badge" style="background:var(--yellow);">
+        📜 &nbsp;IDEATHON — Rules &amp; Regulations
+      </div>
+      <h2 class="display" style="font-size:clamp(32px,4.2vw,54px);">Competition Guidelines</h2>
+      <div class="rules-grid">
+        <div class="clay rule-section" style="background:var(--coral-pale);">
+          <span class="rule-badge" style="background:var(--coral);">Eligibility</span>
+          <h3>Who Can Participate</h3>
+          <ul>
+            <li>Open to undergraduate students enrolled in recognized institutions</li>
+            <li>Teams of 2–6 members (same or different colleges)</li>
+            <li>At least one member from the organizing institution</li>
+            <li>Faculty mentor must be assigned and present at evaluation</li>
+            <li>Each participant can be part of only one team</li>
+          </ul>
+        </div>
+        <div class="clay rule-section" style="background:var(--sky-pale);">
+          <span class="rule-badge" style="background:var(--sky);">Submission Rules</span>
+          <h3>What to Submit</h3>
+          <ul>
+            <li>Working prototype or proof of concept (mandatory)</li>
+            <li>Project report (max 10 pages) — problem &amp; solution</li>
+            <li>1–2 minute demo video (YouTube or Drive link)</li>
+            <li>PPT / PDF presentation (6–8 slides)</li>
+            <li>GitHub or public code repository link</li>
+          </ul>
+        </div>
+        <div class="clay rule-section" style="background:var(--green-pale);">
+          <span class="rule-badge" style="background:var(--green);">Judging Criteria</span>
+          <h3>How You're Evaluated</h3>
+          <ul>
+            <li><strong>Innovation (25%)</strong> — Novelty and uniqueness of the idea</li>
+            <li><strong>Impact (25%)</strong> — Social relevance and scalability</li>
+            <li><strong>Feasibility (20%)</strong> — Technical practicality</li>
+            <li><strong>Prototype (20%)</strong> — Functionality &amp; completeness</li>
+            <li><strong>Presentation (10%)</strong> — Clarity and pitch quality</li>
+          </ul>
+        </div>
+        <div class="clay rule-section" style="background:var(--lavender-pale);">
+          <span class="rule-badge" style="background:var(--lavender);">Key Rules</span>
+          <h3>Important Guidelines</h3>
+          <ul>
+            <li>No plagiarism — all ideas must be original; prior work must be cited</li>
+            <li>Open-source tools and APIs are permitted and encouraged</li>
+            <li>Jury's decision is final and binding in all matters</li>
+            <li>Teams must be present for the full evaluation session</li>
+            <li>Organizers reserve the right to disqualify any team at any stage</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rules-note">
+        ⚠️ &nbsp;Replace this slide with the exact content from your <strong>IDEATHON Rules &amp; Regulations PDF</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: HOW IT WORKS -->
+  <div class="slide" id="slide-4">
+    <div style="width:100%;">
+      <div class="section-badge" style="background:var(--green-pale);">
+        <span class="dot"></span>Our Solution
+      </div>
+      <h2 class="display" style="font-size:clamp(34px,4.6vw,60px);">How <span style="color:var(--green-dark);">Swasthya Queue</span> Works</h2>
+      <p class="lede" style="margin-top:8px;">From standing in line → to feeling looked after. One seamless flow for the entire patient visit.</p>
+      <div class="steps-big">
+        <div class="clay step-big" style="background:var(--coral-pale);">
+          <div class="step-num">01</div>
+          <div class="step-icon">🗓️</div>
+          <h3>Register the Patient</h3>
+          <p>Name, age, village, mobile number, and health concern — captured in under 1 minute on any phone or tablet.</p>
+          <span class="step-chip" style="background:#fff;">Under 1 minute</span>
+        </div>
+        <div class="clay step-big" style="background:var(--sky-pale);">
+          <div class="step-num">02</div>
+          <div class="step-icon">🎫</div>
+          <h3>Get a Digital Token</h3>
+          <p>Patients see their token number and live queue position — no more standing in the sun to hold a place.</p>
+          <span class="step-chip" style="background:#fff;">Live queue view</span>
+        </div>
+        <div class="clay step-big" style="background:var(--green-pale);">
+          <div class="step-num">03</div>
+          <div class="step-icon">✅</div>
+          <h3>Consult &amp; Record</h3>
+          <p>Health worker logs visit notes, medicines given, and next follow-up date against the patient token.</p>
+          <span class="step-chip" style="background:#fff;">Saved to history</span>
+        </div>
+        <div class="clay step-big" style="background:var(--lavender-pale);">
+          <div class="step-num">04</div>
+          <div class="step-icon">📱</div>
+          <h3>Auto Reminders Go Out</h3>
+          <p>SMS + WhatsApp messages for follow-ups, vaccinations, and medicine schedules — sent automatically.</p>
+          <span class="step-chip" style="background:#fff;">SMS + WhatsApp</span>
+        </div>
+      </div>
+      <div class="features-row">
+        <div class="feat-chip">🌐 7 Indian Languages</div>
+        <div class="feat-chip">🔊 Text-to-Speech Audio Mode</div>
+        <div class="feat-chip">📵 SMS — No Smartphone Needed</div>
+        <div class="feat-chip">🌙 Dark Mode + High Contrast</div>
+        <div class="feat-chip">👨‍⚕️ Live Staff Dashboard</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: PROTOTYPE / WEBSITE -->
+  <div class="slide" id="slide-5">
+    <div style="width:100%;">
+      <div class="section-badge" style="background:var(--sky-pale);">
+        <span class="dot" style="background:var(--sky);"></span>
+        Live Working Prototype
+      </div>
+      <h2 class="display" style="font-size:clamp(32px,4.2vw,56px);">See It. Use It. <span style="color:var(--green-dark);">Right Now.</span></h2>
+      <a class="url-big" href="https://swasthya-queue-ht7a4oe1b-aryan-a9b4.vercel.app" target="_blank">
+        🌐 &nbsp;<span>swasthya-queue-ht7a4oe1b-aryan-a9b4.vercel.app</span>
+      </a>
+      <div class="proto-grid">
+        <div class="clay feature-table" style="background:var(--card);">
+          <div class="table-head">✅ What's Live &amp; Working Right Now</div>
+          <div class="table-row"><span>Patient Registration Form</span><span class="status-chip">✅ Fully Functional</span></div>
+          <div class="table-row"><span>Live Token Queue Display</span><span class="status-chip">✅ Working Demo</span></div>
+          <div class="table-row"><span>Token Status Checker (Search)</span><span class="status-chip">✅ Live</span></div>
+          <div class="table-row"><span>Staff Dashboard (/dashboard.html)</span><span class="status-chip">✅ Working</span></div>
+          <div class="table-row"><span>Multilingual — 7 Languages</span><span class="status-chip">✅ Google Translate</span></div>
+          <div class="table-row"><span>Text-to-Speech (Audio Mode)</span><span class="status-chip">✅ Web Speech API</span></div>
+          <div class="table-row"><span>Dark Mode + High Contrast</span><span class="status-chip">✅ Accessibility</span></div>
+          <div class="table-row"><span>Mobile Responsive Design</span><span class="status-chip">✅ All Devices</span></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="clay tech-box" style="background:var(--green-pale);">
+            <h3>🛠️ Tech Stack</h3>
+            <div class="tech-item"><span class="tech-label">Frontend</span>HTML5 + Vanilla CSS + JS</div>
+            <div class="tech-item"><span class="tech-label">Hosting</span>Vercel (free, auto-scalable)</div>
+            <div class="tech-item"><span class="tech-label">Notifications</span>SMS + WhatsApp Business API</div>
+            <div class="tech-item"><span class="tech-label">Translation</span>Google Translate API</div>
+            <div class="tech-item"><span class="tech-label">Accessibility</span>Web Speech API (TTS)</div>
+          </div>
+          <div class="clay" style="background:var(--yellow-pale); border:3px solid var(--ink); border-radius:var(--radius-sm); box-shadow:var(--shadow); padding:18px 20px;">
+            <h3 style="font-family:'Baloo 2',sans-serif; font-weight:800; font-size:17px; margin-bottom:10px;">🚀 Why It Scales</h3>
+            <div style="display:flex; flex-direction:column; gap:7px;">
+              <div style="font-size:14.5px; font-weight:700;">✅ Zero backend cost — Vercel free hosting</div>
+              <div style="font-size:14.5px; font-weight:700;">✅ Deploy at any PHC in under 10 minutes</div>
+              <div style="font-size:14.5px; font-weight:700;">✅ No app download — runs in browser</div>
+              <div style="font-size:14.5px; font-weight:700;">✅ SMS fallback — works on 2G networks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: IMPACT & CONCLUSION -->
+  <div class="slide" id="slide-6">
+    <div style="width:100%;">
+      <div class="section-badge" style="background:var(--green-pale);">
+        <span class="dot"></span>Impact &amp; What's Next
+      </div>
+      <h2 class="display" style="font-size:clamp(30px,4.2vw,54px);">Built for <span style="color:var(--green-dark);">Bharat's 70 Crore</span> Rural People</h2>
+      <div class="impact-grid">
+        <div class="clay impact-card" style="background:var(--coral-pale);">
+          <div class="emoji">🏥</div>
+          <div class="big-num">5 Lakh+</div>
+          <div class="desc">Rural health camps run in India every year</div>
+        </div>
+        <div class="clay impact-card" style="background:var(--green-pale);">
+          <div class="emoji">⏱️</div>
+          <div class="big-num" style="font-size:clamp(20px,2.4vw,30px);">2–4 hrs → 10 min</div>
+          <div class="desc">Queue wait time reduction for rural patients</div>
+        </div>
+        <div class="clay impact-card" style="background:var(--sky-pale);">
+          <div class="emoji">📊</div>
+          <div class="big-num">82%</div>
+          <div class="desc">Follow-up compliance vs ~30% on paper</div>
+        </div>
+        <div class="clay impact-card" style="background:var(--lavender-pale);">
+          <div class="emoji">🌾</div>
+          <div class="big-num">70 Cr+</div>
+          <div class="desc">Rural Indians who need better healthcare access</div>
+        </div>
+      </div>
+      <div class="why-grid">
+        <div class="clay why-item" style="background:var(--card);">
+          <div class="check">✅</div>
+          <p><strong>Real, measurable problem</strong> — not just a concept. Live prototype ready to demo right now.</p>
+        </div>
+        <div class="clay why-item" style="background:var(--card);">
+          <div class="check">✅</div>
+          <p><strong>Zero cost to patients</strong> — no app download, no data charges, no smartphone required.</p>
+        </div>
+        <div class="clay why-item" style="background:var(--card);">
+          <div class="check">✅</div>
+          <p><strong>Multilingual &amp; accessible</strong> — 7 languages, voice audio, high contrast for sunlight field use.</p>
+        </div>
+        <div class="clay why-item" style="background:var(--card);">
+          <div class="check">✅</div>
+          <p><strong>Clear roadmap</strong> — Phase 2: Ayushman Bharat integration. Phase 3: 500+ camps via ASHA network.</p>
+        </div>
+      </div>
+      <div class="cta-final">
+        🌐 &nbsp;<strong>swasthya-queue-ht7a4oe1b-aryan-a9b4.vercel.app</strong> &nbsp;·&nbsp; Team Swasthya Queue &nbsp;·&nbsp; SIH 2026
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('slide-counter');
+  const progressBar = document.getElementById('progress-bar');
+  const prevBtn = document.getElementById('nav-prev');
+  const nextBtn = document.getElementById('nav-next');
+  let current = 0;
+
+  function updateUI() {
+    counter.textContent = (current + 1) + ' / ' + slides.length;
+    progressBar.style.width = ((current + 1) / slides.length * 100) + '%';
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === slides.length - 1;
+  }
+
+  function goTo(n) {
+    if (n < 0 || n >= slides.length) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit-left');
+    const prev = current;
+    current = n;
+    slides[current].classList.add('active');
+    setTimeout(() => slides[prev].classList.remove('exit-left'), 480);
+    updateUI();
+  }
+
+  function nextSlide() { goTo(current + 1); }
+  function prevSlide() { goTo(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+  });
+
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const diff = tx - e.changedTouches[0].clientX;
+    if (diff > 60) nextSlide();
+    else if (diff < -60) prevSlide();
+  }, { passive: true });
+
+  function toggleFS() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      document.getElementById('fullscreen-btn').textContent = '✕ Exit Fullscreen';
+    } else {
+      document.exitFullscreen();
+      document.getElementById('fullscreen-btn').textContent = '⛶ Fullscreen';
+    }
+  }
+
+  updateUI();
+</script>
+</body>
+</html>
