@@ -111,6 +111,20 @@ html.motion-paused *::after {
   to { opacity: 0; transform: translateY(-8px); }
 }
 
+/* Floating Celebration Particles (Pluses & Diyas) */
+.celebration-item {
+  position: absolute;
+  pointer-events: none;
+  animation: floatCelebration 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 50;
+}
+@keyframes floatCelebration {
+  0% { opacity: 0; transform: translateY(0) scale(0.6) rotate(0deg); }
+  20% { opacity: 1; transform: translateY(-24px) scale(1.3) rotate(12deg); }
+  80% { opacity: 0.9; transform: translateY(-75px) scale(1.1) rotate(-12deg); }
+  100% { opacity: 0; transform: translateY(-115px) scale(0.8) rotate(20deg); }
+}
+
 /* ==========================================================================
    OFFICIAL OPD DIGITAL PASS MODAL & TOKEN ANIMATIONS
    ========================================================================== */

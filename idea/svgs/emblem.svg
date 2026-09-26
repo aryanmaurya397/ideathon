@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 115" width="100%" height="100%" aria-label="State Emblem of India">
+  <!-- Ashoka Lion Capital - Official Emblem Vector Representation -->
+  <g fill="#0B3D91">
+    <!-- Center Lion Head & Mane -->
+    <path d="M50 8 C46 8 43 11 43 15 C41 15 39 17 39 20 C37 21 36 24 37 27 C36 29 37 32 39 34 C38 37 40 40 42 42 C44 44 47 46 50 46 C53 46 56 44 58 42 C60 40 62 37 61 34 C63 32 64 29 63 27 C64 24 63 21 61 20 C61 17 59 15 57 15 C57 11 54 8 50 8 Z" fill="#B45309"/>
+    <!-- Center Lion Face Details -->
+    <path d="M47 16 C47 14 53 14 53 16 C53 18 52 20 50 20 C48 20 47 18 47 16 Z" fill="#F59E0B"/>
+    <circle cx="47" cy="18" r="1" fill="#78350F"/>
+    <circle cx="53" cy="18" r="1" fill="#78350F"/>
+    <path d="M48 22 L52 22 L50 25 Z" fill="#78350F"/>
+    <path d="M46 27 C48 29 52 29 54 27" stroke="#78350F" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    
+    <!-- Left Lion Head -->
+    <path d="M36 14 C33 14 30 16 30 19 C28 20 27 23 28 26 C26 28 27 31 29 33 C28 36 30 39 33 41 C36 42 39 43 42 42 C40 39 39 35 39 32 C37 30 37 27 38 24 C38 21 39 18 41 16 C39 14 38 14 36 14 Z" fill="#92400E"/>
+    <circle cx="33" cy="22" r="1" fill="#451A03"/>
+    
+    <!-- Right Lion Head -->
+    <path d="M64 14 C67 14 70 16 70 19 C72 20 73 23 72 26 C74 28 73 31 71 33 C72 36 70 39 67 41 C64 42 61 43 58 42 C60 39 61 35 61 32 C63 30 63 27 62 24 C62 21 61 18 59 16 C61 14 62 14 64 14 Z" fill="#92400E"/>
+    <circle cx="67" cy="22" r="1" fill="#451A03"/>
+
+    <!-- Lion Chests and Paws -->
+    <path d="M43 43 C42 47 43 53 44 58 L56 58 C57 53 58 47 57 43 C55 45 53 46 50 46 C47 46 45 45 43 43 Z" fill="#B45309"/>
+    <path d="M34 42 C33 46 34 52 36 58 L42 58 C41 53 40 47 41 43 C38 43 36 42 34 42 Z" fill="#92400E"/>
+    <path d="M66 42 C67 46 66 52 64 58 L58 58 C59 53 60 47 59 43 C62 43 64 42 66 42 Z" fill="#92400E"/>
+
+    <!-- Paws on Abacus -->
+    <rect x="34" y="58" width="32" height="4" rx="2" fill="#78350F"/>
+
+    <!-- Capital Abacus Platform -->
+    <rect x="18" y="63" width="64" height="15" rx="3" fill="#0B3D91"/>
+    
+    <!-- Ashoka Chakra (Center of Abacus) -->
+    <circle cx="50" cy="70.5" r="6" fill="#FFFFFF"/>
+    <circle cx="50" cy="70.5" r="5" fill="none" stroke="#0B3D91" stroke-width="0.8"/>
+    <circle cx="50" cy="70.5" r="1.2" fill="#0B3D91"/>
+    <!-- Chakra Spokes (24) -->
+    <g stroke="#0B3D91" stroke-width="0.5">
+      <line x1="50" y1="65.5" x2="50" y2="75.5"/>
+      <line x1="45" y1="70.5" x2="55" y2="70.5"/>
+      <line x1="46.5" y1="67" x2="53.5" y2="74"/>
+      <line x1="46.5" y1="74" x2="53.5" y2="67"/>
+      <line x1="45.5" y1="68.5" x2="54.5" y2="72.5"/>
+      <line x1="45.5" y1="72.5" x2="54.5" y2="68.5"/>
+      <line x1="48" y1="65.8" x2="52" y2="75.2"/>
+      <line x1="52" y1="65.8" x2="48" y2="75.2"/>
+    </g>
+
+    <!-- Galloping Horse (Left of Chakra) -->
+    <path d="M25 72 C25 69 27 68 29 68 C31 68 33 70 33 72 C32 73 30 73 29 74 C28 75 26 75 25 74 Z" fill="#F59E0B"/>
+    <path d="M24 74 L22 76 M27 75 L28 77 M31 74 L33 76" stroke="#F59E0B" stroke-width="0.8"/>
+
+    <!-- Bull (Right of Chakra) -->
+    <path d="M75 72 C75 69 73 68 71 68 C69 68 67 70 67 72 C68 73 70 73 71 74 C72 75 74 75 75 74 Z" fill="#F59E0B"/>
+    <path d="M76 74 L78 76 M73 75 L72 77 M69 74 L67 76" stroke="#F59E0B" stroke-width="0.8"/>
+
+    <!-- Lotus Base -->
+    <path d="M22 79 C22 79 32 87 50 87 C68 87 78 79 78 79 C76 83 66 90 50 90 C34 90 24 83 22 79 Z" fill="#B45309"/>
+    <!-- Lotus Petals -->
+    <path d="M26 80 Q35 88 50 88 Q65 88 74 80" stroke="#F59E0B" stroke-width="1.2" fill="none"/>
+    <path d="M30 81 Q40 89 50 89 Q60 89 70 81" stroke="#F59E0B" stroke-width="0.8" fill="none"/>
+
+    <!-- Motto Ribbon Platform -->
+    <rect x="20" y="93" width="60" height="10" rx="2" fill="#0B3D91"/>
+    <!-- Satyameva Jayate text representation -->
+    <text x="50" y="100.5" font-family="'Noto Sans Devanagari', 'Inter', system-ui, sans-serif" font-size="6.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">सत्यमेव जयते</text>
+  </g>
+</svg>
